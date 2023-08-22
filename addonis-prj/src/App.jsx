@@ -1,7 +1,12 @@
+import React from "react";
+import HomeContent from "./components/views/HomeContent/HomeContent";
+
 function App() {
   return (
-    <h1 className="text-4xl  border-2 bg-black text-cyan-400">Hello</h1>
-  )
+    <div>
+      <HomeContent />
+    </div>
+  );
 }
 
-export default App
+export default App;
