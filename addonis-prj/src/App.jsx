@@ -1,7 +1,7 @@
 import HomeContent from "./components/views/HomeContent/HomeContent";
 import { useState } from "react";
 import { BrowserRouter } from 'react-router-dom';
-import { AppContext } from '../src/context/AppContext';
+import AppContext from '../src/context/AppContext';
 
 
 function App() {
