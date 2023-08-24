@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useContext } from "react";
 import {
   Button,
   Modal,
@@ -12,25 +12,39 @@ import {
   FormLabel,
   Input,
   Checkbox,
-  Text,
-} from '@chakra-ui/react';
-import { loginUser } from '../../services/auth.service';
+} from "@chakra-ui/react";
+import { loginUser } from "../../services/auth.service";
+import AppContext from "../../context/AppContext";
+import { getUserData } from "../../services/auth.service";
 
 export default function LoginModal() {
   const [isOpen, setIsOpen] = useState(false);
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
+  const [formData, setFormData] = useState({
+    email: "",
+    password: "",
+  });
+  const { user, setContext } = useContext(AppContext);
 
   const handleLogin = async () => {
     try {
-      await loginUser(email, password);
+      const userCredential = await loginUser(formData.email, formData.password);
+      console.log("userCredential:", userCredential);
+      const uid = userCredential.user.uid;
+      // console.log("uid:", uid);
+      const additionalData = await getUserData(uid);
+      // console.log("additionalData:", additionalData);
+      const userWithAdditionalData = {
+        uid,
+        ...additionalData
+      };
+  
+      setContext((prevState) => ({ ...prevState, user: userWithAdditionalData }));
       onClose();
-      // console.log('vurvi li')
     } catch (error) {
-      console.error('Login err:', error)
-      // console.log('greshkaaa')
+      console.error("Login err:", error);
     }
-  }
+  };
+  
 
   const onClose = () => {
     setIsOpen(false);
@@ -42,35 +56,62 @@ export default function LoginModal() {
 
   return (
     <div>
-      <Button size="sm" bg={'transparent'} _hover={{ bg: 'transparent' }} color={'grey'} onClick={onOpen}>
-        Log In
-      </Button>
+      {user ? (
+        <span className="text-slate-700 mr-4">{user.username}</span>
+      ) : (
+        <Button
+          size="sm"
+          bg={"transparent"}
+          _hover={{ bg: "transparent" }}
+          color={"grey"}
+          onClick={onOpen}
+        >
+          Log In
+        </Button>
+      )}
       <Modal isOpen={isOpen} onClose={onClose} isCentered>
         <ModalOverlay />
         <ModalContent>
-          <ModalHeader textAlign={'center'}>Access Your Smart Hub: 📲</ModalHeader>
+          <ModalHeader textAlign={"center"}>
+            Access Your Smart Hub: 📲
+          </ModalHeader>
           <ModalBody>
             <form noValidate>
               <FormControl mt={4}>
                 <FormLabel>Email address</FormLabel>
-                <Input type="email"
-                value={email}
-                onChange={(e) => setEmail(e.target.value)} />
+                <Input
+                  type="email"
+                  name="email"
+                  value={formData.email}
+                  onChange={(e) =>
+                    setFormData({ ...formData, email: e.target.value })
+                  }
+                />
               </FormControl>
               <FormControl mt={4}>
                 <FormLabel>Password</FormLabel>
-                <Input type="password"
-                value={password}
-                onChange={(e) => setPassword(e.target.value)} />
+                <Input
+                  type="password"
+                  name="password"
+                  value={formData.password}
+                  onChange={(e) =>
+                    setFormData({ ...formData, password: e.target.value })
+                  }
+                />
               </FormControl>
               <Checkbox mt={4}>Remember me</Checkbox>
             </form>
           </ModalBody>
           <ModalFooter>
-            <Button variant="ghost" size={'sm'} onClick={onClose}>
+            <Button variant="ghost" size={"sm"} onClick={onClose}>
               Cancel
             </Button>
-            <Button colorScheme="yellow" size={'sm'} ml={1} onClick={handleLogin}>
+            <Button
+              colorScheme="yellow"
+              size={"sm"}
+              ml={1}
+              onClick={handleLogin}
+            >
               Log in
             </Button>
           </ModalFooter>

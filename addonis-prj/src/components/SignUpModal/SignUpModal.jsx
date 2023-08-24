@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useContext } from "react";
 import {
   Button,
   Modal,
@@ -17,6 +17,7 @@ import {
   ModalFooter,
 } from "@chakra-ui/react";
 import { ViewIcon, ViewOffIcon } from "@chakra-ui/icons";
+import AppContext from "../../context/AppContext";
 import { registerUser } from "../../services/auth.service";
 
 export default function SignUpModal() {
@@ -30,11 +31,27 @@ export default function SignUpModal() {
     password: "",
     phone: "",
   });
+  const { setContext } = useContext(AppContext)
 
   const handleSignup = async () => {
     try {
-      const { email, password } = formData;
-      await registerUser(email, password);
+      const { firstName, lastName, username, email, password, phone } = formData;
+      const userData = {
+        firstName,
+        lastName,
+        username,
+        email,
+        password,
+        phone
+      }
+      await registerUser(email, password, userData);
+
+      setContext({
+        user: {
+          username: userData.username,
+          email: userData.email
+        }
+      })
       onClose();
     } catch (error) {
       console.error("Signup err:", error);
