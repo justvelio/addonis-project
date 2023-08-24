@@ -15,7 +15,7 @@ import {
 } from "@chakra-ui/react";
 import { loginUser } from "../../services/auth.service";
 import AppContext from "../../context/AppContext";
-import { getUserData } from "../../services/auth.service";
+import { getUserData } from "../../services/users.service";
 
 export default function LoginModal() {
   const [isOpen, setIsOpen] = useState(false);
