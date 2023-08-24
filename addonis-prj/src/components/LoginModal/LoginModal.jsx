@@ -23,22 +23,22 @@ export default function LoginModal() {
     email: "",
     password: "",
   });
-  const { user, setContext } = useContext(AppContext);
+  const { user } = useContext(AppContext);
 
   const handleLogin = async () => {
     try {
-      const userCredential = await loginUser(formData.email, formData.password);
-      console.log("userCredential:", userCredential);
-      const uid = userCredential.user.uid;
+      await loginUser(formData.email, formData.password);
+      // console.log("userCredential:", userCredential);
+      // const uid = userCredential.user.uid;
       // console.log("uid:", uid);
-      const additionalData = await getUserData(uid);
+      // const additionalData = await getUserData(uid);
       // console.log("additionalData:", additionalData);
-      const userWithAdditionalData = {
-        uid,
-        ...additionalData
-      };
+      // const userWithAdditionalData = {
+      //   uid,
+      //   ...additionalData
+      // };
   
-      setContext((prevState) => ({ ...prevState, user: userWithAdditionalData }));
+      // setContext((prevState) => ({ ...prevState, user: userWithAdditionalData }));
       onClose();
     } catch (error) {
       console.error("Login err:", error);
@@ -59,15 +59,16 @@ export default function LoginModal() {
       {user ? (
         <span className="text-slate-700 mr-4">{user.username}</span>
       ) : (
-        <Button
-          size="sm"
-          bg={"transparent"}
-          _hover={{ bg: "transparent" }}
-          color={"grey"}
-          onClick={onOpen}
-        >
-          Log In
-        </Button>
+        <Button size='sm' bg={'transparent'} _hover={'transparent'} onClick={onOpen} className="group text-gray-200 hover:text-sky-600 transition ease-in-out duration-200">Log In <span aria-hidden="true" className="inline-block translate-x-0 group-hover:translate-x-1 transition-transform ease-in-out duration-200">→</span></Button>
+        // <Button
+        //   size="sm"
+        //   bg={"transparent"}
+        //   _hover={{ bg: "transparent" }}
+        //   color={"grey"}
+        //   onClick={onOpen}
+        // >
+        //   Log In
+        // </Button>
       )}
       <Modal isOpen={isOpen} onClose={onClose} isCentered>
         <ModalOverlay />
@@ -103,17 +104,18 @@ export default function LoginModal() {
             </form>
           </ModalBody>
           <ModalFooter>
-            <Button variant="ghost" size={"sm"} onClick={onClose}>
+            <Button variant="ghost" size={"sm"} _hover={'transparent'} onClick={onClose}>
               Cancel
             </Button>
-            <Button
+            <Button size={'sm'} onClick={handleLogin} className="px-6 py-3 bg-gray-200 text-black rounded-lg hover:scale-110 active:scale-90 transition-transform ease-in-out duration-200">Log In</Button>
+            {/* <Button
               colorScheme="yellow"
               size={"sm"}
               ml={1}
               onClick={handleLogin}
             >
               Log in
-            </Button>
+            </Button> */}
           </ModalFooter>
         </ModalContent>
       </Modal>
