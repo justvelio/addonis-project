@@ -1,9 +1,9 @@
-import React, { useState } from "react";
+import React, { useState, useContext } from "react";
 import { Dialog } from "@headlessui/react";
 import { ChevronDoubleDownIcon, XIcon } from "@heroicons/react/solid";
 import LoginModal from "../LoginModal/LoginModal";
-import SignUpMenu from "../SignUpMenu/SignUpMenu";
 import SignUpModal from "../SignUpModal/SignUpModal";
+import AppContext from "../../context/AppContext";
 
 const navigation = [
   { name: "Products", href: "#" },
@@ -13,6 +13,7 @@ const navigation = [
 
 export default function Header() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const { user } = useContext(AppContext)
 
   return (
     <header className="absolute inset-x-0 top-0 z-50">
@@ -52,10 +53,15 @@ export default function Header() {
           ))}
         </div>
         <div className="hidden lg:flex lg:flex-1 lg:justify-end text-slate-700">
+        {user ? (
+          <span className="text-slate-700 mr-4">Welcome, {user.username}</span>
+        ) : (
+          <div className="hidden lg:flex lg:flex-1 lg:justify-end text-slate-700">
+            <SignUpModal />
+            <LoginModal />
+          </div>
+        )}
 
-          <SignUpModal />
-
-          <LoginModal />
         </div>
       </nav>
       <Dialog
