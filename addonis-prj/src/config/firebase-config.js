@@ -3,7 +3,7 @@ import { getAuth } from 'firebase/auth';
 import { getDatabase } from 'firebase/database';
 
 
-const firebaseConfig = {
+export const firebaseConfig = {
   apiKey: "AIzaSyDtkqYHqPVNTbfyaBrshArGni10LiapKnw",
   authDomain: "addonis-e5b1b.firebaseapp.com",
   projectId: "addonis-e5b1b",
