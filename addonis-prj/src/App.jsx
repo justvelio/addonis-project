@@ -1,8 +1,9 @@
 import HomeContent from "./components/views/HomeContent/HomeContent";
 import { useState } from "react";
-import { BrowserRouter } from 'react-router-dom';
+import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 import AppContext from '../src/context/AppContext';
 import Header from "./components/Header/Header";
+import MyProfileView from "./components/views/MyProfile/MyProfile";
 
 function App() {
   const [appState, setAppState] = useState({
@@ -13,12 +14,15 @@ function App() {
 
   return (
     <AppContext.Provider value={{ ...appState, setContext: setAppState }}>
-      <BrowserRouter>
+      <Router>
         <div className="App">
           <Header />
-          <HomeContent />
+          {<HomeContent />}
+          <Routes>
+          <Route path="/user-profile" element={<MyProfileView />} />
+      </Routes>
         </div>
-      </BrowserRouter>
+      </Router>
     </AppContext.Provider>
   );
 }

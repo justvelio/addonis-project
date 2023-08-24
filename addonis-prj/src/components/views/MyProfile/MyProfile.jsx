@@ -1,28 +1,34 @@
 import React, { useState, useEffect } from 'react';
 import { firebaseConfig } from '../../../config/firebase-config';
-import firebase from 'firebase/app';
-import 'firebase/database';
+import { initializeApp } from 'firebase/app';
+import { getAuth } from 'firebase/auth';
+import { getUserData } from '../../../services/users.service';
 
-const MyProfileView = ({ userId }) => {
+const app = initializeApp(firebaseConfig);
+const auth = getAuth(app);
+
+const MyProfileView = () => {
   const [userData, setUserData] = useState(null);
 
   useEffect(() => {
-    if (!firebase.apps.length) {
-      firebase.initializeApp(firebaseConfig);
+    const user = auth.currentUser;
+    if (user) {
+      const uid = user.uid;
+      console.log("User UID:", uid);
+
+      getUserData(uid)
+        .then((userData) => {
+          if (userData) {
+            setUserData(userData);
+          } else {
+            console.log("No user data found");
+          }
+        })
+        .catch((error) => {
+          console.error("Error fetching user data:", error);
+        });
     }
-
-    const database = firebase.database();
-    const userRef = database.ref(`users/${userId}`);
-
-    userRef.on('value', (snapshot) => {
-      const user = snapshot.val();
-      setUserData(user);
-    });
-
-    return () => {
-      userRef.off('value');
-    };
-  }, [userId]);
+  }, []);
 
   if (!userData) {
     return <p>Loading...</p>;

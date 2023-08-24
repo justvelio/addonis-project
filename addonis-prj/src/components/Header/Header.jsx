@@ -4,6 +4,7 @@ import { ChevronDoubleDownIcon, XIcon } from "@heroicons/react/solid";
 import LoginModal from "../LoginModal/LoginModal";
 import SignUpModal from "../SignUpModal/SignUpModal";
 import AppContext from "../../context/AppContext";
+import { Link } from "react-router-dom";
 
 const navigation = [
   { name: "Products", href: "#" },
@@ -54,7 +55,15 @@ export default function Header() {
         </div>
         <div className="hidden lg:flex lg:flex-1 lg:justify-end text-slate-700">
         {user ? (
-          <span className="text-slate-700 mr-4">Welcome, {user.username}</span>
+           <div className="flex items-center">
+           <span className="text-slate-700 mr-4">
+             Welcome, {user.username}
+           </span>
+           <Link to="/user-profile" className="text-slate-700">
+             Update Profile
+           </Link>
+         </div>
+
         ) : (
           <div className="hidden lg:flex lg:flex-1 lg:justify-end text-slate-700">
             <SignUpModal />
