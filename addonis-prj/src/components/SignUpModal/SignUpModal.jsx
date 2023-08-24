@@ -56,7 +56,8 @@ export default function SignUpModal() {
     } catch (error) {
       console.error("Signup err:", error);
     }
-  };
+  }
+
 
   const onClose = () => {
     setIsOpen(false);
@@ -68,9 +69,7 @@ export default function SignUpModal() {
 
   return (
     <div>
-      <Button size="sm" onClick={onOpen}>
-        Sign Up
-      </Button>
+      <Button onClick={onOpen} size='sm' className="group [transform:translateZ(0)] px-6 py-3 rounded-lg bg-gray-200 overflow-hidden relative before:absolute before:bg-sky-600 before:bottom-0 before:left-0 before:h-full before:w-full before:-translate-x-full hover:before:translate-x-0 before:transition before:ease-in-out before:duration-500"><span className="relative z-0 text-black group-hover:text-gray-200 transition ease-in-out duration-500">Sign Up</span></Button>
       <Modal isOpen={isOpen} onClose={onClose} isCentered>
         <ModalOverlay />
         <ModalContent>
@@ -157,7 +156,9 @@ export default function SignUpModal() {
                 />
               </FormControl>
 
-              <Button
+              <Button size={'md'} loadingText='Submitting' onClick={handleSignup} className="px-6 py-3 bg-gray-200 text-black rounded-lg hover:scale-110 active:scale-90 transition-transform ease-in-out duration-200">Sign Up</Button>
+
+              {/* <Button
                 loadingText="Submitting"
                 size="md"
                 bg="yellow.400"
@@ -168,7 +169,7 @@ export default function SignUpModal() {
                 onClick={handleSignup}
               >
                 Sign up
-              </Button>
+              </Button> */}
             </Stack>
           </ModalBody>
           <ModalFooter>

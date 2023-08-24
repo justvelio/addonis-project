@@ -1,4 +1,4 @@
-import React, { useState, useContext } from "react";
+import { useState, useContext } from "react";
 import { Dialog } from "@headlessui/react";
 import { ChevronDoubleDownIcon, XIcon } from "@heroicons/react/solid";
 import LoginModal from "../LoginModal/LoginModal";
@@ -14,7 +14,11 @@ const navigation = [
 
 export default function Header() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
-  const { user } = useContext(AppContext)
+  const { user, userData } = useContext(AppContext)
+
+  // to do loading
+
+  console.log(user)
 
   return (
     <header className="absolute inset-x-0 top-0 z-50">

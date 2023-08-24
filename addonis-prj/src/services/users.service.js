@@ -19,20 +19,14 @@ export const createUserHandle = (handle, uid, email) => {
 
 export const getUserData = async (uid) => {
   const userRef = ref(db, `users/${uid}`);
-  
-  try {
-    const snapshot = await get(userRef);
-    if (snapshot.exists()) {
-      const userData = snapshot.val();
-      return userData;
-    } else {
-      console.log("No user data found");
-      return null;
-    }
-  } catch (error) {
-    console.error("Error fetching user data:", error);
-    throw error;
+  // console.log("getUserData called with uid:", uid);
+  const snapshot = await get(userRef);
+  const userData = snapshot.val();
+  if (userData) {
+    userData.uid = uid;
+    // console.log("getUserData snapshot:", snapshot.val());
   }
+  return userData;
 };
 
 export const updateUserProfile = async (handle, updatedData) => {
@@ -60,5 +54,4 @@ export const updateUserProfile = async (handle, updatedData) => {
     Alert('Error updating user profile:', error);
     return false;
   }
-
 };
