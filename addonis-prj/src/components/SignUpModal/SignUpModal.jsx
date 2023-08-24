@@ -35,10 +35,9 @@ export default function SignUpModal() {
     try {
       const { email, password } = formData;
       await registerUser(email, password);
-      // Additional logic after successful signup, e.g., closing the modal
       onClose();
     } catch (error) {
-      console.error("Signup error:", error);
+      console.error("Signup err:", error);
     }
   };
 

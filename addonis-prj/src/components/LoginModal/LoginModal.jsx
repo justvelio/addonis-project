@@ -14,9 +14,23 @@ import {
   Checkbox,
   Text,
 } from '@chakra-ui/react';
+import { loginUser } from '../../services/auth.service';
 
 export default function LoginModal() {
   const [isOpen, setIsOpen] = useState(false);
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+
+  const handleLogin = async () => {
+    try {
+      await loginUser(email, password);
+      onClose();
+      // console.log('vurvi li')
+    } catch (error) {
+      console.error('Login err:', error)
+      // console.log('greshkaaa')
+    }
+  }
 
   const onClose = () => {
     setIsOpen(false);
@@ -39,11 +53,15 @@ export default function LoginModal() {
             <form noValidate>
               <FormControl mt={4}>
                 <FormLabel>Email address</FormLabel>
-                <Input type="email" />
+                <Input type="email"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)} />
               </FormControl>
               <FormControl mt={4}>
                 <FormLabel>Password</FormLabel>
-                <Input type="password" />
+                <Input type="password"
+                value={password}
+                onChange={(e) => setPassword(e.target.value)} />
               </FormControl>
               <Checkbox mt={4}>Remember me</Checkbox>
             </form>
@@ -52,7 +70,7 @@ export default function LoginModal() {
             <Button variant="ghost" size={'sm'} onClick={onClose}>
               Cancel
             </Button>
-            <Button colorScheme="yellow" size={'sm'} ml={1}>
+            <Button colorScheme="yellow" size={'sm'} ml={1} onClick={handleLogin}>
               Log in
             </Button>
           </ModalFooter>
