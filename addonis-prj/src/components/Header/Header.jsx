@@ -3,9 +3,10 @@ import { Dialog } from "@headlessui/react";
 import { ChevronDoubleDownIcon, XIcon } from "@heroicons/react/solid";
 import LoginModal from "../LoginModal/LoginModal";
 import SignUpMenu from "../SignUpMenu/SignUpMenu";
+import SignUpModal from "../SignUpModal/SignUpModal";
 
 const navigation = [
-  { name: "Product", href: "#" },
+  { name: "Products", href: "#" },
   { name: "Features", href: "#" },
   { name: "FAQ", href: "#" },
 ];
@@ -19,20 +20,20 @@ export default function Header() {
         className="flex items-center justify-end p-6 lg:px-8"
         aria-label="Global"
       >
-        <div className="flex lg:flex-1">
+        <div className="flex lg:flex-1 align-center">
           <a href="#" className="-m-1.5 p-1.5">
             <img
-              className="h-8 w-auto"
-              src="https://www.svgrepo.com/show/387021/brain.svg"
+              className="h-12 w-auto"
+              src="https://www.svgrepo.com/show/527750/home-smile.svg"
               alt="Company Logo"
               />
           </a>
-              <span className="text-4xl text-slate-100">BrainTech</span>
+              <span className="text-4xl text-slate-800">FutureHome</span>
         </div>
         <div className="flex lg:hidden">
           <button
             type="button"
-            className="-m-2.5 inline-flex items-center justify-center rounded-md p-2.5 text-slate-100"
+            className="-m-2.5 inline-flex items-center justify-center rounded-md p-2.5 text-slate-800"
             onClick={() => setMobileMenuOpen(true)}
           >
             <span className="sr-only">Open main menu</span>
@@ -44,14 +45,15 @@ export default function Header() {
             <a
               key={item.name}
               href={item.href}
-              className="text-sm font-semibold leading-6 text-slate-100"
+              className="text-sm font-semibold leading-6 text-slate-800"
             >
               {item.name}
             </a>
           ))}
         </div>
-        <div className="hidden lg:flex lg:flex-1 lg:justify-end text-slate-300">
-          <SignUpMenu />
+        <div className="hidden lg:flex lg:flex-1 lg:justify-end text-slate-700">
+
+          <SignUpModal />
 
           <LoginModal />
         </div>
@@ -68,7 +70,7 @@ export default function Header() {
             <a href="#" className="-m-1.5 p-1.5">
               <img
                 className="h-8 w-auto"
-                src="https://www.svgrepo.com/show/387021/brain.svg"
+                src="https://www.svgrepo.com/show/527750/home-smile.svg"
                 alt=""
               />
             </a>
@@ -96,7 +98,7 @@ export default function Header() {
               </div>
               <div className="py-6 text-lg">
                 <LoginModal />
-                <SignUpMenu />
+                <SignUpModal />
               </div>
             </div>
           </div>

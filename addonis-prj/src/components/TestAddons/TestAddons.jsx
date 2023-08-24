@@ -7,72 +7,60 @@ import {
   Text,
   Stack,
   Image,
+  Icon,
+  Flex,
 } from '@chakra-ui/react';
+import { FaStar } from 'react-icons/fa'; // Import the star icon
 
 const IMAGE =
   'https://parkinsonsnewstoday.com/wp-content/uploads/2017/09/shutterstock_432573415.jpg';
 
-export default function TestAddon() {
-  return (
-    <Center py={12}>
-      <Box
-        role={'group'}
-        p={6}
-        maxW={'330px'}
-        w={'full'}
-        bg={useColorModeValue('gray', 'gray.800')}
-        boxShadow={'2xl'}
-        rounded={'lg'}
-        pos={'relative'}
-        zIndex={1}
-      >
+  export default function TestAddon() {
+    return (
+      <Box p={2} maxW={'240px'} w={'full'}>
         <Box
+          p={4}
+          bg={useColorModeValue('gray.100', 'gray.700')}
+          boxShadow={'md'}
           rounded={'lg'}
-          mt={-12}
-          pos={'relative'}
-          height={'230px'}
-          _after={{
-            transition: 'all .3s ease',
-            content: '""',
-            w: 'full',
-            h: 'full',
-            pos: 'absolute',
-            top: 5,
-            left: 0,
-            backgroundImage: `url(${IMAGE})`,
-            filter: 'blur(15px)',
-            zIndex: -1,
-          }}
-          _groupHover={{
-            _after: {
-              filter: 'blur(20px)',
-            },
-          }}
         >
-          <Image
+          <Box
             rounded={'lg'}
-            height={230}
-            width={282}
-            objectFit={'cover'}
-            src={IMAGE}
-            alt="#"
-          />
-        </Box>
-        <Stack pt={10} align={'center'}>
-          <Text color={'gray.100'} fontSize={'sm'} textTransform={'uppercase'}>
-            Neurotransmitter
-          </Text>
-          <Heading fontSize={'2xl'} fontFamily={'body'} fontWeight={500} color={'gray.300'}>
-            Dopamine Booster
-          </Heading>
-          <Stack direction={'row'} align={'center'}>
-            <Text fontWeight={400} fontSize={'xl'} color={'grey.300'}>
+            overflow={'hidden'}
+            pos={'relative'}
+            height={'150px'}
+            mb={2}
+          >
+            <Image
+              alt={'Addon'}
+              fit={'cover'}
+              align={'center'}
+              w={'100%'}
+              h={'100%'}
+              src={IMAGE}
+            />
+          </Box>
+          <Stack spacing={0} align={'center'}>
+            <Text color={'gray.500'} fontSize={'sm'} textTransform={'uppercase'}>
+              Neurotransmitter
+            </Text>
+            <Heading fontSize={'lg'} fontFamily={'body'} fontWeight={500}>
+              Dopamine Booster
+            </Heading>
+            <Flex justify={'center'}>
+              <Stack direction={'row'} spacing={1} align={'center'}>
+                <Icon as={FaStar} color={'yellow.400'} />
+                <Icon as={FaStar} color={'yellow.400'} />
+                <Icon as={FaStar} color={'yellow.400'} />
+                <Icon as={FaStar} color={'yellow.400'} />
+                <Icon as={FaStar} color={'gray.300'} />
+              </Stack>
+            </Flex>
+            <Text fontWeight={600} fontSize={'lg'} color={'gray.900'}>
               $325.99
             </Text>
           </Stack>
-        </Stack>
+        </Box>
       </Box>
-    </Center>
-  );
-}
-
+    );
+  }

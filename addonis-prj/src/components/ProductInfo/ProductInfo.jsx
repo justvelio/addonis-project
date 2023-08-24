@@ -13,9 +13,8 @@ import {
 } from '@chakra-ui/react';
 import { IoFlaskSharp, IoEyeOff, IoFishSharp } from 'react-icons/io5';
 import { color } from 'framer-motion';
-import animationData from '../../assets/animation_brain.json'
+import animationData from '../../assets/animation_llnwfv8u.json'
 import Lottie from 'lottie-react'
-import { useRef } from 'react';
 
 const Feature = ({ text, icon, iconBg }) => {
   return (
@@ -23,25 +22,23 @@ const Feature = ({ text, icon, iconBg }) => {
       <Flex w={8} h={8} align={'center'} justify={'center'} rounded={'full'} bg={iconBg}>
         {icon}
       </Flex>
-      <Text fontWeight={600} color={'white'}>{text}</Text>
+      <Text fontWeight={600} color={'gray'}>{text}</Text>
     </Stack>
   );
 };
 
 export default function ProductInfo() {
-    const brainAnim = useRef()
 
     
   return (
     <Container maxW={'5xl'} py={12}>
       <SimpleGrid columns={{ base: 1, md: 2 }} spacing={10}>
         <Stack spacing={4}>
-          <Heading color={'white'} textAlign={'center'}>🧠Upgrade Your Mind with our Addon Registry!🧠</Heading>
-          <Text color={'white'} fontSize={'lg'} textAlign={'center'}>🔥Experience the Future of Brain Enhancement🔥</Text>
-          <Text color={'white'} fontSize={'lg'} textAlign={'center'}>
-          Imagine having the ability to enhance memory, creativity, and problem-solving skills with just a few clicks. Our addon collection boasts a wide range of brain-boosting tools designed to expand your mental horizons.
+          <Heading color={'gray'} textAlign={'center'}>🏡 Your Home, Upgraded</Heading>
+
+          <Text color={'gray'} fontSize={'lg'} textAlign={'center'}>
+          Embrace the future with our handpicked selection of addons designed to elevate your home's IQ. Experience the convenience of automation, the thrill of futuristic tech, and the comfort of a truly intelligent living space.
           </Text>
-          <Text color={'white'} fontSize={'lg'} textAlign={'center'}>Why choose us?</Text>
           <Stack
             spacing={4}
             divider={
@@ -49,18 +46,18 @@ export default function ProductInfo() {
             }>
             <Feature
               icon={<Icon as={IoFlaskSharp} color={'gry.500'} w={5} h={5} />}
-              iconBg={useColorModeValue('white', 'grey.900')}
-              text={'Scientifically Backed'}
+              iconBg={useColorModeValue('gray', 'grey.900')}
+              text={'Effortless Automation'}
             />
             <Feature
               icon={<Icon as={IoEyeOff} color={'gry.500'} w={5} h={5} />}
-              iconBg={useColorModeValue('white', 'grey.900')}
-              text={'Privacy and Security'}
+              iconBg={useColorModeValue('gray', 'grey.900')}
+              text={'Boundless Futuristic Thrills'}
             />
             <Feature
               icon={<Icon as={IoFishSharp} color={'grey.500'} w={5} h={5} />}
-              iconBg={useColorModeValue('white', 'grey.900')}
-              text={'User-Friendly Interface'}
+              iconBg={useColorModeValue('gray', 'grey.900')}
+              text={'Intelligence that Cares'}
             />
           </Stack>
         </Stack>

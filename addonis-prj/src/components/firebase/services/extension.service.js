@@ -11,24 +11,31 @@
 // }
 
 import { getDatabase, ref, child, get } from "firebase/database";
-import { db } from "../config";
+import { db } from "../../../config/firebase-config";
 
-
-export const getAllExtensions = () => {
-    let data = 'null';
-  const dbRef = ref(db);
-  get(child(dbRef, `extensions/`))
-    .then((snapshot) => {
-      if (snapshot.exists()) {
-        data = snapshot.val()
-        console.log(snapshot.val());
-      } else {
-        console.log("No data available");
-      }
-    })
-    .catch((error) => {
-      console.error(error);
-    });
-
-  return data;
+export const getAllExtensions = async () => {
+  try {
+    const dbRef = ref(db);
+    const snapshot = await get(child(dbRef, `extensions/`));
+    if (snapshot.exists()) {
+      return snapshot.val();
+    } else {
+      return null;
+    }
+  } catch (error) {
+    console.error(error);
+  }
 };
+
+// get(child(dbRef, `extensions/`))
+//   .then((snapshot) => {
+//     if (snapshot.exists()) {
+//       data = snapshot.val()
+//       console.log(snapshot.val());
+//     } else {
+//       console.log("No data available");
+//     }
+//   })
+//   .catch((error) => {
+//     console.error(error);
+//   });

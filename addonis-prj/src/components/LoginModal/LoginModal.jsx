@@ -28,14 +28,13 @@ export default function LoginModal() {
 
   return (
     <div>
-      <Button size="sm" bg={'transparent'} _hover={{ bg: 'transparent' }} color={'white'} onClick={onOpen}>
+      <Button size="sm" bg={'transparent'} _hover={{ bg: 'transparent' }} color={'grey'} onClick={onOpen}>
         Log In
       </Button>
-      <Modal isOpen={isOpen} onClose={onClose}>
+      <Modal isOpen={isOpen} onClose={onClose} isCentered>
         <ModalOverlay />
         <ModalContent>
-          <ModalHeader>Log in to your account</ModalHeader>
-          <ModalCloseButton />
+          <ModalHeader textAlign={'center'}>Access Your Smart Hub: 📲</ModalHeader>
           <ModalBody>
             <form noValidate>
               <FormControl mt={4}>
