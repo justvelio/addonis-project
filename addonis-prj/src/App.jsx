@@ -1,6 +1,6 @@
 import HomeContent from "./components/views/HomeContent/HomeContent";
 import { useEffect, useState } from "react";
-import { BrowserRouter, Route, Routes, BrowserRouter } from 'react-router-dom';
+import { BrowserRouter, Route, Routes, } from 'react-router-dom';
 import AppContext from '../src/context/AppContext';
 import Header from "./components/Header/Header";
 import { onAuthStateChanged } from "firebase/auth";

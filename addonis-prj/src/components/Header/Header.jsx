@@ -4,7 +4,9 @@ import { ChevronDoubleDownIcon, XIcon } from "@heroicons/react/solid";
 import LoginModal from "../LoginModal/LoginModal";
 import SignUpModal from "../SignUpModal/SignUpModal";
 import AppContext from "../../context/AppContext";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+import { logoutUser } from "../../services/auth.service";
+import SignOutButton from "../SignOut/SignOut";
 
 const navigation = [
   { name: "Products", href: "#" },
@@ -66,6 +68,7 @@ export default function Header() {
            <Link to="/user-profile" className="text-slate-700">
              Update Profile
            </Link>
+              <SignOutButton />
          </div>
 
         ) : (
