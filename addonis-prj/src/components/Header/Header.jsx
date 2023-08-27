@@ -9,7 +9,8 @@ import { logoutUser } from "../../services/auth.service";
 import SignOutButton from "../SignOut/SignOut";
 import { Menu, MenuButton, MenuList, MenuItem, Button } from "@chakra-ui/react";
 import Search from "../Search/Search";
-
+import { ChevronDownIcon } from "@chakra-ui/icons";
+import { color } from "framer-motion";
 
 const navigation = [
   { name: "Products", href: "#" },
@@ -43,7 +44,7 @@ export default function Header() {
             />
           </a>
         </div>
-          <Search />
+        <Search />
         <div className="flex lg:hidden">
           <button
             type="button"
@@ -60,7 +61,7 @@ export default function Header() {
               key={item.name}
               href={item.href}
               className="text-sm font-semibold leading-6 text-white"
-              >
+            >
               {item.name}
             </a>
           ))}
@@ -68,8 +69,14 @@ export default function Header() {
         <div className="hidden lg:flex lg:flex-1 lg:justify-end text-slate-700">
           {user ? (
             <Menu>
-              <MenuButton as={Button} rightIcon={<ChevronDoubleDownIcon />} variant="unstyled">
-                Welcome, {userData.username}
+              <MenuButton
+                as={Button}
+                rightIcon={<ChevronDownIcon />}
+                variant="unstyled"
+                color={'white'}
+                
+              >
+              {userData.username}
               </MenuButton>
               <MenuList>
                 <MenuItem>
@@ -78,8 +85,8 @@ export default function Header() {
                 <MenuItem>
                   <Link to="/upload-plugin">Upload Plugin</Link>
                 </MenuItem>
-                <MenuItem >
-                  <SignOutButton />
+                <MenuItem as={'div'}>
+                 <SignOutButton />
                 </MenuItem>
               </MenuList>
             </Menu>
@@ -134,7 +141,7 @@ export default function Header() {
                 {user ? (
                   <div className="flex items-center">
                     <span className="text-slate-700 mr-4">
-                      Welcome, {userData.username}
+                      {userData.username}
                     </span>
                     <Link to="/user-profile" className="text-slate-700">
                       Update Profile

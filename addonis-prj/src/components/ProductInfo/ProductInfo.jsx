@@ -8,7 +8,6 @@ import {
   Stack,
   StackDivider,
   Icon,
-  Spacer,
   useColorModeValue,
 } from '@chakra-ui/react';
 import { IoFlaskSharp, IoEyeOff, IoFishSharp } from 'react-icons/io5';
@@ -27,16 +26,16 @@ export default function ProductInfo() {
 
           <Text color={'black'} fontSize={'lg'} textAlign={'center'}>
           Welcome to your <span className='italic'>Future Home!</span> We're dedicated to enhancing your smart home experience by offering a curated selection of innovative add-ons and downloads. Our passion lies in making your home smarter, more convenient, and truly connected.
-          <Spacer />
+
+          </Text>
+          <Text color={'black'} fontSize={'lg'} textAlign={'center'}>
+          Whether you're a tech enthusiast, a homeowner looking to simplify routines, or simply curious about the latest smart home advancements, we're here to guide you on this exciting journey. Our team is committed to sourcing high-quality products and resources that enhance your home's automation, security, energy efficiency, and overall comfort.
           </Text>
           <Stack
             spacing={4}
             divider={
               <StackDivider borderColor={useColorModeValue('gray.100', 'gray.700')} />
             }>
-              <Text color={'black'} fontSize={'lg'} textAlign={'center'}>
-          Whether you're a tech enthusiast, a homeowner looking to simplify routines, or simply curious about the latest smart home advancements, we're here to guide you on this exciting journey. Our team is committed to sourcing high-quality products and resources that enhance your home's automation, security, energy efficiency, and overall comfort.
-          </Text>
           </Stack>
         </Stack>
         <Flex>

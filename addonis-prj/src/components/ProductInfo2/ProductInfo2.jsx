@@ -23,9 +23,9 @@ import {
   IoPhonePortraitOutline,
   IoCloudDownloadOutline,
 } from "react-icons/io5";
+import { MdFileDownload,  } from "react-icons/md"
 import animationData from "../../assets/animation_lls8yso6.json";
 import Lottie from "lottie-react";
-import { MdFileDownload,  } from "react-icons/md"
 
 const popoverData = [
   {

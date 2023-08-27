@@ -5,15 +5,15 @@ import { logoutUser } from '../../services/auth.service';
 import { useNavigate } from 'react-router-dom';
 
 const SignOutButton = () => {
-  const { setContext } = useContext(AppContext);
+  // const { setContext } = useContext(AppContext);
   const navigate = useNavigate();
 
   const handleSignOut = async () => {
     try {
       await logoutUser();
-      setContext({
-        user: null,
-      });
+      // setContext({
+        // user: null,
+      // });
       navigate('/'); // Redirect to the home page
     } catch (error) {
       console.error('Sign-out error:', error);
