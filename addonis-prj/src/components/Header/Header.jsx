@@ -7,11 +7,17 @@ import AppContext from "../../context/AppContext";
 import { Link, useNavigate } from "react-router-dom";
 import { logoutUser } from "../../services/auth.service";
 import SignOutButton from "../SignOut/SignOut";
+import { Menu, MenuButton, MenuList, MenuItem, Button } from "@chakra-ui/react";
+import Search from "../Search/Search";
+
 
 const navigation = [
   { name: "Products", href: "#" },
   { name: "Features", href: "#" },
-  { name: "FAQ", href: "#" },
+  { name: "Smart Home", href: "#" },
+  { name: "Partners", href: "#" },
+  { name: "Careers", href: "#" },
+  { name: "Contacts", href: "#" },
 ];
 
 export default function Header() {
@@ -21,7 +27,7 @@ export default function Header() {
 
   // to do loading
 
-  console.log(user)
+  // console.log(user);
 
   return (
     <header className="absolute inset-x-0 top-0 z-50">
@@ -39,6 +45,7 @@ export default function Header() {
           </Link>
               <span className="text-4xl text-slate-800">FutureHome</span>
         </div>
+          <Search />
         <div className="flex lg:hidden">
           <button
             type="button"
@@ -54,31 +61,36 @@ export default function Header() {
             <a
               key={item.name}
               href={item.href}
-              className="text-sm font-semibold leading-6 text-slate-800"
-            >
+              className="text-sm font-semibold leading-6 text-white"
+              >
               {item.name}
             </a>
           ))}
         </div>
         <div className="hidden lg:flex lg:flex-1 lg:justify-end text-slate-700">
-        {user ? (
-           <div className="flex items-center">
-           <span className="text-slate-700 mr-4">
-             Welcome, {userData.username}
-           </span>
-           <button className="text-slate-700" onClick={() => {navigate("/user-profile");}}>
-                My Profile
-              </button> 
-              <SignOutButton />
-         </div>
-
-        ) : (
-          <div className="hidden lg:flex lg:flex-1 lg:justify-end text-slate-700">
-            <SignUpModal />
-            <LoginModal />
-          </div>
-        )}
-
+          {user ? (
+            <Menu>
+              <MenuButton as={Button} rightIcon={<ChevronDoubleDownIcon />} variant="unstyled">
+                Welcome, {userData.username}
+              </MenuButton>
+              <MenuList>
+                <MenuItem>
+                  <Link to="/user-profile">My Profile</Link>
+                </MenuItem>
+                <MenuItem>
+                  <Link to="/upload-plugin">Upload Plugin</Link>
+                </MenuItem>
+                <MenuItem >
+                  <SignOutButton />
+                </MenuItem>
+              </MenuList>
+            </Menu>
+          ) : (
+            <div className="hidden lg:flex lg:flex-1 lg:justify-end text-slate-700">
+              <SignUpModal />
+              <LoginModal />
+            </div>
+          )}
         </div>
       </nav>
       <Dialog
@@ -120,8 +132,23 @@ export default function Header() {
                 ))}
               </div>
               <div className="py-6 text-lg">
-                <LoginModal />
-                <SignUpModal />
+                <Search />
+                {user ? (
+                  <div className="flex items-center">
+                    <span className="text-slate-700 mr-4">
+                      Welcome, {userData.username}
+                    </span>
+                    <Link to="/user-profile" className="text-slate-700">
+                      Update Profile
+                    </Link>
+                    <SignOutButton />
+                  </div>
+                ) : (
+                  <div className="hidden lg:flex lg:flex-1 lg:justify-end text-slate-700">
+                    <SignUpModal />
+                    <LoginModal />
+                  </div>
+                )}
               </div>
             </div>
           </div>

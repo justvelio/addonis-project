@@ -4,6 +4,8 @@ import React, { useEffect, useState } from "react";
 import ProductInfo from "../../ProductInfo/ProductInfo";
 import TopFields from "../../TopFields/TopFields";
 import { Flex, Center } from "@chakra-ui/react";
+import Hero from "../../Hero/Hero";
+import ProductInfo2 from "../../ProductInfo2/ProductInfo2";
 
 export default function HomeContent() {
   const [data, setData] = useState([]);
@@ -25,14 +27,11 @@ export default function HomeContent() {
 
   return (
     <div className="bg-white">
+      <Hero />
       {/* <Header /> */}
       <div className="relative isolate px-6 pt-14 lg:px-8">
-        <div className="flex flex-col items-center justify-center text-center pt-12">
-          <h1 className="text-4xl font-bold tracking-tight text-slate-600 sm:text-6xl sm:text-center pb-8">
-            Where Home Meets <span className="italic">Tomorrow</span>
-          </h1>
           <ProductInfo />
-        </div>
+          <ProductInfo2 />
         <div className="flex flex-col items-center justify-center text-center pt-15">
           <h2 className="text-4xl font-bold tracking-tight text-slate-400 sm:text-6xl pb-12">
             Check out some of our addons

@@ -57,9 +57,9 @@ export default function LoginModal() {
   return (
     <div>
       {user ? (
-        <span className="text-slate-700 mr-4">{user.username}</span>
+        <span className="text-white mr-4">{user.username}</span>
       ) : (
-        <Button size='sm' bg={'transparent'} _hover={'transparent'} onClick={onOpen} className="group text-gray-200 hover:text-sky-600 transition ease-in-out duration-200">Log In <span aria-hidden="true" className="inline-block translate-x-0 group-hover:translate-x-1 transition-transform ease-in-out duration-200">→</span></Button>
+        <Button size='sm' color={'white'} bg={'transparent'} _hover={'transparent'} onClick={onOpen} className="group text-gray-200 hover:text-sky-600 transition ease-in-out duration-200">Log In <span aria-hidden="true" className="inline-block translate-x-0 group-hover:translate-x-1 transition-transform ease-in-out duration-200">→</span></Button>
         // <Button
         //   size="sm"
         //   bg={"transparent"}

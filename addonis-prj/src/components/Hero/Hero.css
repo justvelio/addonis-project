@@ -1,0 +1,24 @@
+@keyframes fade {
+    0%, 100% {
+      opacity: 0;
+    }
+    10%, 90% {
+      opacity: 1;
+    }
+  }
+  
+  .image-transition {
+    animation: fade 10s ease-in-out infinite;
+    position: relative;
+
+  }
+  
+  .shadow-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.2);
+  }
+  
