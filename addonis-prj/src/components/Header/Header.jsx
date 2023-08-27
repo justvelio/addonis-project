@@ -7,6 +7,8 @@ import AppContext from "../../context/AppContext";
 import { Link, useNavigate } from "react-router-dom";
 import { logoutUser } from "../../services/auth.service";
 import SignOutButton from "../SignOut/SignOut";
+import { Menu, MenuButton, MenuList, MenuItem, Button } from "@chakra-ui/react";
+
 
 const navigation = [
   { name: "Products", href: "#" },
@@ -34,9 +36,9 @@ export default function Header() {
               className="h-12 w-auto"
               src="https://www.svgrepo.com/show/527750/home-smile.svg"
               alt="Company Logo"
-              />
+            />
           </a>
-              <span className="text-4xl text-slate-800">FutureHome</span>
+          <span className="text-4xl text-slate-800">FutureHome</span>
         </div>
         <div className="flex lg:hidden">
           <button
@@ -60,23 +62,26 @@ export default function Header() {
           ))}
         </div>
         <div className="hidden lg:flex lg:flex-1 lg:justify-end text-slate-700">
-        {user ? (
-           <div className="flex items-center">
-           <span className="text-slate-700 mr-4">
-             Welcome, {user.username}
-           </span>
-           <Link to="/user-profile" className="text-slate-700">
-             Update Profile
-           </Link>
-              <SignOutButton />
-         </div>
-
-        ) : (
-          <div className="hidden lg:flex lg:flex-1 lg:justify-end text-slate-700">
-            <SignUpModal />
-            <LoginModal />
-          </div>
-        )}
+          {user ? (
+            <Menu>
+              <MenuButton as={Button} rightIcon={<ChevronDoubleDownIcon />} variant="unstyled">
+                Welcome, {userData.username}
+              </MenuButton>
+              <MenuList>
+                <MenuItem>
+                  <Link to="/user-profile">Update Profile</Link>
+                </MenuItem>
+                <MenuItem >
+                  <SignOutButton />
+                </MenuItem>
+              </MenuList>
+            </Menu>
+          ) : (
+            <div className="hidden lg:flex lg:flex-1 lg:justify-end text-slate-700">
+              <SignUpModal />
+              <LoginModal />
+            </div>
+          )}
 
         </div>
       </nav>
