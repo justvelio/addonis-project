@@ -3,6 +3,7 @@ import { firebaseConfig } from '../../../config/firebase-config';
 import { initializeApp } from 'firebase/app';
 import { getAuth } from 'firebase/auth';
 import { getUserData } from '../../../services/users.service';
+import UpdateProfile from '../../UpdateProfile/UpdateProfile';
 
 const app = initializeApp(firebaseConfig);
 const auth = getAuth(app);
@@ -14,7 +15,7 @@ const MyProfileView = () => {
     const user = auth.currentUser;
     if (user) {
       const uid = user.uid;
-      console.log("User UID:", uid);
+      //console.log("User UID:", uid);
 
       getUserData(uid)
         .then((userData) => {
@@ -39,6 +40,7 @@ const MyProfileView = () => {
       <h1>Profile View</h1>
       <p>Name: {userData.name}</p>
       <p>Email: {userData.email}</p>
+      <UpdateProfile setUserData={setUserData} />
     </div>
   );
 };

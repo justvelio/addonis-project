@@ -22,10 +22,11 @@ const navigation = [
 
 export default function Header() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
-  const { user, userData } = useContext(AppContext);
+  const { user, userData, loading } = useContext(AppContext)
+  const navigate = useNavigate();
 
   // to do loading
-
+console.log(loading);
   // console.log(user);
 
   return (
@@ -35,13 +36,14 @@ export default function Header() {
         aria-label="Global"
       >
         <div className="flex lg:flex-1 align-center">
-          <a href="#" className="-m-1.5 p-1.5">
+          <Link to="/" className="-m-1.5 p-1.5">
             <img
               className="h-12 w-auto"
               src="https://www.svgrepo.com/show/527750/home-smile.svg"
               alt="Company Logo"
-            />
-          </a>
+              />
+          </Link>
+              <span className="text-4xl text-slate-800">FutureHome</span>
         </div>
           <Search />
         <div className="flex lg:hidden">
@@ -73,7 +75,7 @@ export default function Header() {
               </MenuButton>
               <MenuList>
                 <MenuItem>
-                  <Link to="/user-profile">Update Profile</Link>
+                  <Link to="/user-profile">My Profile</Link>
                 </MenuItem>
                 <MenuItem>
                   <Link to="/upload-plugin">Upload Plugin</Link>
