@@ -39,16 +39,6 @@ function App() {
         const uid = user.uid;
         getUserData(uid)
           .then((data) => {
-  //           setAppState({ user, userData: data })
-  //           console.log(data)
-
-  //         }
-  //         )
-  //     } else {
-  //       console.log(user)
-  //     }
-  //   });
-  // }, [])
             setAppState({ user, userData: data });
           })
           .catch((error) => {
