@@ -10,7 +10,8 @@ import SignOutButton from "../SignOut/SignOut";
 import { Menu, MenuButton, MenuList, MenuItem, Button } from "@chakra-ui/react";
 import Search from "../Search/Search";
 import { ChevronDownIcon } from "@chakra-ui/icons";
-import { color } from "framer-motion";
+import './Header.css'
+
 
 const navigation = [
   { name: "Products", href: "#" },
@@ -27,11 +28,12 @@ export default function Header() {
   const navigate = useNavigate();
 
   // to do loading
-console.log(loading);
+  console.log(loading);
   // console.log(user);
 
   return (
-    <header className="absolute inset-x-0 top-0 z-50">
+    <header className="absolute inset-x-0 top-0 z-50 custom-overlay">
+      
       <nav
         className="flex items-center justify-end p-6 lg:px-8"
         aria-label="Global"
@@ -159,6 +161,8 @@ console.log(loading);
               </div>
             </div>
           </div>
+          
+          <div className="absolute inset-0 bg-black opacity-50 pointer-events-none" />
         </Dialog.Panel>
       </Dialog>
     </header>

@@ -30,7 +30,6 @@ export default function HomeContent() {
       <Hero />
       {/* <Header /> */}
       <div className="relative isolate px-6 pt-14 lg:px-8">
-          <ProductInfo />
           <ProductInfo2 />
         <div className="flex flex-col items-center justify-center text-center pt-15">
           <h2 className="text-4xl font-bold tracking-tight text-slate-400 sm:text-6xl pb-12">
