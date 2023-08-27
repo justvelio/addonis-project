@@ -22,11 +22,11 @@ const navigation = [
 
 export default function Header() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
-  const { user, userData } = useContext(AppContext)
+  const { user, userData, loading } = useContext(AppContext)
   const navigate = useNavigate();
 
   // to do loading
-
+console.log(loading);
   // console.log(user);
 
   return (

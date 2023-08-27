@@ -13,40 +13,31 @@ function App() {
   const [appState, setAppState] = useState({
     user: null,
     userData: null,
+    loading: true,
   });
-
-  // useEffect(() => {
-  //   onAuthStateChanged(auth, (user) => {
-  //     if (user) {
-  //       console.log(user)
-  //       const uid = user.uid;
-  //       getUserData(uid)
-  //       .then((data) => {
-  //         setAppState({ user, userData: data })
-  //         console.log(data)
-
-  //       }
-  //       )
-  //     } else {
-  //       console.log(user)
-  //     }
-  //   });
-  // }, [])
 
   useEffect(() => {
     onAuthStateChanged(auth, (user) => {
       if (user) {
+        console.log(user)
         const uid = user.uid;
         getUserData(uid)
-          .then((data) => {
-            setAppState({ user, userData: data });
-          })
-          .catch((error) => {
-            console.error('Error fetching user data:', error);
-          });
+        .then((data) => {
+          setAppState({ user, userData: data })
+          console.log(data)
+        }
+        )
+      } else {
+        console.log(user)
+        setAppState({
+          user: null,
+          userData: null,
+        })
       }
     });
-  }, []);
+    setAppState((previous) => ({...previous, loading: false}))
+  }, [])
+
 
   return (
     <AppContext.Provider value={{ ...appState, setContext: setAppState }}>
