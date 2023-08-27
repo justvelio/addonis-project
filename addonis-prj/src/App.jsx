@@ -1,7 +1,7 @@
 import HomeContent from "./components/views/HomeContent/HomeContent";
-import { useEffect, useState } from "react";
-import { BrowserRouter, Route, Routes } from "react-router-dom";
-import AppContext from "../src/context/AppContext";
+import React, { useEffect, useState } from "react";
+import { BrowserRouter as Router, Route, Routes, } from 'react-router-dom';
+import AppContext from '../src/context/AppContext';
 import Header from "./components/Header/Header";
 import { onAuthStateChanged } from "firebase/auth";
 import { auth } from "./config/firebase-config";
@@ -13,6 +13,7 @@ function App() {
   const [appState, setAppState] = useState({
     user: null,
     userData: null,
+    loading: true,
   });
 
   useEffect(() => {
@@ -20,36 +21,36 @@ function App() {
       if (user) {
         console.log(user);
         const uid = user.uid;
-        getUserData(uid).then((data) => {
-          setAppState({ user, userData: data });
-          console.log(data);
-        });
+        getUserData(uid)
+          .then((data) => {
+            setAppState({ user, userData: data })
+            console.log(data)
+          }
+          )
       } else {
-        // console.log(user)
-        console.log("log out");
+        console.log(user)
         setAppState({
           user: null,
           userData: null,
-        });
+        })
       }
     });
-  }, []);
+    setAppState((previous) => ({ ...previous, loading: false }))
+  }, [])
 
-  console.log(appState);
 
   return (
     <AppContext.Provider value={{ ...appState, setContext: setAppState }}>
-      <BrowserRouter>
-        <div className="relative">
+      <Router>
+        <div className="App">
           <Header />
           <Routes>
-            <Route path="/" element={<HomeContent />} />{" "}
-            {/* Render HomeContent only for root path */}
+            <Route path="/" element={<HomeContent />} />
             <Route path="/user-profile" element={<MyProfileView />} />
             <Route path="/upload-plugin" element={<UploadPlugin />} />
           </Routes>
         </div>
-      </BrowserRouter>
+      </Router>
     </AppContext.Provider>
   );
 }

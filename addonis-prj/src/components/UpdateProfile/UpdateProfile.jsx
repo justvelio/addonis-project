@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
-import { updateUserProfile } from './user.service';
-const UpdateProfileComponent = () => {
+import { updateUserProfile } from '../../services/users.service';
+const UpdateProfile = () => {
   const [newEmail, setNewEmail] = useState('');
   const [newPassword, setNewPassword] = useState('');
 
@@ -38,9 +38,9 @@ const UpdateProfileComponent = () => {
           onChange={(e) => setNewPassword(e.target.value)}
         />
       </label>
-      <button onClick={handleUpdate}>Update Profile</button>
+      <button onClick={handleUpdate}>Save Changes</button>
     </div>
   );
 };
 
-export default UpdateProfileComponent;
+export default UpdateProfile;
