@@ -17,6 +17,7 @@ const navigation = [
 export default function Header() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const { user, userData } = useContext(AppContext)
+  const navigate = useNavigate();
 
   // to do loading
 
@@ -29,13 +30,13 @@ export default function Header() {
         aria-label="Global"
       >
         <div className="flex lg:flex-1 align-center">
-          <a href="#" className="-m-1.5 p-1.5">
+          <Link to="/" className="-m-1.5 p-1.5">
             <img
               className="h-12 w-auto"
               src="https://www.svgrepo.com/show/527750/home-smile.svg"
               alt="Company Logo"
               />
-          </a>
+          </Link>
               <span className="text-4xl text-slate-800">FutureHome</span>
         </div>
         <div className="flex lg:hidden">
@@ -63,11 +64,11 @@ export default function Header() {
         {user ? (
            <div className="flex items-center">
            <span className="text-slate-700 mr-4">
-             Welcome, {user.username}
+             Welcome, {userData.username}
            </span>
-           <Link to="/user-profile" className="text-slate-700">
-             Update Profile
-           </Link>
+           <button className="text-slate-700" onClick={() => {navigate("/user-profile");}}>
+                My Profile
+              </button> 
               <SignOutButton />
          </div>
 
