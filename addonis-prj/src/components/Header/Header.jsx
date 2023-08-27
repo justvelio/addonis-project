@@ -71,6 +71,9 @@ export default function Header() {
                 <MenuItem>
                   <Link to="/user-profile">Update Profile</Link>
                 </MenuItem>
+                <MenuItem>
+                  <Link to="/upload-plugin">Upload Plugin</Link>
+                </MenuItem>
                 <MenuItem >
                   <SignOutButton />
                 </MenuItem>
