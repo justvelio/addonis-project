@@ -7,7 +7,7 @@ import { onAuthStateChanged } from "firebase/auth";
 import { auth } from "./config/firebase-config";
 import { getUserData } from "./services/users.service";
 import MyProfileView from "./components/views/MyProfile/MyProfile";
-// import UploadPlugin from "../src/components/views/UploadPlugin/UploadPlugin";
+import UploadPlugin from "../src/components/views/UploadPlugin/UploadPlugin";
 
 function App() {
   const [appState, setAppState] = useState({
@@ -44,7 +44,7 @@ function App() {
           <Routes>
             <Route path="/" element={<HomeContent />} /> {/* Render HomeContent only for root path */}
             <Route path="/user-profile" element={<MyProfileView />} />
-            {/* <Route path="/upload-plugin" element={<UploadPlugin />} /> */}
+            <Route path="/upload-plugin" element={<UploadPlugin />} />
           </Routes>
         </div>
       </BrowserRouter>
