@@ -1,6 +1,6 @@
-import React, { useContext } from 'react';
+// import { useContext } from 'react';
 import { Button } from '@chakra-ui/react';
-import AppContext from '../../context/AppContext';
+// import AppContext from '../../context/AppContext';
 import { logoutUser } from '../../services/auth.service';
 import { useNavigate } from 'react-router-dom';
 

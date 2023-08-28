@@ -26,26 +26,14 @@ export default function HomeContent() {
   // console.log(test);
 
   return (
-    <div className="bg-white">
+    <div>
       <Hero />
-      {/* <Header /> */}
       <div className="relative isolate px-6 pt-14 lg:px-8">
+          <ProductInfo />
           <ProductInfo2 />
         <div className="flex flex-col items-center justify-center text-center pt-15">
-          <h2 className="text-4xl font-bold tracking-tight text-slate-400 sm:text-6xl pb-12">
-            Check out some of our addons
-          </h2>
-          <TopFields />
           <Flex align="center" justify="center" height="100vh">
-            <Center>
-              <div style={{ maxWidth: "100%" }}></div>
-            </Center>
           </Flex>
-        </div>
-
-        <div className="mx-auto max-w-2xl py-32 sm:py-48 lg:py-56">
-          <div className="hidden sm:mb-8 sm:flex sm:justify-center"></div>
-          <div className="flex flex-col-reverse sm:flex-row items-center justify-center"></div>
         </div>
       </div>
     </div>

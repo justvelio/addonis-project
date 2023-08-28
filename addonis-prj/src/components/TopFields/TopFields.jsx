@@ -1,95 +1,114 @@
-import React from "react";
+import { useState } from "react";
 import { Tabs, TabList, Tab, TabPanels, TabPanel } from "@chakra-ui/react";
 import TestAddon from "../TestAddons/TestAddons";
 import TestAddon2 from "../TestAddons/TestAddons2";
 import TestAddon3 from "../TestAddons/TestAddons3";
 
-function TopFields({ children }) {
+function TopFields() {
+  const [selectedTab, setSelectedTab] = useState(0);
+
+  const tabTexts = ["Featured", "Most Popular", "Newest"];
+
+  const handleTabChange = (index) => {
+    setSelectedTab(index);
+  };
+
   return (
-    <Tabs isFitted variant="enclosed" w="100%" color={"blackAlpha.800"}>
-      <TabList mb="6em">
-        <Tab
-          _selected={{ color: "white", bg: "teal.200" }}
-          _focus={{ outline: "none" }}
-        >
-          Featured
-        </Tab>
-        <Tab
-          _selected={{ color: "white", bg: "blue.300" }}
-          _focus={{ outline: "none" }}
-        >
-          Popular
-        </Tab>
-        <Tab
-          _selected={{ color: "white", bg: "yellow.300" }}
-          _focus={{ outline: "none" }}
-        >
-          New
-        </Tab>
-      </TabList>
-      <TabPanels>
-        <TabPanel>
-          {/* Render your addons here */}
-          <div
-            style={{
-              display: "grid",
-              gridTemplateColumns: "repeat(5, 1fr)", // Update to 5 columns
-              gap: "1em",
-              alignItems: 'center',
-              maxWidth: '100%',
-              overflowX: 'auto' // Scroll horizontally if content overflows
-            }}
+    <>
+      <h2 className="mt-10 text-4xl font-bold tracking-tight text-center text-slate-800 sm:text-6xl pb-12">
+        Check Out Some Of Our {tabTexts[selectedTab]} Addons
+      </h2>
+      <Tabs
+        isFitted
+        variant="enclosed"
+        w="100%"
+        color={"blackAlpha.800"}
+        onChange={handleTabChange}
+      >
+        <TabList mb="6em">
+          <Tab
+            _selected={{ color: "white", bg: "teal.200" }}
+            _focus={{ outline: "none" }}
           >
-            <TestAddon3 />
-            <TestAddon2 />
-            <TestAddon />
-            <TestAddon2 />
-            <TestAddon3 />
-            {/* Five addons in a row */}
-          </div>
-        </TabPanel>
-        <TabPanel>
-          {/* Render your addons here */}
-          <div
-            style={{
-              display: "grid",
-              gridTemplateColumns: "repeat(5, 1fr)", // Update to 5 columns
-              gap: "1em",
-              alignItems: 'center',
-              maxWidth: '100%',
-              overflowX: 'auto' // Scroll horizontally if content overflows
-            }}
+            Featured
+          </Tab>
+          <Tab
+            _selected={{ color: "white", bg: "blue.300" }}
+            _focus={{ outline: "none" }}
           >
-            <TestAddon />
-            <TestAddon2 />
-            <TestAddon3 />
-            <TestAddon2 />
-            <TestAddon />
-            {/* Five addons in a row */}
-          </div>
-        </TabPanel>
-        <TabPanel>
-          {/* Render your addons here */}
-          <div
-            style={{
-              display: "grid",
-              gridTemplateColumns: "repeat(5, 1fr)", // Update to 5 columns
-              gap: "1em",
-              alignItems: 'center',
-              maxWidth: '100%',
-              overflowX: 'auto' // Scroll horizontally if content overflows
-            }}
+            Popular
+          </Tab>
+          <Tab
+            _selected={{ color: "white", bg: "yellow.300" }}
+            _focus={{ outline: "none" }}
           >
-            <TestAddon />
-            <TestAddon2 />
-            <TestAddon3 />
-            <TestAddon />
-            <TestAddon2 />
-            {/* Five addons in a row */}
-          </div>
-        </TabPanel>
-      </TabPanels>
-    </Tabs>
+            New
+          </Tab>
+        </TabList>
+        <TabPanels>
+          <TabPanel>
+
+            <div
+              style={{
+                display: "grid",
+                gridTemplateColumns: "repeat(5, 1fr)", 
+                gap: "1em",
+                alignItems: "center",
+                maxWidth: "100%",
+                overflowX: "auto", 
+              }}
+            >
+              <TestAddon3 />
+              <TestAddon2 />
+              <TestAddon />
+              <TestAddon2 />
+              <TestAddon3 />
+
+            </div>
+          </TabPanel>
+          <TabPanel>
+
+            <div
+              style={{
+                display: "grid",
+                gridTemplateColumns: "repeat(5, 1fr)",
+                gap: "1em",
+                alignItems: "center",
+                maxWidth: "100%",
+                overflowX: "auto",
+              }}
+            >
+              <TestAddon />
+              <TestAddon2 />
+              <TestAddon3 />
+              <TestAddon2 />
+              <TestAddon />
+
+            </div>
+          </TabPanel>
+          <TabPanel>
+
+            <div
+              style={{
+                display: "grid",
+                gridTemplateColumns: "repeat(5, 1fr)", 
+                gap: "1em",
+                alignItems: "center",
+                maxWidth: "100%",
+                overflowX: "auto", 
+              }}
+            >
+              <TestAddon />
+              <TestAddon2 />
+              <TestAddon3 />
+              <TestAddon />
+              <TestAddon2 />
+
+            </div>
+          </TabPanel>
+        </TabPanels>
+      </Tabs>
+    </>
   );
 }
 

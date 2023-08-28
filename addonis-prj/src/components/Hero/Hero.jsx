@@ -1,9 +1,9 @@
 import React, { useState, useEffect, useRef } from "react";
 import { Stack, Button, VStack, useBreakpointValue } from "@chakra-ui/react";
 import ImageCarousel from "../ImageCarousel/ImageCarousel";
-import ProductInfo from "../ProductInfo/ProductInfo";
 import { ChevronDownIcon } from "@chakra-ui/icons";
 import './Hero.css'
+import TopFields from "../TopFields/TopFields";
 
 
 function Hero() {
@@ -44,7 +44,7 @@ function Hero() {
         </VStack>
       </div>
       <div ref={contentRef}>
-        <ProductInfo />
+        <TopFields />
       </div>
     </>
   );

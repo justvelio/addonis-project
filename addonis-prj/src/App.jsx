@@ -8,6 +8,8 @@ import { auth } from "./config/firebase-config";
 import { getUserData } from "./services/users.service";
 import MyProfileView from "./components/views/MyProfile/MyProfile";
 import UploadPlugin from "../src/components/views/UploadPlugin/UploadPlugin";
+import Footer from "./components/Footer/Footer";
+
 
 function App() {
   const [appState, setAppState] = useState({
@@ -49,6 +51,7 @@ function App() {
             <Route path="/user-profile" element={<MyProfileView />} />
             <Route path="/upload-plugin" element={<UploadPlugin />} />
           </Routes>
+          <Footer />
         </div>
       </Router>
     </AppContext.Provider>

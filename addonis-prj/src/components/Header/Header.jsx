@@ -35,18 +35,17 @@ export default function Header() {
     <header className="absolute inset-x-0 top-0 z-50 custom-overlay">
       
       <nav
-        className="flex items-center justify-end p-6 lg:px-8"
+        className="flex items-center justify-end p-4 lg:px-8"
         aria-label="Global"
       >
         <div className="flex lg:flex-1 align-center">
           <Link to="/" className="-m-1.5 p-1.5">
             <img
               className="h-12 w-auto"
-              src="https://www.svgrepo.com/show/527750/home-smile.svg"
+              src="https://www.svgrepo.com/show/525382/home-wifi-angle.svg"
               alt="Company Logo"
               />
           </Link>
-              <span className="text-4xl text-slate-800">FutureHome</span>
         </div>
         <Search />
         <div className="flex lg:hidden">
