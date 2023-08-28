@@ -64,7 +64,7 @@ export default function Header() {
             <a
               key={item.name}
               href={item.href}
-              className="text-sm font-semibold leading-6 text-white"
+              className="text-lg font-semibold leading-6 text-white"
             >
               {item.name}
             </a>

@@ -1,7 +1,8 @@
-import { useState } from 'react';
+import React, { useState } from 'react';
 import {
   Box,
   useBreakpointValue,
+  Text,
 } from '@chakra-ui/react';
 import Slider from 'react-slick';
 
@@ -20,6 +21,15 @@ const settings = {
   slidesToShow: 1,
   slidesToScroll: 1,
 };
+
+const imageTexts = [
+  "Discover a World of Possibilities",
+  "Explore Innovative Smart Home Solutions",
+  "Transform Your Living Space",
+  "Experience the Future of Home Automation",
+  "Elevate Your Lifestyle with Smart Technology",
+  "Connect, Control, and Create with FutureHome",
+];
 
 export default function ImageCarousel() {
   const [slider, setSlider] = useState(null);
@@ -49,7 +59,22 @@ export default function ImageCarousel() {
               backgroundRepeat="no-repeat"
               backgroundSize="cover"
               backgroundImage={`url(${url})`}
-            />
+            >
+              <Text
+         
+                position="absolute"
+                top="50%"
+                left="50%"
+                transform="translate(-50%, -50%)"
+                color="lightgray"
+                textShadow={'5px 4px black'}
+                fontSize={{ base: "xl", md: "4xl" }}
+                textAlign="center"
+                fontWeight={'bold'}
+              >
+                {imageTexts[index]}
+              </Text>
+            </Box>
           ))}
         </Slider>
       </Box>
