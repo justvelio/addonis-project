@@ -5,8 +5,10 @@ import { useEffect, useState } from "react";
 export const useAllExtensionsFromDb = () => {
   const [extensions, setExtensions] = useState(null);
   const [error, setError] = useState(null);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
+    
     const extensionsRef = ref(db, `extensions/`);
     try {
       onValue(extensionsRef, (snapshot) => {
@@ -16,6 +18,7 @@ export const useAllExtensionsFromDb = () => {
     } catch (error) {
       setError(error);
     }
+    setLoading(false)
   }, []);
-  return { error, extensions };
+  return { error, extensions, loading };
 };

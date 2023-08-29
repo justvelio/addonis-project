@@ -5,45 +5,55 @@ import { useAllExtensionsFromDb } from "../../services/extension.service";
 
 const AddonsList = () => {
   const [addons, setAddons] = useState([]);
-  const { error, extensions } = useAllExtensionsFromDb();
+  const { error, extensions, loading } = useAllExtensionsFromDb();
 
-  console.log(error);
-  console.log(extensions);
   useEffect(() => {
-    async function fetchAddons() {
-      const accessToken =
-        "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";
-      const octokit = new Octokit({ auth: accessToken });
-
-      try {
-        // Fetch data from GitHub for each add-on repository
-        const repos = ["owner/repo1", "owner/repo2", "owner/repo3"]; // Replace with your repository names
-        const fetchedAddons = await Promise.all(
-          repos.map(async (repo) => {
-            const response = await octokit.repos.get({ owner: "owner", repo });
-            return response.data;
-          })
-        );
-        setAddons(fetchedAddons);
-      } catch (error) {
-        console.error("Error fetching addons:", error);
-      }
+    const accessToken =
+      "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";
+    const octokit = new Octokit({
+      auth: accessToken,
+    });
+    if (loading || !extensions) {
+      return;
     }
-
-    fetchAddons();
-  }, []);
+    const formatData = Object.values(extensions).map(
+      async ({ repoOwner: owner, repoName: repo, extensionName, date, authorName, imageUrl, rating, downloadUrl }) => {
+        const response = await octokit.request("GET /repos/{owner}/{repo}", {
+          owner,
+          repo,
+          headers: {
+            accept: "application/vnd.github+json",
+            "X-GitHub-Api-Version": "2022-11-28",
+          },
+        });
+        return {
+            title: extensionName,
+            description: response.data.description,
+            imageUrl,
+            rating,
+            date,
+            authorName,
+            issuesCount: response.data.open_issues,
+            downloadUrl,
+        };
+      }
+    );
+    Promise.all(formatData)
+    .then((result) => {
+    //   console.log(result);
+      setAddons(result)
+    });
+    // console.log(formatData);
+  }, [extensions, loading]);
+  
+console.log(addons)
 
   return (
     <div>
       {addons.map((addon) => (
         <AddonCards
-          key={addon.id}
-          title={addon.name}
-          description={addon.description}
-          imageUrl={addon.avatar_url} // Replace with the appropriate property from GitHub response
-          author={0}
-          date={addon.updated_at}
-          rating={0}
+          key={addon.title}
+          {...addon}
         />
       ))}
     </div>
