@@ -90,7 +90,7 @@ export default function Footer() {
             </Stack>
           </Stack>
           <Stack align={"flex-start"}>
-            <ListHeader>Company</ListHeader>
+            <ListHeader>FutureHome</ListHeader>
             <Box as="a" href={"#"}>
               About us
             </Box>
@@ -122,7 +122,7 @@ export default function Footer() {
               Privacy Policy
             </Box>
             <Box as="a" href={"#"}>
-              Satus
+              Status
             </Box>
           </Stack>
           <Stack align={"flex-start"}>

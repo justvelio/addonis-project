@@ -42,6 +42,7 @@ function App() {
 
 
   return (
+    <div className="font-roboto">
     <AppContext.Provider value={{ ...appState, setContext: setAppState }}>
       <Router>
         <div className="App">
@@ -55,6 +56,8 @@ function App() {
         </div>
       </Router>
     </AppContext.Provider>
+
+    </div>
   );
 }
 

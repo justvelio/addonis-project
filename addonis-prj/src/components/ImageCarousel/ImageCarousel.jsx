@@ -76,10 +76,10 @@ export default function ImageCarousel() {
               backgroundImage={`url(${url})`}
             >
               <Text
-                background="rgba(0, 0, 0, 0.14)"
+                background="rgba(0, 0, 0, 0.20)"
                 borderRadius="16px"
                 boxShadow="0 4px 30px rgba(0, 0, 0, 0.1)"
-                backdropFilter="blur(5.9px) hue-rotate(90deg)"
+                backdropFilter="blur(5.9px) hue-rotate(70deg)"
                 WebkitBackdropFilter="blur(5.9px)"
                 position="absolute"
                 top="50%"
@@ -91,7 +91,7 @@ export default function ImageCarousel() {
                 backgroundClip="text"
                 WebkitBackgroundClip="text"
                 color="transparent"
-                style={gradientAnimation} // Apply the gradient animation
+                style={gradientAnimation}
               >
                 {imageTexts[index]}
               </Text>

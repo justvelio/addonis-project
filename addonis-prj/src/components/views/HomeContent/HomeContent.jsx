@@ -6,6 +6,7 @@ import TopFields from "../../TopFields/TopFields";
 import { Flex, Center } from "@chakra-ui/react";
 import Hero from "../../Hero/Hero";
 import ProductInfo2 from "../../ProductInfo2/ProductInfo2";
+import AddonDetails from "../../AddonDetails/AddonDetails";
 
 export default function HomeContent() {
   const [data, setData] = useState([]);
@@ -28,6 +29,7 @@ export default function HomeContent() {
   return (
     <div>
       <Hero />
+      <AddonDetails />
       <div className="relative isolate px-6 pt-14 lg:px-8">
           <ProductInfo />
           <ProductInfo2 />

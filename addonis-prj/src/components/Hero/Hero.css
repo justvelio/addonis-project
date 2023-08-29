@@ -1,15 +1,12 @@
 .btn {
     border-color: #7aaddd;
-    color: #fff;
-    background-color: #7aaddd; /* Add this line to set initial background color */
+    background-color: #7aaddd;
     box-shadow: 0 0 40px 40px #7aaddd inset, 0 0 0 0 #7aaddd;
     transition: all 150ms ease-in-out;
   }
   
   .btn:hover {
-    box-shadow: 0 0 10px 0 #7aaddd inset, 0 0 10px 4px #7aaddd;
-    color: lightgray;
-    text-shadow: 1px 1px black;
-    background-color: transparent;
+    box-shadow: 0 0 10px 0 #023769 inset, 0 0 10px 4px #f7f7f8;  
+    background-color: #3672aa;  
   }
   

@@ -1,4 +1,3 @@
-/** @type {import('tailwindcss').Config} */
 module.exports = {
   content: [
     "./index.html",
@@ -6,7 +5,11 @@ module.exports = {
     './src/components/**/*.jsx',
   ],
   theme: {
-    extend: {},
+    extend: {
+      fontFamily: {
+        roboto: ['Roboto', 'sans'],
+      },
+    },
   },
   plugins: [],
 }
