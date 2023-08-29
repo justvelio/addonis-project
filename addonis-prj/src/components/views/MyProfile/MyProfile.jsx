@@ -36,9 +36,12 @@ const MyProfileView = () => {
   }
 
   return (
-    <div>
-      <h1>Profile View</h1>
-      <p>Name: {userData.name}</p>
+    <div style={{ paddingTop: '100px' }}>
+      <h1 style={{ fontWeight: 'bold', fontSize: '1.5rem' }}>Personal Information</h1>
+      <p>Username: {userData.username}</p>
+      <p>First Name: {userData.firstName}</p>
+      <p>Last Name: {userData.lastName}</p>
+      <p>Phone: {userData.phone}</p>
       <p>Email: {userData.email}</p>
       <UpdateProfile setUserData={setUserData} />
     </div>

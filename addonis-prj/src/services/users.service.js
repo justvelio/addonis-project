@@ -1,6 +1,6 @@
-import { get, set, ref, query, equalTo, orderByChild } from 'firebase/database';
+import { get, set, ref, query, equalTo, orderByChild, update } from 'firebase/database';
 import { db } from '../config/firebase-config';
-import { updateEmail, updatePassword, updateProfile } from 'firebase/auth';
+import { getAuth, updateEmail, updatePassword, updateProfile } from 'firebase/auth';
 
 export const getUserByHandle = (handle) => {
 
@@ -30,10 +30,12 @@ export const getUserData = async (uid) => {
 };
 
 export const updateUserProfile = async (handle, updatedData) => {
-  const { email, password, ...otherUpdatedData } = updatedData;
+  const { email, password, firstName, lastName, phone, ...otherUpdatedData } = updatedData;
 
   try {
+    const auth = getAuth();
     const userRef = ref(db, `users/${handle}`);
+    
     if (email) {
       await updateEmail(auth.currentUser, email);
       await update(userRef, { email });
@@ -41,6 +43,18 @@ export const updateUserProfile = async (handle, updatedData) => {
 
     if (password) {
       await updatePassword(auth.currentUser, password);
+    }
+
+    if (firstName) {
+      await update(userRef, { firstName });
+    }
+
+    if (lastName) {
+      await update(userRef, { lastName });
+    }
+
+    if (phone) {
+      await update(userRef, { phone });
     }
 
     await update(userRef, otherUpdatedData);
@@ -51,7 +65,7 @@ export const updateUserProfile = async (handle, updatedData) => {
 
     return true;
   } catch (error) {
-    Alert('Error updating user profile:', error);
+    console.log('Error updating user profile:', error);
     return false;
   }
 };
