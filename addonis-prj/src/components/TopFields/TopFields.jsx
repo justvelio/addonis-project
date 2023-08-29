@@ -1,8 +1,9 @@
 import { useState } from "react";
 import { Tabs, TabList, Tab, TabPanels, TabPanel } from "@chakra-ui/react";
-import TestAddon from "../TestAddons/TestAddons";
-import TestAddon2 from "../TestAddons/TestAddons2";
-import TestAddon3 from "../TestAddons/TestAddons3";
+import AddonCards from "../AddonCards/AddonCards";
+import TestAddon2 from "../AddonCards/TestAddons2";
+import TestAddon3 from "../AddonCards/TestAddons3";
+import AddonsList from "../AddonsList/AddonsList";
 
 function TopFields() {
   const [selectedTab, setSelectedTab] = useState(0);
@@ -60,7 +61,7 @@ function TopFields() {
             >
               <TestAddon3 />
               <TestAddon2 />
-              <TestAddon />
+              <AddonsList />
               <TestAddon2 />
               <TestAddon3 />
 
@@ -78,11 +79,11 @@ function TopFields() {
                 overflowX: "auto",
               }}
             >
-              <TestAddon />
+    
               <TestAddon2 />
               <TestAddon3 />
               <TestAddon2 />
-              <TestAddon />
+            
 
             </div>
           </TabPanel>
@@ -98,10 +99,10 @@ function TopFields() {
                 overflowX: "auto", 
               }}
             >
-              <TestAddon />
+             
               <TestAddon2 />
               <TestAddon3 />
-              <TestAddon />
+          
               <TestAddon2 />
 
             </div>
