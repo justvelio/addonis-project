@@ -1,25 +1,42 @@
-import React, { useState } from 'react';
-import { updateUserProfile } from '../../services/users.service';
-import MyProfileView from '../views/MyProfile/MyProfile';
-import reauthenticateUser from './reauthenticateUser';
-import { getAuth } from 'firebase/auth';
+import React, { useState } from "react";
+import {
+  Box,
+  Button,
+  FormControl,
+  FormLabel,
+  Stack,
+  Heading,
+  Input,
+  Center,
+  useColorModeValue,
+} from "@chakra-ui/react";
 
-const UpdateProfile = ({setUserData}) => {
-  const [newEmail, setNewEmail] = useState('');
-  const [currentPassword, setCurrentPassword] = useState('');
-  const [newPassword, setNewPassword] = useState('');
-  const [newFirstName, setNewFirstName] = useState('');
-  const [newLastName, setNewLastName] = useState('');
-  const [newPhone, setNewPhone] = useState('');
+import { updateUserProfile } from "../../services/users.service";
+import reauthenticateUser from "./reauthenticateUser";
+import { getAuth } from "firebase/auth";
+
+const UpdateProfile = ({ setUserData }) => {
+  const [newEmail, setNewEmail] = useState("");
+  const [currentPassword, setCurrentPassword] = useState("");
+  const [newPassword, setNewPassword] = useState("");
+  const [newFirstName, setNewFirstName] = useState("");
+  const [newLastName, setNewLastName] = useState("");
+  const [newPhone, setNewPhone] = useState("");
 
   const handleUpdate = async () => {
     const auth = getAuth();
     const user = auth.currentUser;
     const updatedData = {};
-    const reauthSuccess = await reauthenticateUser(user, user.email, currentPassword);
+    const reauthSuccess = await reauthenticateUser(
+      user,
+      user.email,
+      currentPassword
+    );
 
     if (!reauthSuccess) {
-      alert('Failed to reauthenticate. Please enter the correct current password.');
+      alert(
+        "Failed to reauthenticate. Please enter the correct current password."
+      );
       return;
     }
 
@@ -46,101 +63,110 @@ const UpdateProfile = ({setUserData}) => {
     const success = await updateUserProfile(user.uid, updatedData);
 
     if (success) {
-      alert('Profile updated successfully!');
+      alert("Profile updated successfully!");
       setUserData((prevData) => ({ ...prevData, ...updatedData }));
 
-      setNewEmail('');
-      setNewPassword('');
-      setNewFirstName('');
-      setNewLastName('');
-      setNewPhone('');
-      setCurrentPassword('');
+      setNewEmail("");
+      setNewPassword("");
+      setNewFirstName("");
+      setNewLastName("");
+      setNewPhone("");
+      setCurrentPassword("");
     } else {
-      alert('Profile update failed. Please try again.');
+      alert("Profile update failed. Please try again.");
     }
   };
 
   return (
-    <div style={{ paddingTop: '50px' }}> 
-      <h2 style={{ fontWeight: 'bold', fontSize: '1.2rem' }}>Update Your Profile</h2>
-      <label>
-        New First Name:<br />
-        <input
-          type="text"
-          value={newFirstName}
-          onChange={(e) => setNewFirstName(e.target.value)}
-          style={inputStyle}
-        />
-      </label><br />
-      <label>
-        New Last Name:<br />
-        <input
-          type="text"
-          value={newLastName}
-          onChange={(e) => setNewLastName(e.target.value)}
-          style={inputStyle}
-        />
-      </label><br />
-      <label>
-        New Email:<br />
-        <input
-          type="email"
-          value={newEmail}
-          onChange={(e) => setNewEmail(e.target.value)}
-          style={inputStyle}
-        />
-      </label><br />
-      <label>
-        New Phone:<br />
-        <input
-          type="tel"
-          value={newPhone}
-          onChange={(e) => setNewPhone(e.target.value)}
-          style={inputStyle}
-        />
-      </label><br />
-      <label>
-        New Password:<br />
-        <input
-          type="password"
-          value={newPassword}
-          onChange={(e) => setNewPassword(e.target.value)}
-          style={inputStyle}
-        />
-      </label><br />
-      <label>
-        Please, confirm your current password before saving the changes:<br />
-        <input
-          type="password"
-          value={currentPassword}
-          onChange={(e) => setCurrentPassword(e.target.value)}
-          style={inputStyle}
-        />
-      </label><br />
-      <button
-        onClick={handleUpdate}
-        style={{
-          backgroundColor: '#4CAF50',
-          color: 'white',
-          padding: '10px 20px',
-          border: 'none',
-          borderRadius: '5px',
-          cursor: 'pointer',
-        }}
+    <Center>
+      <Box
+        maxW={"800px"}
+        w={"600px"}
+        h={"600px"}
+        bg={useColorModeValue("white", "gray.800")}
+        boxShadow={"2xl"}
+        rounded={"md"}
+        overflow={"hidden"}
       >
-        Save Changes
-      </button>
-    </div>
-  );
-};
+        <Stack  spacing={7} p={6} bg={useColorModeValue("white", "gray.800")}>
+          <Heading
+            lineHeight={1.1}
+            fontSize={{ base: "2xl", sm: "3xl" }}
+            textAlign={"center"}
+          >
+            Update Your Profile
+          </Heading>
+          <FormControl>
+            <Input
+              placeholder="New First Name"
+              type="text"
+              value={newFirstName}
+              onChange={(e) => setNewFirstName(e.target.value)}
+            />
+          </FormControl>
+          <FormControl>
 
-const inputStyle = {
-  border: '1px solid #ccc',
-  borderRadius: '4px',
-  padding: '6px',
-  margin: '4px',
-  width: '20%',
-  boxSizing: 'border-box',
+            <Input
+            placeholder="New Last Name"
+              type="text"
+              value={newLastName}
+              onChange={(e) => setNewLastName(e.target.value)}
+            />
+          </FormControl>
+          <FormControl>
+
+            <Input
+            placeholder="New Email"
+              type="email"
+              value={newEmail}
+              onChange={(e) => setNewEmail(e.target.value)}
+            />
+          </FormControl>
+          <FormControl>
+
+            <Input
+            placeholder="New Phone Number"
+              type="tel"
+              value={newPhone}
+              onChange={(e) => setNewPhone(e.target.value)}
+            />
+          </FormControl>
+          <FormControl>
+
+            <Input
+            placeholder="New Password"
+              type="password"
+              value={newPassword}
+              onChange={(e) => setNewPassword(e.target.value)}
+            />
+          </FormControl>
+          <FormControl>
+
+            <Input
+            placeholder="Confirm Your Password To Save Changes"
+              type="password"
+              value={currentPassword}
+              onChange={(e) => setCurrentPassword(e.target.value)}
+            />
+          </FormControl>
+            </Stack>
+          <div className="pb-10 text-center">
+            <Button
+              bg={useColorModeValue("#151f21", "gray.900")}
+              color="white"
+              w="500px"
+              _hover={{
+                transform: "translateY(-2px)",
+                boxShadow: "lg",
+              }}
+              onClick={handleUpdate}
+            >
+              Save Changes
+            </Button>
+          </div>
+        </Box>
+    </Center>
+  );
 };
 
 export default UpdateProfile;

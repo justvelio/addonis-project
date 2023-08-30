@@ -1,6 +1,8 @@
 import { get, set, ref, query, equalTo, orderByChild, update } from 'firebase/database';
 import { db } from '../config/firebase-config';
 import { getAuth, updateEmail, updatePassword, updateProfile } from 'firebase/auth';
+import { storage } from '../config/firebase-config';
+import { uploadBytes, getDownloadURL } from 'firebase/storage';
 
 export const getUserByHandle = (handle) => {
 
@@ -68,4 +70,13 @@ export const updateUserProfile = async (handle, updatedData) => {
     console.log('Error updating user profile:', error);
     return false;
   }
+};
+
+export const uploadProfilePictureToStorage = async (file) => {
+  const storageRef = ref(storage, "profilePictures/" + file.name);
+
+  await uploadBytes(storageRef, file);
+
+  const downloadURL = await getDownloadURL(storageRef);
+  return downloadURL;
 };
