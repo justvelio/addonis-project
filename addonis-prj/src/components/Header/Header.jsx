@@ -10,8 +10,7 @@ import SignOutButton from "../SignOut/SignOut";
 import { Menu, MenuButton, MenuList, MenuItem, Button } from "@chakra-ui/react";
 import Search from "../Search/Search";
 import { ChevronDownIcon } from "@chakra-ui/icons";
-import './Header.css'
-
+import "./Header.css";
 
 const navigation = [
   { name: "Products", href: "#" },
@@ -24,7 +23,7 @@ const navigation = [
 
 export default function Header() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
-  const { user, userData, loading } = useContext(AppContext)
+  const { user, userData, loading } = useContext(AppContext);
   const navigate = useNavigate();
 
   // to do loading
@@ -33,7 +32,6 @@ export default function Header() {
 
   return (
     <header className="absolute inset-x-0 top-0 z-50 custom-overlay">
-      
       <nav
         className="flex items-center justify-end p-4 lg:px-8"
         aria-label="Global"
@@ -44,7 +42,7 @@ export default function Header() {
               className="h-12 w-auto"
               src="https://www.svgrepo.com/show/525382/home-wifi-angle.svg"
               alt="Company Logo"
-              />
+            />
           </Link>
         </div>
         <Search />
@@ -76,10 +74,9 @@ export default function Header() {
                 as={Button}
                 rightIcon={<ChevronDownIcon />}
                 variant="unstyled"
-                color={'white'}
-                
+                color={"white"}
               >
-              {userData.username}
+                {userData.username}
               </MenuButton>
               <MenuList>
                 <MenuItem>
@@ -88,8 +85,8 @@ export default function Header() {
                 <MenuItem>
                   <Link to="/upload-plugin">Upload Plugin</Link>
                 </MenuItem>
-                <MenuItem as={'div'}>
-                 <SignOutButton />
+                <MenuItem as={"div"}>
+                  <SignOutButton />
                 </MenuItem>
               </MenuList>
             </Menu>
@@ -112,9 +109,9 @@ export default function Header() {
           <div className="flex items-center justify-between">
             <a href="#" className="-m-1.5 p-1.5">
               <img
-                className="h-8 w-auto"
-                src="https://www.svgrepo.com/show/527750/home-smile.svg"
-                alt=""
+                className="h-12 w-auto"
+                src="https://www.svgrepo.com/show/525382/home-wifi-angle.svg"
+                alt="Company Logo"
               />
             </a>
             <button
@@ -160,7 +157,7 @@ export default function Header() {
               </div>
             </div>
           </div>
-          
+
           <div className="absolute inset-0 bg-black opacity-50 pointer-events-none" />
         </Dialog.Panel>
       </Dialog>

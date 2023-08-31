@@ -16,14 +16,11 @@ import { BiMailSend } from "react-icons/bi";
 
 const Logo = (props) => {
   return (
-    <svg
-      height={32}
-      viewBox="0 0 120 28"
-      xmlns="http://www.w3.org/2000/svg"
-      {...props}
-    >
-      {/* SVG path here */}
-    </svg>
+    <img
+      className="h-12 w-auto"
+      src="https://www.svgrepo.com/show/525382/home-wifi-angle.svg"
+      alt="Company Logo"
+    />
   );
 };
 
@@ -65,18 +62,16 @@ export default function Footer() {
       bg={useColorModeValue("gray.50", "gray.900")}
       color={useColorModeValue("gray.700", "gray.200")}
     >
-      <Container as={Stack} maxW={"6xl"} py={10}>
+      <Container as={Stack} maxW={"6xl"} py={3}>
         <SimpleGrid
           templateColumns={{ sm: "1fr 1fr", md: "2fr 1fr 1fr 2fr" }}
           spacing={8}
         >
           <Stack spacing={6}>
             <Box>
-              <Logo color={useColorModeValue("gray.700", "white")} />
+              <Logo />
             </Box>
-            <Text fontSize={"sm"}>
-              © 2023 Team 14. All rights reserved
-            </Text>
+            <Text fontSize={"sm"}>© 2023 Team 14. All rights reserved</Text>
             <Stack direction={"row"} spacing={6}>
               <SocialButton label={"Twitter"} href={"#"}>
                 <FaTwitter />
@@ -95,9 +90,6 @@ export default function Footer() {
               About us
             </Box>
             <Box as="a" href={"#"}>
-              Blog
-            </Box>
-            <Box as="a" href={"#"}>
               Contact us
             </Box>
             <Box as="a" href={"#"}>
@@ -114,9 +106,6 @@ export default function Footer() {
             </Box>
             <Box as="a" href={"#"}>
               Terms of Service
-            </Box>
-            <Box as="a" href={"#"}>
-              Legal
             </Box>
             <Box as="a" href={"#"}>
               Privacy Policy
