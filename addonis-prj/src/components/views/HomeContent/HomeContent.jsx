@@ -34,7 +34,7 @@ export default function HomeContent() {
           <ProductInfo />
           <ProductInfo2 />
         <div className="flex flex-col items-center justify-center text-center pt-15">
-          <Flex align="center" justify="center" height="100vh">
+          <Flex align="center" justify="center">
           </Flex>
         </div>
       </div>

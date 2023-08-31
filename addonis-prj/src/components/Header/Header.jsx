@@ -27,7 +27,7 @@ export default function Header() {
   const navigate = useNavigate();
 
   // to do loading
-  console.log(loading);
+  // console.log(loading);
   // console.log(user);
 
   return (
@@ -78,14 +78,14 @@ export default function Header() {
               >
                 {userData.username}
               </MenuButton>
-              <MenuList>
-                <MenuItem>
+              <MenuList bg={'gray.100'}>
+                <MenuItem bg={'gray.100'}>
                   <Link to="/user-profile">My Profile</Link>
                 </MenuItem>
-                <MenuItem>
+                <MenuItem bg={'gray.100'}>
                   <Link to="/upload-plugin">Upload Plugin</Link>
                 </MenuItem>
-                <MenuItem as={"div"}>
+                <MenuItem as={"div"} bg={'gray.100'}>
                   <SignOutButton />
                 </MenuItem>
               </MenuList>

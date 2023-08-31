@@ -14,14 +14,14 @@ const SignOutButton = () => {
       // setContext({
         // user: null,
       // });
-      navigate('/'); // Redirect to the home page
+      navigate('/');
     } catch (error) {
       console.error('Sign-out error:', error);
     }
   };
 
   return (
-    <Button onClick={handleSignOut} colorScheme="red">
+    <Button onClick={handleSignOut} size={'sm'} colorScheme="red">
       Sign Out
     </Button>
   );

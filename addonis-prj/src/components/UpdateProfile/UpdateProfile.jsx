@@ -14,6 +14,7 @@ import {
 import { updateUserProfile } from "../../services/users.service";
 import reauthenticateUser from "./reauthenticateUser";
 import { getAuth } from "firebase/auth";
+import "./UpdateProfile.css";
 
 const UpdateProfile = ({ setUserData }) => {
   const [newEmail, setNewEmail] = useState("");
@@ -78,78 +79,75 @@ const UpdateProfile = ({ setUserData }) => {
   };
 
   return (
-    <Center>
-      <Box
-        maxW={"800px"}
-        w={"600px"}
-        h={"600px"}
-        bg={useColorModeValue("white", "gray.800")}
-        boxShadow={"2xl"}
-        rounded={"md"}
-        overflow={"hidden"}
-      >
-        <Stack  spacing={7} p={6} bg={useColorModeValue("white", "gray.800")}>
-          <Heading
-            lineHeight={1.1}
-            fontSize={{ base: "2xl", sm: "3xl" }}
-            textAlign={"center"}
-          >
-            Update Your Profile
-          </Heading>
-          <FormControl>
-            <Input
-              placeholder="New First Name"
-              type="text"
-              value={newFirstName}
-              onChange={(e) => setNewFirstName(e.target.value)}
-            />
-          </FormControl>
-          <FormControl>
-
-            <Input
-            placeholder="New Last Name"
-              type="text"
-              value={newLastName}
-              onChange={(e) => setNewLastName(e.target.value)}
-            />
-          </FormControl>
-          <FormControl>
-
-            <Input
-            placeholder="New Email"
-              type="email"
-              value={newEmail}
-              onChange={(e) => setNewEmail(e.target.value)}
-            />
-          </FormControl>
-          <FormControl>
-
-            <Input
-            placeholder="New Phone Number"
-              type="tel"
-              value={newPhone}
-              onChange={(e) => setNewPhone(e.target.value)}
-            />
-          </FormControl>
-          <FormControl>
-
-            <Input
-            placeholder="New Password"
-              type="password"
-              value={newPassword}
-              onChange={(e) => setNewPassword(e.target.value)}
-            />
-          </FormControl>
-          <FormControl>
-
-            <Input
-            placeholder="Confirm Your Password To Save Changes"
-              type="password"
-              value={currentPassword}
-              onChange={(e) => setCurrentPassword(e.target.value)}
-            />
-          </FormControl>
-            </Stack>
+    <div className="fade-in">
+      <Center>
+        <Box
+          maxW={"800px"}
+          w={"600px"}
+          h={"600px"}
+          bg={useColorModeValue("white", "gray.800")}
+          overflow={"hidden"}
+          style={{
+            boxShadow: "9px 5px 10px rgba(0, 0, 0, 0.2)", // Adjust values as needed
+          }}
+        >
+          <Stack spacing={7} p={6} bg={useColorModeValue("white", "gray.800")}>
+            <Heading
+              lineHeight={1.1}
+              fontSize={{ base: "2xl", sm: "3xl" }}
+              textAlign={"center"}
+            >
+              Update Your Profile
+            </Heading>
+            <FormControl>
+              <Input
+                placeholder="New First Name"
+                type="text"
+                value={newFirstName}
+                onChange={(e) => setNewFirstName(e.target.value)}
+              />
+            </FormControl>
+            <FormControl>
+              <Input
+                placeholder="New Last Name"
+                type="text"
+                value={newLastName}
+                onChange={(e) => setNewLastName(e.target.value)}
+              />
+            </FormControl>
+            <FormControl>
+              <Input
+                placeholder="New Email"
+                type="email"
+                value={newEmail}
+                onChange={(e) => setNewEmail(e.target.value)}
+              />
+            </FormControl>
+            <FormControl>
+              <Input
+                placeholder="New Phone Number"
+                type="tel"
+                value={newPhone}
+                onChange={(e) => setNewPhone(e.target.value)}
+              />
+            </FormControl>
+            <FormControl>
+              <Input
+                placeholder="New Password"
+                type="password"
+                value={newPassword}
+                onChange={(e) => setNewPassword(e.target.value)}
+              />
+            </FormControl>
+            <FormControl>
+              <Input
+                placeholder="Confirm Your Password To Save Changes"
+                type="password"
+                value={currentPassword}
+                onChange={(e) => setCurrentPassword(e.target.value)}
+              />
+            </FormControl>
+          </Stack>
           <div className="pb-10 text-center">
             <Button
               bg={useColorModeValue("#151f21", "gray.900")}
@@ -165,7 +163,8 @@ const UpdateProfile = ({ setUserData }) => {
             </Button>
           </div>
         </Box>
-    </Center>
+      </Center>
+    </div>
   );
 };
 
