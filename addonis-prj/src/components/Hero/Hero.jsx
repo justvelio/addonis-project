@@ -32,7 +32,7 @@ function Hero() {
           left="0"
         >
           <Stack maxW={"4xl"} align={"flex-start"} spacing={6}>
-            <Stack direction={"row"}>
+            <Stack direction={"row"} pb={12}>
               <Button
                 className="btn"
                 onClick={scrollToContent}

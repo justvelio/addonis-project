@@ -46,7 +46,7 @@ const AddonsList = () => {
     // console.log(formatData);
   }, [extensions, loading]);
   
-console.log(addons)
+// console.log(addons)
 
   return (
     <div>

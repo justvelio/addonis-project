@@ -14,11 +14,10 @@ import "./Header.css";
 
 const navigation = [
   { name: "Products", href: "#" },
-  { name: "Features", href: "#" },
-  { name: "Smart Home", href: "#" },
   { name: "Partners", href: "#" },
   { name: "Careers", href: "#" },
-  { name: "Contacts", href: "#" },
+  { name: "Testimonials", href: "#" },
+  { name: "About Us", href: "#" },
 ];
 
 export default function Header() {
