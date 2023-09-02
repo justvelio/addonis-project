@@ -16,6 +16,8 @@ import {
 import { loginUser } from "../../services/auth.service";
 import AppContext from "../../context/AppContext";
 import { getUserData } from "../../services/users.service";
+import { checkUserExistence } from "../../services/auth.service";
+
 
 export default function LoginModal() {
   const [isOpen, setIsOpen] = useState(false);
@@ -27,21 +29,15 @@ export default function LoginModal() {
 
   const handleLogin = async () => {
     try {
-      await loginUser(formData.email, formData.password);
-      // console.log("userCredential:", userCredential);
-      // const uid = userCredential.user.uid;
-      // console.log("uid:", uid);
-      // const additionalData = await getUserData(uid);
-      // console.log("additionalData:", additionalData);
-      // const userWithAdditionalData = {
-      //   uid,
-      //   ...additionalData
-      // };
-  
-      // setContext((prevState) => ({ ...prevState, user: userWithAdditionalData }));
-      onClose();
+      const userExists = await checkUserExistence(formData.email);
+      if (userExists) {
+        await loginUser(formData.email, formData.password);
+        onClose();
+      } else {
+        console.error("User does not exist.");
+      }
     } catch (error) {
-      console.error("Login err:", error);
+      console.error("Login error:", error.message);
     }
   };
   

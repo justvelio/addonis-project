@@ -27,6 +27,12 @@ export default function Header() {
   // to do loading
   // console.log(loading);
   // console.log(user);
+  if (!user || !userData) {
+    return (
+      <header className="absolute inset-x-0 top-0 z-50 custom-overlay">
+      </header>
+    );
+  }
 
   return (
     <header className="absolute inset-x-0 top-0 z-50 custom-overlay">
