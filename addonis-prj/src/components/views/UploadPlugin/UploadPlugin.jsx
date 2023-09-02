@@ -14,9 +14,8 @@ import {
   Textarea,
   VStack,
 } from "@chakra-ui/react";
-import { ref, uploadBytesResumable, getDownloadURL } from "firebase/storage";
-import { ref as dbRef, set } from "firebase/database";
-import { storage, db } from "../../../config/firebase-config";
+import { ref as dbRef, push } from "firebase/database";
+import { auth, storage, db } from "../../../config/firebase-config";
 
 const GITHUB_TOKEN = "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";
 
@@ -34,40 +33,22 @@ export default function UploadPlugin() {
   };
 
   const uploadToFirebase = async () => {
-    const storageRef = ref(storage, "plugins/" + file.name);
-    const uploadTask = uploadBytesResumable(storageRef, file);
+    const newPluginRef = dbRef(db, "plugins/");
+    const pluginData = {
+      name,
+      description,
+      creator: auth.currentUser?.uid || "Anonymous",
+      sourceCodeURL,
+      tags,
+      isHidden,
+      date: new Date().toISOString(),
+    };
 
-    return new Promise((resolve, reject) => {
-      uploadTask.on(
-        "state_changed",
-        (snapshot) => {
-          const progress =
-            (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
-          console.log("Upload is " + progress + "% done");
-        },
-        (error) => {
-          reject(error);
-        },
-        async () => {
-          const downloadURL = await getDownloadURL(uploadTask.snapshot.ref);
-          const newPluginRef = dbRef(db, "plugins/");
-          await set(newPluginRef, {
-            filename: file.name,
-            url: downloadURL,
-            name,
-            description,
-            creator,
-            sourceCodeURL,
-            tags,
-            isHidden,
-          });
-          resolve(downloadURL);
-        }
-      );
-    });
+    await push(newPluginRef, pluginData);
+    console.log("Metadata uploaded to Firebase");
   };
 
-  const uploadToGitHub = async (downloadURL) => {
+  const uploadToGitHub = async () => {
     const headers = {
       Authorization: `token ${GITHUB_TOKEN}`,
       Accept: "application/vnd.github.v3+json",
@@ -87,8 +68,7 @@ export default function UploadPlugin() {
     };
 
     const response = await fetch(
-      "https://api.github.com/repos/DNMetodiev/Addonis/contents/plugins/" +
-        file.name,
+      `https://api.github.com/repos/DNMetodiev/Addonis/contents/plugins/${file.name}`,
       {
         method: "PUT",
         headers,
@@ -107,15 +87,13 @@ export default function UploadPlugin() {
 
   const handleSubmit = async () => {
     try {
-      const firebaseURL = await uploadToFirebase();
-      const gitResponse = await uploadToGitHub(firebaseURL);
-      console.log("Uploaded to Firebase:", firebaseURL);
+      await uploadToFirebase();
+      const gitResponse = await uploadToGitHub();
       console.log("GitHub Response:", gitResponse);
     } catch (error) {
       console.error("Error uploading:", error);
     }
   };
-
   return (
     <Box position="relative" textAlign="center" py={20}>
       <Container maxW={"3xl"} py={6}>
