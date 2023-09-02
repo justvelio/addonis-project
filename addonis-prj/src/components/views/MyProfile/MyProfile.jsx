@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { firebaseConfig } from "../../../config/firebase-config";
 import { initializeApp } from "firebase/app";
-import { getAuth } from "firebase/auth";
+import { getAuth, onAuthStateChanged } from "firebase/auth";
 import { getUserData } from "../../../services/users.service";
 import UpdateProfile from "../../UpdateProfile/UpdateProfile";
 import {
@@ -27,25 +27,32 @@ const MyProfileView = () => {
   const [showEditProfile, setShowEditProfile] = useState(false);
   const [changeProfilePicture, setChangeProfilePicture] = useState(false);
 
-
   useEffect(() => {
-    const user = auth.currentUser;
-    if (user) {
-      const uid = user.uid;
-      //console.log("User UID:", uid);
+    // Initialize Firebase app only on the client-side
+    const app = initializeApp(firebaseConfig);
+    const auth = getAuth(app);
 
-      getUserData(uid)
-        .then((userData) => {
-          if (userData) {
-            setUserData(userData);
-          } else {
-            console.log("No user data found");
-          }
-        })
-        .catch((error) => {
-          console.error("Error fetching user data:", error);
-        });
-    }
+    // Listen for Firebase authentication state changes
+    const unsubscribe = onAuthStateChanged(auth, (user) => {
+      if (user) {
+        const uid = user.uid;
+
+        getUserData(uid)
+          .then((userData) => {
+            if (userData) {
+              setUserData(userData);
+            } else {
+              console.log("No user data found");
+            }
+          })
+          .catch((error) => {
+            console.error("Error fetching user data:", error);
+          });
+      }
+    });
+
+    // Clean up the Firebase auth state listener when the component unmounts
+    return () => unsubscribe();
   }, []);
 
   const onChangeProfilePicture = () => {
@@ -57,7 +64,7 @@ const MyProfileView = () => {
   }
 
   return (
-    <Center pt={20}>
+    <Center pb={20} pt={8}>
       <div className="pt-20 pb-20">
         <Box
           maxW={"800px"}
@@ -114,7 +121,7 @@ const MyProfileView = () => {
                 </Text>
               </Stack>
             </Stack>
-            <div className="pt-10">
+            <Box pt={12}>
             <Button
               w={"full"}
               mt={8}
@@ -132,7 +139,7 @@ const MyProfileView = () => {
               {showEditProfile ? "Cancel" : "Edit Profile"}
             </Button>
 
-            </div>
+            </Box>
           </Box>
         </Box>
       </div>
