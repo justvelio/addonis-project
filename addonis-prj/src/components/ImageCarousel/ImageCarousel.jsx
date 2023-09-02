@@ -80,7 +80,7 @@ export default function ImageCarousel() {
                 borderRadius="16px"
                 boxShadow="0 4px 30px rgba(0, 0, 0, 0.1)"
                 backdropFilter="blur(5.9px) hue-rotate(70deg)"
-                WebkitBackdropFilter="blur(5.9px)"
+                webkitbackdropfilter="blur(5.9px)"
                 position="absolute"
                 top="50%"
                 left="50%"
@@ -89,7 +89,7 @@ export default function ImageCarousel() {
                 textAlign="center"
                 fontWeight="bold"
                 backgroundClip="text"
-                WebkitBackgroundClip="text"
+                webkitbackgroundclip="text"
                 color="transparent"
                 style={gradientAnimation}
               >
