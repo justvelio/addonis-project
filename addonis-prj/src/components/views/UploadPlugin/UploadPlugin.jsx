@@ -15,7 +15,7 @@ import {
   VStack,
 } from "@chakra-ui/react";
 import { ref as dbRef, push } from "firebase/database";
-import { auth, storage, db } from "../../../config/firebase-config";
+import { auth, db } from "../../../config/firebase-config";
 import TagComponent from "../../TagComponent/TagComponent";
 
 const GITHUB_TOKEN = "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";
@@ -160,10 +160,9 @@ export default function UploadPlugin() {
               <FormLabel color={"gray.800"} lineHeight={1.1} fontSize={24}>
                 Tags:
               </FormLabel>
-              {/* 2. Add the TagComponent for managing tags */}
               <TagComponent
                 mode="edit"
-                allTags={['utility', 'design', 'exampleTag1', 'exampleTag2']} // Example list of all tags, replace with your actual list
+                allTags={['utility', 'design', 'exampleTag1', 'exampleTag2']}
                 selectedTags={tags}
                 onTagChange={setTags}
               />
