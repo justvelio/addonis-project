@@ -32,8 +32,9 @@ export default function UploadPlugin() {
     setFile(e.target.files[0]);
   };
 
-  const uploadToFirebase = async () => {
+  const uploadToFirebase = async (gitDownloadLink) => {
     const newPluginRef = dbRef(db, "plugins/");
+
     const pluginData = {
       name,
       description,
@@ -42,10 +43,16 @@ export default function UploadPlugin() {
       tags,
       isHidden,
       date: new Date().toISOString(),
+      gitDownloadLink
     };
 
-    await push(newPluginRef, pluginData);
-    console.log("Metadata uploaded to Firebase");
+    try {
+      await push(newPluginRef, pluginData);
+
+      console.log("Successfully uploaded metadata and download link to Firebase");
+    } catch (error) {
+      console.error("Failed to upload to Firebase:", error);
+    }
   };
 
   const uploadToGitHub = async () => {
@@ -82,18 +89,23 @@ export default function UploadPlugin() {
       throw new Error("GitHub upload failed");
     }
 
-    return response.json();
+    const responseData = await response.json();
+    return responseData.content.download_url;
   };
 
   const handleSubmit = async () => {
     try {
-      await uploadToFirebase();
-      const gitResponse = await uploadToGitHub();
-      console.log("GitHub Response:", gitResponse);
+      const gitDownloadLink = await uploadToGitHub();
+
+      console.log("GitHub Download Link:", gitDownloadLink);
+
+      await uploadToFirebase(gitDownloadLink);
+
     } catch (error) {
       console.error("Error uploading:", error);
     }
   };
+
   return (
     <Box position="relative" textAlign="center" py={20}>
       <Container maxW={"3xl"} py={6}>
