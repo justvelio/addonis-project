@@ -9,7 +9,7 @@ import { getUserData } from "./services/users.service";
 import MyProfileView from "./components/views/MyProfile/MyProfile";
 import UploadPlugin from "../src/components/views/UploadPlugin/UploadPlugin";
 import Footer from "./components/Footer/Footer";
-
+import AdminPanel from "./components/AdminPanel/AdminPanel";
 
 function App() {
   const [appState, setAppState] = useState({
@@ -51,6 +51,8 @@ function App() {
             <Route path="/" element={<HomeContent />} />
             <Route path="/user-profile" element={<MyProfileView />} />
             <Route path="/upload-plugin" element={<UploadPlugin />} />
+            <Route path="admin" element={<AdminPanel role={appState.role} />} />
+
           </Routes>
           <Footer />
         </div>

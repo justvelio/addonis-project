@@ -65,6 +65,7 @@ export default function SignUpModal() {
         email,
         password,
         phone,
+        role: 'user',
       };
       await registerUser(email, password, userData);
 

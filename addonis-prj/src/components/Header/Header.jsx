@@ -16,7 +16,6 @@ const navigation = [
   { name: "Products", href: "#" },
   { name: "Partners", href: "#" },
   { name: "Careers", href: "#" },
-  { name: "Testimonials", href: "#" },
   { name: "About Us", href: "#" },
 ];
 
@@ -75,16 +74,16 @@ export default function Header() {
                 variant="unstyled"
                 color={"white"}
               >
-                {userData.username}
+                {userData ? userData.username : ""}
               </MenuButton>
-              <MenuList bg={'gray.100'}>
-                <MenuItem bg={'gray.100'}>
+              <MenuList bg={"gray.100"}>
+                <MenuItem bg={"gray.100"}>
                   <Link to="/user-profile">My Profile</Link>
                 </MenuItem>
-                <MenuItem bg={'gray.100'}>
+                <MenuItem bg={"gray.100"}>
                   <Link to="/upload-plugin">Upload Plugin</Link>
                 </MenuItem>
-                <MenuItem as={"div"} bg={'gray.100'}>
+                <MenuItem as={"div"} bg={"gray.100"}>
                   <SignOutButton />
                 </MenuItem>
               </MenuList>

@@ -1,5 +1,5 @@
 import { get, set, ref, query, equalTo, orderByChild, update } from 'firebase/database';
-import { db } from '../config/firebase-config';
+import { db, firestore } from '../config/firebase-config';
 import { getAuth, updateEmail, updatePassword, updateProfile } from 'firebase/auth';
 import { storage } from '../config/firebase-config';
 import { uploadBytes, getDownloadURL } from 'firebase/storage';
@@ -9,9 +9,9 @@ export const getUserByHandle = (handle) => {
   return get(ref(db, `users/${handle}`));
 };
 
-export const createUserHandle = (handle, uid, email) => {
+export const createUserHandle = (handle, uid, email, role) => {
 
-  return set(ref(db, `users/${handle}`), { handle, uid, email, createdOn: new Date(), likedPosts: {} })
+  return set(ref(db, `users/${handle}`), { handle, uid, email, createdOn: new Date(), likedPosts: {}, role: role, })
 };
 
 // export const getUserData = (uid) => {
@@ -32,7 +32,7 @@ export const getUserData = async (uid) => {
 };
 
 export const updateUserProfile = async (handle, updatedData) => {
-  const { email, password, firstName, lastName, phone, ...otherUpdatedData } = updatedData;
+  const { email, password, firstName, lastName, phone, role, ...otherUpdatedData } = updatedData;
 
   try {
     const auth = getAuth();
@@ -65,6 +65,11 @@ export const updateUserProfile = async (handle, updatedData) => {
       await updateProfile(auth.currentUser, { email });
     }
 
+    if(role){
+      await update(userRef, { role });
+    }
+    await update(userRef, otherUpdatedData)
+
     return true;
   } catch (error) {
     console.log('Error updating user profile:', error);
@@ -80,3 +85,50 @@ export const uploadProfilePictureToStorage = async (file) => {
   const downloadURL = await getDownloadURL(storageRef);
   return downloadURL;
 };
+
+export const createUserRoles = (uid) => {
+  const userRolesCollection = firestore.collection('userRoles');
+
+  return userRolesCollection.doc(uid).set({
+    roles: ['user'],
+  })
+}
+
+export const updateUserRoles = (uid, newRoles) => {
+  const userRolesCollection = firestore.collection('userRoles');
+
+  return userRolesCollection.doc(uid).update({
+    roles: newRoles,
+  })
+}
+
+export const getUserRoles = async (uid) => {
+  const userRolesCollection = firestore.collection('userRole');
+
+  try {
+    const doc = await userRolesCollection.doc(uid).get();
+    if(doc.exists){
+      return doc.data().roles;
+    }else{
+      console.log('UR Doc not found')
+      return [];
+    }
+  }catch(error){
+    console.error('error fetching UR:', error)
+    return [];
+  }
+}
+
+export const checkUserPermissions = async (uid) => {
+  
+  try {
+    const roles = await getUserRoles(uid);
+    if(roles.includes('admin')){
+      console.log('user is admin');
+    }else{
+      console.log('user is not an admin');
+    }
+  }catch(error){
+    console.error('error checking UR:', error)
+  }
+}
