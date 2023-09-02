@@ -23,8 +23,6 @@ export default function UploadPlugin() {
   const [file, setFile] = useState(null);
   const [name, setName] = useState("");
   const [description, setDescription] = useState("");
-  const [creator, setCreator] = useState("");
-  const [sourceCodeURL, setSourceCodeURL] = useState("");
   const [tags, setTags] = useState("");
   const [isHidden, setIsHidden] = useState(false);
 
@@ -39,7 +37,6 @@ export default function UploadPlugin() {
       name,
       description,
       creator: auth.currentUser?.uid || "Anonymous",
-      sourceCodeURL,
       tags,
       isHidden,
       date: new Date().toISOString(),
@@ -150,32 +147,14 @@ export default function UploadPlugin() {
                 onChange={(e) => setDescription(e.target.value)}
               />
             </FormControl>
-            <FormControl id="creator">
-              <FormLabel color={"gray.800"} lineHeight={1.1} fontSize={24}>
-                Creator:
-              </FormLabel>
-              <Input
-                type="text"
-                value={creator}
-                onChange={(e) => setCreator(e.target.value)}
-              />
-            </FormControl>
+
             <FormControl id="file">
               <FormLabel color={"gray.800"} lineHeight={1.1} fontSize={24}>
                 Plugin File:
               </FormLabel>
               <Input type="file" onChange={handleFileChange} />
             </FormControl>
-            <FormControl id="source-url">
-              <FormLabel color={"gray.800"} lineHeight={1.1} fontSize={24}>
-                Source Code URL:
-              </FormLabel>
-              <Input
-                type="text"
-                value={sourceCodeURL}
-                onChange={(e) => setSourceCodeURL(e.target.value)}
-              />
-            </FormControl>
+
             <FormControl id="tags">
               <FormLabel color={"gray.800"} lineHeight={1.1} fontSize={24}>
                 Tags:
