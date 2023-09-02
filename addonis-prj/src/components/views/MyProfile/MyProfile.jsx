@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import { firebaseConfig } from "../../../config/firebase-config";
 import { initializeApp } from "firebase/app";
 import { getAuth, onAuthStateChanged } from "firebase/auth";
@@ -18,8 +18,6 @@ import {
   Spacer,
 } from "@chakra-ui/react";
 
-const app = initializeApp(firebaseConfig);
-const auth = getAuth(app);
 const defaultProfilePictureURL = 'https://1fid.com/wp-content/uploads/2022/06/no-profile-picture-6-1024x1024.jpg'
 
 const MyProfileView = () => {
@@ -27,12 +25,11 @@ const MyProfileView = () => {
   const [showEditProfile, setShowEditProfile] = useState(false);
   const [changeProfilePicture, setChangeProfilePicture] = useState(false);
 
+  
   useEffect(() => {
-    // Initialize Firebase app only on the client-side
     const app = initializeApp(firebaseConfig);
     const auth = getAuth(app);
 
-    // Listen for Firebase authentication state changes
     const unsubscribe = onAuthStateChanged(auth, (user) => {
       if (user) {
         const uid = user.uid;
@@ -51,7 +48,6 @@ const MyProfileView = () => {
       }
     });
 
-    // Clean up the Firebase auth state listener when the component unmounts
     return () => unsubscribe();
   }, []);
 

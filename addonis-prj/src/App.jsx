@@ -51,7 +51,7 @@ function App() {
             <Route path="/" element={<HomeContent />} />
             <Route path="/user-profile" element={<MyProfileView />} />
             <Route path="/upload-plugin" element={<UploadPlugin />} />
-            <Route path="admin" element={<AdminPanel role={appState.role} />} />
+            <Route path="/admin" element={<AdminPanel role={appState.role} />} />
 
           </Routes>
           <Footer />

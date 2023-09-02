@@ -17,6 +17,8 @@ import { loginUser } from "../../services/auth.service";
 import AppContext from "../../context/AppContext";
 import { getUserData } from "../../services/users.service";
 import { checkUserExistence } from "../../services/auth.service";
+import { signInWithEmailAndPassword } from "firebase/auth";
+import { auth } from "../../config/firebase-config";
 
 
 export default function LoginModal() {
@@ -29,18 +31,38 @@ export default function LoginModal() {
 
   const handleLogin = async () => {
     try {
-      const userExists = await checkUserExistence(formData.email);
-      if (userExists) {
-        await loginUser(formData.email, formData.password);
-        onClose();
-      } else {
-        console.error("User does not exist.");
-      }
+      // Use Firebase Authentication to log in the user
+      const { email, password } = formData;
+      await signInWithEmailAndPassword(auth, email, password);
+  
+      // If login is successful, close the modal or navigate to the next page
+      onClose();
     } catch (error) {
-      console.error("Login error:", error.message);
+      // Handle Firebase authentication errors and provide user-friendly error messages
+      switch (error.code) {
+        case "auth/invalid-email":
+          console.error("Invalid email address.");
+          // You can display an error message to the user here
+          break;
+        case "auth/user-disabled":
+          console.error("User account is disabled.");
+          // You can display an error message to the user here
+          break;
+        case "auth/user-not-found":
+          console.error("User not found. Please register first.");
+          // You can display an error message to the user here
+          break;
+        case "auth/wrong-password":
+          console.error("Incorrect password.");
+          // You can display an error message to the user here
+          break;
+        default:
+          console.error("Login error:", error.message);
+          // For other errors, you can display a generic error message
+          break;
+      }
     }
   };
-  
 
   const onClose = () => {
     setIsOpen(false);
