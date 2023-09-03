@@ -1,7 +1,7 @@
 import HomeContent from "./components/views/HomeContent/HomeContent";
 import React, { useEffect, useState } from "react";
-import { BrowserRouter as Router, Route, Routes, } from 'react-router-dom';
-import AppContext from '../src/context/AppContext';
+import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
+import AppContext from "../src/context/AppContext";
 import Header from "./components/Header/Header";
 import { onAuthStateChanged } from "firebase/auth";
 import { auth } from "./config/firebase-config";
@@ -10,6 +10,7 @@ import MyProfileView from "./components/views/MyProfile/MyProfile";
 import UploadPlugin from "../src/components/views/UploadPlugin/UploadPlugin";
 import Footer from "./components/Footer/Footer";
 import AdminPanel from "./components/AdminPanel/AdminPanel";
+import UpdateProfile from "./components/UpdateProfile/UpdateProfile";
 
 function App() {
   const [appState, setAppState] = useState({
@@ -23,23 +24,20 @@ function App() {
       if (user) {
         // console.log(user);
         const uid = user.uid;
-        getUserData(uid)
-          .then((data) => {
-            setAppState({ user, userData: data })
-            // console.log(data)
-          }
-          )
+        getUserData(uid).then((data) => {
+          setAppState({ user, userData: data });
+          // console.log(data)
+        });
       } else {
         // console.log(user)
         setAppState({
           user: null,
           userData: null,
-        })
+        });
       }
     });
-    setAppState((previous) => ({ ...previous, loading: false }))
-  }, [])
-
+    setAppState((previous) => ({ ...previous, loading: false }));
+  }, []);
 
   return (
     <AppContext.Provider value={{ ...appState, setContext: setAppState }}>
@@ -50,8 +48,11 @@ function App() {
             <Route path="/" element={<HomeContent />} />
             <Route path="/user-profile" element={<MyProfileView />} />
             <Route path="/upload-plugin" element={<UploadPlugin />} />
-            <Route path="/admin" element={<AdminPanel role={appState.role} />} />
-
+            <Route
+              path="/admin"
+              element={<AdminPanel role={appState.role} />}
+            />
+            <Route path="/edit-profile" element={<UpdateProfile />} />
           </Routes>
           <Footer />
         </div>
