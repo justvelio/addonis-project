@@ -37,7 +37,7 @@ export default function Header() {
   return (
     <header className="absolute inset-x-0 top-0 z-50 custom-overlay">
       <nav
-        className="flex items-center justify-end p-4 lg:px-8"
+        className="flex items-center justify-between p-4 lg:px-8"
         aria-label="Global"
       >
         <div className="flex lg:flex-1 align-center">
@@ -49,7 +49,6 @@ export default function Header() {
             />
           </Link>
         </div>
-        <Search />
         <div className="flex lg:hidden">
           <button
             type="button"
@@ -82,7 +81,10 @@ export default function Header() {
               >
                 {userData ? userData.username : ""}
               </MenuButton>
-              <MenuList bg={"gray.100"}>
+              <MenuList
+                bg={"gray.100"}
+                maxH="20rem"
+              >
                 <MenuItem bg={"gray.100"}>
                   <Link to="/user-profile">My Profile</Link>
                 </MenuItem>
@@ -114,23 +116,14 @@ export default function Header() {
         onClose={() => setMobileMenuOpen(false)}
       >
         <div className="fixed inset-0 z-50" />
-        <Dialog.Panel className="fixed inset-y-0 right-0 z-50 w-full overflow-y-auto px-6 py-6 sm:max-w-sm sm:ring-1 sm:ring-white mobile-dropdown">
+        <Dialog.Panel className="fixed inset-y-0 right-0 z-50 w-64 overflow-y-auto px-4 py-4 sm:ring-1 sm:ring-white mobile-dropdown">
           <div className="flex items-center justify-between">
-            <a href="#" className="-m-1.5 p-1.5">
-              <img
-                className="h-12 w-auto"
-                src="https://www.svgrepo.com/show/525382/home-wifi-angle.svg"
-                alt="Company Logo"
-              />
-            </a>
-            <button
-              type="button"
-              className="-m-2.5 rounded-md p-2.5 text-slate-880000"
+            <Button
+              className="-m-2.5 rounded-md p-2.5 text-slate-800"
               onClick={() => setMobileMenuOpen(false)}
             >
-              <span className="sr-only">Close menu</span>
               <XIcon className="h-6 w-6" aria-hidden="true" />
-            </button>
+            </Button>
           </div>
           <div className="mt-6 flow-root">
             <div className="-my-6 divide-y divide-gray-500/10">
@@ -140,17 +133,18 @@ export default function Header() {
                     key={item.name}
                     to={item.href}
                     onClick={() => setMobileMenuOpen(false)}
-                    className="-mx-3 block rounded-lg px-3 py-2 text-base font-semibold leading-7 text-gray-900 hover:bg-gray-50"
+                    className="-mx-3 block rounded-lg px-3 py-2 text-base font-semibold leading-7 text-black hover:bg-gray-50"
                   >
                     {item.name}
                   </Link>
                 ))}
+                <Search />
               </div>
               <Box fontSize={"lg"} py={6}>
                 {user ? (
                   <div className="flex items-center">
                     <Stack>
-                      <span className="text-slate-700">
+                      <span className="text-black">
                         {userData.username}
                       </span>
                       <Link to="/user-profile" className="text-slate-700">
