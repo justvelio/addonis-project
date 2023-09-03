@@ -5,3 +5,8 @@
   backdrop-filter: blur(7.8px);
   -webkit-backdrop-filter: blur(7.8px) invert(1);
 }
+
+.mobile-dropdown {
+  background-color: #F0F0F0;
+  color: #333; 
+}

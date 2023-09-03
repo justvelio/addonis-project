@@ -88,7 +88,7 @@ const UpdateProfile = ({ setUserData }) => {
           bg={useColorModeValue("white", "gray.800")}
           overflow={"hidden"}
           style={{
-            boxShadow: "9px 5px 10px rgba(0, 0, 0, 0.2)", // Adjust values as needed
+            boxShadow: "9px 5px 10px rgba(0, 0, 0, 0.2)",
           }}
         >
           <Stack spacing={7} p={6} bg={useColorModeValue("white", "gray.800")}>

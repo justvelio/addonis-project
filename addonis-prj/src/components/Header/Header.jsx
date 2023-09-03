@@ -7,7 +7,15 @@ import AppContext from "../../context/AppContext";
 import { Link, useNavigate } from "react-router-dom";
 import { logoutUser } from "../../services/auth.service";
 import SignOutButton from "../SignOut/SignOut";
-import { Menu, MenuButton, MenuList, MenuItem, Button } from "@chakra-ui/react";
+import {
+  Menu,
+  MenuButton,
+  MenuList,
+  MenuItem,
+  Button,
+  Stack,
+  Box,
+} from "@chakra-ui/react";
 import Search from "../Search/Search";
 import { ChevronDownIcon } from "@chakra-ui/icons";
 import "./Header.css";
@@ -23,16 +31,8 @@ export default function Header() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const { user, userData, loading } = useContext(AppContext);
   const navigate = useNavigate();
-
-  // to do loading
-  // console.log(loading);
-  // console.log(user);
-  // if (!user || !userData) {
-  //   return (
-  //     <header className="absolute inset-x-0 top-0 z-50 custom-overlay">
-  //     </header>
-  //   );
-  // }
+  const isAdminUser =
+    userData && userData.role && userData.role.includes("admin");
 
   return (
     <header className="absolute inset-x-0 top-0 z-50 custom-overlay">
@@ -89,6 +89,11 @@ export default function Header() {
                 <MenuItem bg={"gray.100"}>
                   <Link to="/upload-plugin">Upload Plugin</Link>
                 </MenuItem>
+                {isAdminUser && (
+                  <MenuItem bg={"gray.100"}>
+                    <Link to="/admin">Admin Dashboard</Link>
+                  </MenuItem>
+                )}
                 <MenuItem as={"div"} bg={"gray.100"}>
                   <SignOutButton />
                 </MenuItem>
@@ -106,10 +111,10 @@ export default function Header() {
         as="div"
         className="lg:hidden"
         open={mobileMenuOpen}
-        onClose={setMobileMenuOpen}
+        onClose={() => setMobileMenuOpen(false)}
       >
         <div className="fixed inset-0 z-50" />
-        <Dialog.Panel className="fixed inset-y-0 right-0 z-50 w-full overflow-y-auto bg-white px-6 py-6 sm:max-w-sm sm:ring-1 sm:ring-white">
+        <Dialog.Panel className="fixed inset-y-0 right-0 z-50 w-full overflow-y-auto px-6 py-6 sm:max-w-sm sm:ring-1 sm:ring-white mobile-dropdown">
           <div className="flex items-center justify-between">
             <a href="#" className="-m-1.5 p-1.5">
               <img
@@ -131,34 +136,42 @@ export default function Header() {
             <div className="-my-6 divide-y divide-gray-500/10">
               <div className="space-y-2 py-6">
                 {navigation.map((item) => (
-                  <a
+                  <Link
                     key={item.name}
-                    href={item.href}
+                    to={item.href}
+                    onClick={() => setMobileMenuOpen(false)}
                     className="-mx-3 block rounded-lg px-3 py-2 text-base font-semibold leading-7 text-gray-900 hover:bg-gray-50"
                   >
                     {item.name}
-                  </a>
+                  </Link>
                 ))}
               </div>
-              <div className="py-6 text-lg">
-                <Search />
+              <Box fontSize={"lg"} py={6}>
                 {user ? (
                   <div className="flex items-center">
-                    <span className="text-slate-700 mr-4">
-                      {userData.username}
-                    </span>
-                    <Link to="/user-profile" className="text-slate-700">
-                      Update Profile
-                    </Link>
-                    <SignOutButton />
+                    <Stack>
+                      <span className="text-slate-700">
+                        {userData.username}
+                      </span>
+                      <Link to="/user-profile" className="text-slate-700">
+                        My Profile
+                      </Link>
+                      <Link to="/upload-plugin">Upload Plugin</Link>
+                      {isAdminUser && (
+                        <Link to="/admin" className="text-slate-700">
+                          Admin Dashboard
+                        </Link>
+                      )}
+                      <SignOutButton />
+                    </Stack>
                   </div>
                 ) : (
-                  <div className="hidden lg:flex lg:flex-1 lg:justify-end text-slate-700">
+                  <div className="lg:flex lg:flex-1 lg:justify-end text-slate-700">
                     <SignUpModal />
                     <LoginModal />
                   </div>
                 )}
-              </div>
+              </Box>
             </div>
           </div>
 
