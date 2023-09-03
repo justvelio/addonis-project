@@ -21,16 +21,16 @@ function App() {
   useEffect(() => {
     onAuthStateChanged(auth, (user) => {
       if (user) {
-        console.log(user);
+        // console.log(user);
         const uid = user.uid;
         getUserData(uid)
           .then((data) => {
             setAppState({ user, userData: data })
-            console.log(data)
+            // console.log(data)
           }
           )
       } else {
-        console.log(user)
+        // console.log(user)
         setAppState({
           user: null,
           userData: null,
@@ -42,7 +42,6 @@ function App() {
 
 
   return (
-    <div className="font-roboto">
     <AppContext.Provider value={{ ...appState, setContext: setAppState }}>
       <Router>
         <div className="App">
@@ -58,8 +57,6 @@ function App() {
         </div>
       </Router>
     </AppContext.Provider>
-
-    </div>
   );
 }
 
