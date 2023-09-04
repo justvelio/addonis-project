@@ -112,7 +112,7 @@ const UpdateProfile = ({ setUserData }) => {
         rounded={"md"}
         overflow={"hidden"}
       >
-        <Stack spacing={7} p={6} bg={useColorModeValue("white", "gray.800")}>
+        <Stack spacing={7} p={6}>
           <Heading
             lineHeight={1.1}
             fontSize={{ base: "2xl", sm: "3xl" }}
@@ -212,13 +212,10 @@ const UpdateProfile = ({ setUserData }) => {
           <Button
             w={"full"}
             mt={8}
-            bg={useColorModeValue("#151f21", "gray.900")}
+            bg={'black'}
             color={"white"}
             rounded={"md"}
-            _hover={{
-              transform: "translateY(-2px)",
-              boxShadow: "lg",
-            }}
+            _hover={{ bgColor: "gray", _dark: { bgColor: "gray.300" } }}
             onClick={handleUpdate}
           >
             Save Changes

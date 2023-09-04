@@ -18,7 +18,7 @@ import {
   Link,
   Center,
   Spacer,
-  SimpleGrid, // Import SimpleGrid for responsiveness
+  SimpleGrid,
 } from "@chakra-ui/react";
 
 const defaultProfilePictureURL =
@@ -61,9 +61,9 @@ const MyProfileView = () => {
   return (
     <Center h={'93vh'}>
       <Box
-        maxW={{ base: "100%", md: "800px" }} // Adjust the max width for responsiveness
+        maxW={{ base: "100%", md: "800px" }}
         w={"100%"}
-        bg={useColorModeValue("white", "gray.800")}
+        _hover={{ bgColor: "gray.200", _dark: { bgColor: "gray.300" } }}
         boxShadow={"2xl"}
         rounded={"md"}
         overflow={"hidden"}
@@ -120,13 +120,10 @@ const MyProfileView = () => {
             <Button
               w={"full"}
               mt={8}
-              bg={useColorModeValue("#151f21", "gray.900")}
+              bg={'black'}
               color={"white"}
               rounded={"md"}
-              _hover={{
-                transform: "translateY(-2px)",
-                boxShadow: "lg",
-              }}
+              _hover={{ bgColor: "gray", _dark: { bgColor: "gray.300" } }}
               onClick={() => navigate("/edit-profile")}
             >
               Edit Profile
