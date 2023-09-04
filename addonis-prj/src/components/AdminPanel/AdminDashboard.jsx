@@ -17,8 +17,7 @@ import {
             <Tab>Blocked Users</Tab>
             <Tab>Uploaded Plugins</Tab>
           </TabList>
-          {/* Wrap TabPanels in a container with a fixed height */}
-          <Box h="60vh"> {/* You can adjust the height as needed */}
+          <Box h="60vh">
             <TabPanels>
               <TabPanel>
                 <UserList />

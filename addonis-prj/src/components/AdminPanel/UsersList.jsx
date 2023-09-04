@@ -117,7 +117,7 @@ const UserList = () => {
             <Text>Phone: {user.phone}</Text>
             <Text>Username: {user.username}</Text>
             <Button
-              colorScheme={user.isBlocked ? "red" : "teal"}
+              colorScheme={user.isBlocked ? "red" : "blue"}
               onClick={() => toggleBlockUser(user.uid, user.isBlocked)}
             >
               {user.isBlocked ? "Unblock User" : "Block User"}
@@ -128,7 +128,7 @@ const UserList = () => {
       <Box mt={4}>
         <Button
           variant="outline"
-          colorScheme="teal"
+          colorScheme="blue"
           onClick={() => handlePageChange(page - 1)}
           disabled={page === 1}
         >
@@ -139,7 +139,7 @@ const UserList = () => {
         </Text>
         <Button
           variant="outline"
-          colorScheme="teal"
+          colorScheme="blue"
           onClick={() => handlePageChange(page + 1)}
           disabled={page === totalPages}
         >
