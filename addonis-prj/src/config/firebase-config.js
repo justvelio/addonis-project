@@ -23,4 +23,4 @@ export const auth = getAuth(app);
 // the Realtime Database handler
 export const db = getDatabase(app);
 export const storage = getStorage(app);
-export const firestore = getFirestore(app)
+export const firestore = getFirestore(app);

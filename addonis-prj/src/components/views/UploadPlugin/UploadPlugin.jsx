@@ -1,21 +1,25 @@
-import { useState } from "react";
+import React, { useEffect, useState } from "react";
+import { onAuthStateChanged } from "firebase/auth";
+import { auth, db } from "../../../config/firebase-config";
+import { getUserData } from "../../../services/users.service";
 import {
   Box,
-  Button,
+  Text,
+  VStack,
+  Stack,
+  SimpleGrid,
   Checkbox,
   FormControl,
-  FormLabel,
-  Heading,
-  Input,
   Container,
-  useColorModeValue,
-  Stack,
-  Text,
+  Heading,
+  FormLabel,
+  Input,
   Textarea,
-  VStack,
+  useColorModeValue,
+  Button,
+  StackDivider,
 } from "@chakra-ui/react";
-import { ref as dbRef, push } from "firebase/database";
-import { auth, db } from "../../../config/firebase-config";
+import { ref, push, get, update } from "firebase/database";
 import TagComponent from "../../TagComponent/TagComponent";
 
 const GITHUB_TOKEN = "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";
@@ -26,13 +30,29 @@ export default function UploadPlugin() {
   const [description, setDescription] = useState("");
   const [tags, setTags] = useState([]);
   const [isHidden, setIsHidden] = useState(false);
+  const [isBlocked, setIsBlocked] = useState(false); // New state to check if the user is blocked
+
+  useEffect(() => {
+    onAuthStateChanged(auth, (user) => {
+      if (user) {
+        const uid = user.uid;
+        getUserData(uid)
+          .then((data) => {
+            setIsBlocked(data.isBlocked); // Set isBlocked state based on user's blocked status
+          })
+          .catch((error) => {
+            console.error("Error fetching user data:", error);
+          });
+      }
+    });
+  }, []);
 
   const handleFileChange = (e) => {
     setFile(e.target.files[0]);
   };
 
   const uploadToFirebase = async (gitDownloadLink) => {
-    const newPluginRef = dbRef(db, "plugins/");
+    const newPluginRef = ref(db, "plugins/");
 
     const pluginData = {
       name,
@@ -41,7 +61,7 @@ export default function UploadPlugin() {
       tags,
       isHidden,
       date: new Date().toISOString(),
-      gitDownloadLink
+      gitDownloadLink,
     };
 
     try {
@@ -92,17 +112,33 @@ export default function UploadPlugin() {
   };
 
   const handleSubmit = async () => {
+    // Check if the user is blocked before allowing the upload
+    if (isBlocked) {
+      console.log("You are blocked and can't upload plugins.");
+      return;
+    }
+
     try {
       const gitDownloadLink = await uploadToGitHub();
 
       console.log("GitHub Download Link:", gitDownloadLink);
 
       await uploadToFirebase(gitDownloadLink);
-
     } catch (error) {
       console.error("Error uploading:", error);
     }
   };
+
+  // Render a message if the user is blocked
+  if (isBlocked) {
+    return (
+      <Box h="100vh" display="flex" justifyContent="center" alignItems="center">
+        <Text color="red.500" fontSize="2xl">
+          You are blocked and can't upload plugins.
+        </Text>
+      </Box>
+    );
+  }
 
   return (
     <Box position="relative" textAlign="center" py={20}>
