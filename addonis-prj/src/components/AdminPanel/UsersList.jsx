@@ -16,7 +16,7 @@ const UserList = () => {
   const [userRole, setUserRole] = useState(null);
   const [users, setUsers] = useState([]);
   const [page, setPage] = useState(1);
-  const usersPerPage = 10;
+  const usersPerPage = 9;
 
   useEffect(() => {
     onAuthStateChanged(auth, (user) => {
@@ -58,7 +58,6 @@ const UserList = () => {
   }, []);
 
   const toggleBlockUser = (uid, isBlocked) => {
-    // Toggle the blocked status of the user
     const updatedUsers = users.map((user) => {
       if (user.uid === uid) {
         return { ...user, isBlocked: !isBlocked };
@@ -66,10 +65,8 @@ const UserList = () => {
       return user;
     });
 
-    // Update the user list in the state
     setUsers(updatedUsers);
 
-    // Update the blocked status in Firebase
     const userRef = ref(db, `users/${uid}`);
     update(userRef, { isBlocked: !isBlocked })
       .then(() => {
@@ -80,7 +77,6 @@ const UserList = () => {
       });
   };
 
-  // Calculate the range of users to display for the current page
   const startIndex = (page - 1) * usersPerPage;
   const endIndex = startIndex + usersPerPage;
   const displayedUsers = users.slice(startIndex, endIndex);

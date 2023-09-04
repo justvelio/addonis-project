@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { onAuthStateChanged } from "firebase/auth";
 import { auth } from "../../config/firebase-config";
 import { getUserData } from "../../services/users.service";
-import UserList from "./UsersList";
+import AdminDashboard from "./AdminDashboard";
 
 const AdminPanel = ({ role }) => {
     const [userRole, setUserRole] = useState(null);
@@ -38,8 +38,8 @@ const AdminPanel = ({ role }) => {
       return (
         <div className="flex justify-center items-center h-screen">
           <div className="">
-            <UserList />
-            {/* Admin panel content */}
+            <AdminDashboard />
+            
           </div>
         </div>
       );
