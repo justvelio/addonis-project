@@ -1,4 +1,6 @@
-import { Box, Text, Button, Heading, VStack, HStack, Link } from "@chakra-ui/react";
+import PropTypes from 'prop-types';
+
+import { Box, Text, Button, Heading, VStack, HStack, Link, Badge } from "@chakra-ui/react";
 
 function PluginCard({ plugin, onClick, onDownload }) {
   return (
@@ -64,5 +66,18 @@ function PluginCard({ plugin, onClick, onDownload }) {
     </Box>
   );
 }
+
+PluginCard.propTypes = {
+  plugin: PropTypes.shape({
+    gitDownloadLink: PropTypes.string.isRequired,
+    name: PropTypes.string.isRequired,
+    description: PropTypes.string.isRequired,
+    reviewsCount: PropTypes.number,
+    rating: PropTypes.number,
+    category: PropTypes.string,
+  }).isRequired,
+  onClick: PropTypes.func,
+  onDownload: PropTypes.func
+};
 
 export default PluginCard;
