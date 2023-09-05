@@ -11,7 +11,6 @@ import TopFields from "../../TopFields/TopFields";
 import { Box } from "@chakra-ui/react";
 import Hero from "../../Hero/Hero";
 import ProductInfo2 from "../../ProductInfo2/ProductInfo2";
-import AddonDetails from "../../AddonDetails/AddonDetails";
 import PluginDetailView from "../../PluginDetailView/PluginDetailView";
 
 
@@ -63,13 +62,12 @@ export default function HomeContent() {
       ) : (
         <>
           <Hero />
-          <AddonDetails />
-          <div className="relative isolate px-6 pt-14 lg:px-8">
-            <ProductInfo />
-            <ProductInfo2 />
             <Box mt={6}>
               <PluginList plugins={plugins} onClick={(plugin) => setSelectedPlugin(plugin)} />
             </Box>
+          <div className="relative isolate px-6 pt-14 lg:px-8">
+            <ProductInfo />
+            <ProductInfo2 />
           </div>
         </>
       )}

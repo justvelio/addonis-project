@@ -3,6 +3,8 @@ import 'react-responsive-carousel/lib/styles/carousel.min.css';
 import PluginCard from '../PluginCard/PluginCard';
 
 export default function PluginList({ plugins, onClick }) {
+  const approvedPlugins = plugins.filter(plugin => plugin.status === "approved");
+
   return (
     <Carousel
       showThumbs={false}
@@ -13,7 +15,7 @@ export default function PluginList({ plugins, onClick }) {
       slidesToShow={5}
       dynamicWidth
     >
-      {plugins.map(plugin => (
+      {approvedPlugins.map(plugin => (
         <PluginCard key={plugin.id} plugin={plugin} onClick={() => onClick(plugin)} />
       ))}
     </Carousel>

@@ -16,7 +16,7 @@ const UserList = () => {
   const [userRole, setUserRole] = useState(null);
   const [users, setUsers] = useState([]);
   const [page, setPage] = useState(1);
-  const usersPerPage = 9;
+  const usersPerPage = 12;
 
   useEffect(() => {
     onAuthStateChanged(auth, (user) => {
@@ -99,7 +99,7 @@ const UserList = () => {
     <VStack h={'80vh'}> 
       <Text>All Users:</Text>
       <SimpleGrid
-        columns={{ sm: 1, md: 2, lg: 3 }}
+        columns={{ sm: 4, md: 4, lg: 4 }}
         spacing={4}
         divider={<StackDivider borderColor="gray.200" />}
       >

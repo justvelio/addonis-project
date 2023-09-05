@@ -7,6 +7,7 @@ import {
     Tabs,
   } from "@chakra-ui/react";
   import UserList from "./UsersList";
+import UploadedPlugins from "./UploadedPlugins";
   
   export default function AdminDashboard() {
     return (
@@ -26,7 +27,7 @@ import {
                 all blocked users will be stored here
               </TabPanel>
               <TabPanel>
-                uploaded plugins will come here to be accepted by admin
+                <UploadedPlugins />
               </TabPanel>
             </TabPanels>
           </Box>

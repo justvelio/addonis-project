@@ -4,6 +4,7 @@ import ImageCarousel from "../ImageCarousel/ImageCarousel";
 import { ChevronDownIcon } from "@chakra-ui/icons";
 import './Hero.css'
 import TopFields from "../TopFields/TopFields";
+import PluginList from "../PluginList/PluginList";
 
 
 function Hero() {
@@ -44,7 +45,6 @@ function Hero() {
         </VStack>
       </div>
       <div ref={contentRef}>
-        <TopFields />
       </div>
     </>
   );

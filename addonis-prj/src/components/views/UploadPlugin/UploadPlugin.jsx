@@ -19,7 +19,7 @@ import {
   Button,
   StackDivider,
 } from "@chakra-ui/react";
-import { ref, push, get, update } from "firebase/database";
+import { ref, push } from "firebase/database";
 import TagComponent from "../../TagComponent/TagComponent";
 
 const GITHUB_TOKEN = "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";
@@ -30,7 +30,7 @@ export default function UploadPlugin() {
   const [description, setDescription] = useState("");
   const [tags, setTags] = useState([]);
   const [isHidden, setIsHidden] = useState(false);
-  const [isBlocked, setIsBlocked] = useState(false); // New state to check if the user is blocked
+  const [isBlocked, setIsBlocked] = useState(false);
 
   useEffect(() => {
     onAuthStateChanged(auth, (user) => {
@@ -38,7 +38,7 @@ export default function UploadPlugin() {
         const uid = user.uid;
         getUserData(uid)
           .then((data) => {
-            setIsBlocked(data.isBlocked); // Set isBlocked state based on user's blocked status
+            setIsBlocked(data.isBlocked);
           })
           .catch((error) => {
             console.error("Error fetching user data:", error);
@@ -62,11 +62,11 @@ export default function UploadPlugin() {
       isHidden,
       date: new Date().toISOString(),
       gitDownloadLink,
+      status: 'pending',
     };
 
     try {
       await push(newPluginRef, pluginData);
-
       console.log("Successfully uploaded metadata and download link to Firebase");
     } catch (error) {
       console.error("Failed to upload to Firebase:", error);
@@ -112,7 +112,6 @@ export default function UploadPlugin() {
   };
 
   const handleSubmit = async () => {
-    // Check if the user is blocked before allowing the upload
     if (isBlocked) {
       console.log("You are blocked and can't upload plugins.");
       return;
@@ -120,16 +119,13 @@ export default function UploadPlugin() {
 
     try {
       const gitDownloadLink = await uploadToGitHub();
-
       console.log("GitHub Download Link:", gitDownloadLink);
-
       await uploadToFirebase(gitDownloadLink);
     } catch (error) {
       console.error("Error uploading:", error);
     }
   };
 
-  // Render a message if the user is blocked
   if (isBlocked) {
     return (
       <Box h="100vh" display="flex" justifyContent="center" alignItems="center">
