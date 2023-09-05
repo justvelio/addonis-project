@@ -140,7 +140,7 @@ const UserList = () => {
   return (
     <VStack h={"80vh"}>
       <Box>
-        <Text>Search Users by username or email:</Text>
+        <Text>Search Users by Username or Email:</Text>
         <input
         className="border-2"
           type="search"
