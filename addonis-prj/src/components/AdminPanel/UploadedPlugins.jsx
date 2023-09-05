@@ -11,7 +11,6 @@ import {
 } from "@chakra-ui/react";
 import { getDatabase, ref, onValue, remove, update } from "firebase/database";
 
-
 export default function UploadedPlugins() {
   const [uploadedPlugins, setUploadedPlugins] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
@@ -25,7 +24,9 @@ export default function UploadedPlugins() {
       const plugins = [];
       snapshot.forEach((childSnapshot) => {
         const plugin = childSnapshot.val();
-        plugins.push({ ...plugin, id: childSnapshot.key });
+        if (plugin.status === "pending") { // Only add pending plugins
+          plugins.push({ ...plugin, id: childSnapshot.key });
+        }
       });
       setUploadedPlugins(plugins);
     });
@@ -61,7 +62,7 @@ export default function UploadedPlugins() {
   return (
     <VStack spacing={4}>
       {uploadedPlugins.length === 0 ? (
-        <Text>No plugins to be reviewed.</Text>
+        <Text>No pending plugins to be reviewed.</Text>
       ) : (
         <>
           <SimpleGrid columns={4} spacing={4}>
