@@ -142,62 +142,62 @@ const UserList = () => {
       <Box>
         <Text>Search Users by Username or Email:</Text>
         <input
-        className="border-2"
-          type="search"
+          className="border-2 border-black rounded-md"
+          type="text"
           value={searchQuery}
           onChange={handleSearchInputChange}
           placeholder="Search"
         />
       </Box>
       <SimpleGrid
-  columns={{ sm: 4, md: 4, lg: 4 }}
-  spacing={4}
-  divider={<StackDivider borderColor="gray.200" />}
->
-  {searchQuery !== ""
-    ? filteredUsers.map((user) => (
-        <Box
-          key={user.uid}
-          borderWidth="1px"
-          borderRadius="lg"
-          overflow="hidden"
-          p={4}
-        >
-          <Text>Email: {user.email}</Text>
-          <Text>First Name: {user.firstName}</Text>
-          <Text>Last Name: {user.lastName}</Text>
-          <Text>Phone: {user.phone}</Text>
-          <Text>Username: {user.username}</Text>
-          <Button
-            colorScheme={user.isBlocked ? "red" : "blue"}
-            onClick={() => toggleBlockUser(user.uid, user.isBlocked)}
-          >
-            {user.isBlocked ? "Unblock User" : "Block User"}
-          </Button>
-        </Box>
-      ))
-    : currentUsers.map((user) => (
-        <Box
-          key={user.uid}
-          borderWidth="1px"
-          borderRadius="lg"
-          overflow="hidden"
-          p={4}
-        >
-          <Text>Email: {user.email}</Text>
-          <Text>First Name: {user.firstName}</Text>
-          <Text>Last Name: {user.lastName}</Text>
-          <Text>Phone: {user.phone}</Text>
-          <Text>Username: {user.username}</Text>
-          <Button
-            colorScheme={user.isBlocked ? "red" : "blue"}
-            onClick={() => toggleBlockUser(user.uid, user.isBlocked)}
-          >
-            {user.isBlocked ? "Unblock User" : "Block User"}
-          </Button>
-        </Box>
-      ))}
-</SimpleGrid>
+        columns={{ sm: 4, md: 4, lg: 4 }}
+        spacing={4}
+        divider={<StackDivider borderColor="gray.200" />}
+      >
+        {searchQuery !== ""
+          ? filteredUsers.map((user) => (
+              <Box
+                key={user.uid}
+                borderWidth="1px"
+                borderRadius="lg"
+                overflow="hidden"
+                p={4}
+              >
+                <Text>Email: {user.email}</Text>
+                <Text>First Name: {user.firstName}</Text>
+                <Text>Last Name: {user.lastName}</Text>
+                <Text>Phone: {user.phone}</Text>
+                <Text>Username: {user.username}</Text>
+                <Button
+                  colorScheme={user.isBlocked ? "red" : "blue"}
+                  onClick={() => toggleBlockUser(user.uid, user.isBlocked)}
+                >
+                  {user.isBlocked ? "Unblock User" : "Block User"}
+                </Button>
+              </Box>
+            ))
+          : currentUsers.map((user) => (
+              <Box
+                key={user.uid}
+                borderWidth="1px"
+                borderRadius="lg"
+                overflow="hidden"
+                p={4}
+              >
+                <Text>Email: {user.email}</Text>
+                <Text>First Name: {user.firstName}</Text>
+                <Text>Last Name: {user.lastName}</Text>
+                <Text>Phone: {user.phone}</Text>
+                <Text>Username: {user.username}</Text>
+                <Button
+                  colorScheme={user.isBlocked ? "red" : "blue"}
+                  onClick={() => toggleBlockUser(user.uid, user.isBlocked)}
+                >
+                  {user.isBlocked ? "Unblock User" : "Block User"}
+                </Button>
+              </Box>
+            ))}
+      </SimpleGrid>
       <Box mt={4}>
         {totalPages > 1 && (
           <HStack>
