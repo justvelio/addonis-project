@@ -11,6 +11,7 @@ import UploadPlugin from "../src/components/views/UploadPlugin/UploadPlugin";
 import Footer from "./components/Footer/Footer";
 import AdminPanel from "./components/AdminPanel/AdminPanel";
 import UpdateProfile from "./components/UpdateProfile/UpdateProfile";
+import ProductsPage from "./components/views/ProductsPage/ProductsPage";
 
 function App() {
   const [appState, setAppState] = useState({
@@ -53,6 +54,7 @@ function App() {
               element={<AdminPanel role={appState.role} />}
             />
             <Route path="/edit-profile" element={<UpdateProfile />} />
+            <Route path="/products" element={<ProductsPage />} />
           </Routes>
           <Footer />
         </div>

@@ -21,7 +21,7 @@ import { ChevronDownIcon } from "@chakra-ui/icons";
 import "./Header.css";
 
 const navigation = [
-  { name: "Products", href: "#" },
+  { name: "Products", href: "/products" },
   { name: "Partners", href: "#" },
   { name: "Careers", href: "#" },
   { name: "About Us", href: "#" },
@@ -61,13 +61,13 @@ export default function Header() {
         </div>
         <div className="hidden lg:flex lg:gap-x-12">
           {navigation.map((item) => (
-            <a
+            <Link
               key={item.name}
-              href={item.href}
+              to={item.href}
               className="text-lg font-semibold leading-6 text-white"
             >
               {item.name}
-            </a>
+            </Link>
           ))}
         </div>
         <div className="hidden lg:flex lg:flex-1 lg:justify-end text-slate-700">
@@ -81,10 +81,7 @@ export default function Header() {
               >
                 {userData ? userData.username : ""}
               </MenuButton>
-              <MenuList
-                bg={"gray.100"}
-                maxH="20rem"
-              >
+              <MenuList bg={"gray.100"} maxH="20rem">
                 <MenuItem bg={"gray.100"}>
                   <Link to="/user-profile">My Profile</Link>
                 </MenuItem>
@@ -144,9 +141,7 @@ export default function Header() {
                 {user ? (
                   <div className="flex items-center">
                     <Stack>
-                      <span className="text-black">
-                        {userData.username}
-                      </span>
+                      <span className="text-black">{userData.username}</span>
                       <Link to="/user-profile" className="text-slate-700">
                         My Profile
                       </Link>
