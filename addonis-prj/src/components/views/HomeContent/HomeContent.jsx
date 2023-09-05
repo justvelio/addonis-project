@@ -1,15 +1,22 @@
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 // import Header from "../../Header/Header";
 // import { getAllExtensions } from "../../firebase/services/extension.service";
+import { ref, get, onValue } from "firebase/database";
+import { db } from "../../../config/firebase-config";
+import { collection, getDocs } from "firebase/firestore";
+import { firestore } from "../../../config/firebase-config";
+import PluginList from "../../PluginList/PluginList";
 import ProductInfo from "../../ProductInfo/ProductInfo";
 import TopFields from "../../TopFields/TopFields";
-import { Flex, Center } from "@chakra-ui/react";
+import { Box } from "@chakra-ui/react";
 import Hero from "../../Hero/Hero";
 import ProductInfo2 from "../../ProductInfo2/ProductInfo2";
 import AddonDetails from "../../AddonDetails/AddonDetails";
+import PluginDetailView from "../../PluginDetailView/PluginDetailView";
+
 
 export default function HomeContent() {
-  const [data, setData] = useState([]);
+  // const [data, setData] = useState([]);
   // const [test, setTest] = useState(null);
 
   // useEffect(() => {
@@ -26,18 +33,46 @@ export default function HomeContent() {
   // }, []);
   // console.log(test);
 
+  const [plugins, setPlugins] = useState([]);
+  const [selectedPlugin, setSelectedPlugin] = useState(null);
+
+  const [isDetailViewOpen, setDetailViewOpen] = useState(false);
+
+  const handlePluginClick = (plugin) => {
+    setSelectedPlugin(plugin);
+    setDetailViewOpen(true);
+  };
+
+  useEffect(() => {
+    const pluginRef = ref(db, 'plugins');
+    const handleData = snap => {
+      if (snap.val()) setPlugins(Object.values(snap.val()));
+    }
+
+    const unsubscribe = onValue(pluginRef, handleData, error => alert(error));
+    return () => unsubscribe();
+  }, []);
+
   return (
     <div>
-      <Hero />
-      <AddonDetails />
-      <div className="relative isolate px-6 pt-14 lg:px-8">
-          <ProductInfo />
-          <ProductInfo2 />
-        <div className="flex flex-col items-center justify-center text-center pt-15">
-          <Flex align="center" justify="center">
-          </Flex>
-        </div>
-      </div>
+      {selectedPlugin ? (
+        <PluginDetailView
+          plugin={selectedPlugin}
+          onClose={() => setSelectedPlugin(null)}
+        />
+      ) : (
+        <>
+          <Hero />
+          <AddonDetails />
+          <div className="relative isolate px-6 pt-14 lg:px-8">
+            <ProductInfo />
+            <ProductInfo2 />
+            <Box mt={6}>
+              <PluginList plugins={plugins} onClick={(plugin) => setSelectedPlugin(plugin)} />
+            </Box>
+          </div>
+        </>
+      )}
     </div>
   );
 }
