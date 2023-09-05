@@ -1,3 +1,5 @@
+import PropTypes from 'prop-types';
+
 import { useState, useRef } from 'react';
 import { Box, Button, Flex } from '@chakra-ui/react';
 import { ChevronLeftIcon, ChevronRightIcon } from '@chakra-ui/icons';
@@ -35,6 +37,10 @@ const Carousel = ({ children }) => {
       </Button>
     </Flex>
   );
+};
+
+Carousel.propTypes = {
+  children: PropTypes.node.isRequired,
 };
 
 export default Carousel;

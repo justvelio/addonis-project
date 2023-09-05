@@ -1,3 +1,5 @@
+import PropTypes from 'prop-types';
+
 import { Carousel } from 'react-responsive-carousel';
 import 'react-responsive-carousel/lib/styles/carousel.min.css';
 import PluginCard from '../PluginCard/PluginCard';
@@ -21,3 +23,13 @@ export default function PluginList({ plugins, onClick }) {
     </Carousel>
   );
 }
+
+
+PluginList.propTypes = {
+  plugins: PropTypes.arrayOf(
+    PropTypes.shape({
+      status: PropTypes.string
+    })
+  ).isRequired,
+  onClick: PropTypes.func.isRequired,
+};

@@ -1,3 +1,4 @@
+import PropTypes from 'prop-types';
 import { Button, Heading, Text, VStack, HStack } from "@chakra-ui/react";
 
 function PluginDetailView({ plugin, onClose }) {
@@ -23,5 +24,14 @@ function PluginDetailView({ plugin, onClose }) {
     </VStack>
   );
 }
+
+PluginDetailView.propTypes = {
+  plugin: PropTypes.shape({
+    name: PropTypes.string.isRequired,
+    description: PropTypes.string.isRequired,
+    gitDownloadLink: PropTypes.string.isRequired,
+  }).isRequired,
+  onClose: PropTypes.func.isRequired,
+};
 
 export default PluginDetailView;
