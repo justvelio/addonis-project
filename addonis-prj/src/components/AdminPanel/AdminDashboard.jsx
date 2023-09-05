@@ -15,16 +15,12 @@ import UploadedPlugins from "./UploadedPlugins";
         <Tabs isLazy>
           <TabList>
             <Tab>All Users</Tab>
-            <Tab>Blocked Users</Tab>
-            <Tab>Uploaded Plugins</Tab>
+            <Tab>Plugins Pending Approval</Tab>
           </TabList>
           <Box h="60vh">
             <TabPanels>
               <TabPanel>
                 <UserList />
-              </TabPanel>
-              <TabPanel>
-                all blocked users will be stored here
               </TabPanel>
               <TabPanel>
                 <UploadedPlugins />
