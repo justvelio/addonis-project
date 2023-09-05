@@ -1,21 +1,22 @@
-import React, { useEffect, useState } from "react";
-import { onAuthStateChanged } from "firebase/auth";
-import { auth, db } from "../../config/firebase-config";
-import { getUserData } from "../../services/users.service";
+import { useState, useEffect } from "react";
 import {
   Box,
+  Button,
   Text,
   VStack,
   SimpleGrid,
-  Button,
   StackDivider,
+  HStack,
 } from "@chakra-ui/react";
 import { ref, get, update } from "firebase/database";
+import { onAuthStateChanged } from "firebase/auth";
+import { auth, db } from "../../config/firebase-config";
+import { getUserData } from "../../services/users.service";
 
 const UserList = () => {
   const [userRole, setUserRole] = useState(null);
   const [users, setUsers] = useState([]);
-  const [page, setPage] = useState(1);
+  const [currentPage, setCurrentPage] = useState(1);
   const usersPerPage = 12;
 
   useEffect(() => {
@@ -77,14 +78,14 @@ const UserList = () => {
       });
   };
 
-  const startIndex = (page - 1) * usersPerPage;
-  const endIndex = startIndex + usersPerPage;
-  const displayedUsers = users.slice(startIndex, endIndex);
+  const indexOfLastUser = currentPage * usersPerPage;
+  const indexOfFirstUser = indexOfLastUser - usersPerPage;
+  const currentUsers = users.slice(indexOfFirstUser, indexOfLastUser);
 
   const totalPages = Math.ceil(users.length / usersPerPage);
 
   const handlePageChange = (newPage) => {
-    setPage(newPage);
+    setCurrentPage(newPage);
   };
 
   if (userRole !== "admin") {
@@ -96,14 +97,14 @@ const UserList = () => {
   }
 
   return (
-    <VStack h={'80vh'}> 
+    <VStack h={"80vh"}>
       <Text>All Users:</Text>
       <SimpleGrid
         columns={{ sm: 4, md: 4, lg: 4 }}
         spacing={4}
         divider={<StackDivider borderColor="gray.200" />}
       >
-        {displayedUsers.map((user) => (
+        {currentUsers.map((user) => (
           <Box
             key={user.uid}
             borderWidth="1px"
@@ -126,25 +127,19 @@ const UserList = () => {
         ))}
       </SimpleGrid>
       <Box mt={4}>
-        <Button
-          variant="outline"
-          colorScheme="blue"
-          onClick={() => handlePageChange(page - 1)}
-          disabled={page === 1}
-        >
-          Previous Page
-        </Button>
-        <Text display="inline-block" mx={2}>
-          Page {page} of {totalPages}
-        </Text>
-        <Button
-          variant="outline"
-          colorScheme="blue"
-          onClick={() => handlePageChange(page + 1)}
-          disabled={page === totalPages}
-        >
-          Next Page
-        </Button>
+        {totalPages > 1 && (
+          <HStack>
+            {Array.from({ length: totalPages }, (_, i) => (
+              <Button
+                key={i + 1}
+                onClick={() => handlePageChange(i + 1)}
+                variant={i + 1 === currentPage ? "solid" : "ghost"}
+              >
+                {i + 1}
+              </Button>
+            ))}
+          </HStack>
+        )}
       </Box>
     </VStack>
   );

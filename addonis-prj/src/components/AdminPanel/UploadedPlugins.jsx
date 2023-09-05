@@ -24,7 +24,7 @@ export default function UploadedPlugins() {
       const plugins = [];
       snapshot.forEach((childSnapshot) => {
         const plugin = childSnapshot.val();
-        if (plugin.status === "pending") { // Only add pending plugins
+        if (plugin.status === "pending") {
           plugins.push({ ...plugin, id: childSnapshot.key });
         }
       });
@@ -99,7 +99,9 @@ export default function UploadedPlugins() {
             {uploadedPlugins.length > pluginsPerPage && (
               <HStack>
                 {Array.from(
-                  { length: Math.ceil(uploadedPlugins.length / pluginsPerPage) },
+                  {
+                    length: Math.ceil(uploadedPlugins.length / pluginsPerPage),
+                  },
                   (_, i) => (
                     <Button
                       key={i + 1}
