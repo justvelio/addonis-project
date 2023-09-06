@@ -6,8 +6,8 @@ import {
   VStack,
   SimpleGrid,
   HStack,
-  Spacer,
   Flex,
+  useToast,
 } from "@chakra-ui/react";
 import { getDatabase, ref, onValue, remove, update } from "firebase/database";
 
@@ -15,6 +15,8 @@ export default function UploadedPlugins() {
   const [uploadedPlugins, setUploadedPlugins] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
   const pluginsPerPage = 12;
+  const toast = useToast(); // Initialize the toast hook
+
 
   useEffect(() => {
     const db = getDatabase();
@@ -41,22 +43,54 @@ export default function UploadedPlugins() {
 
   const paginate = (pageNumber) => setCurrentPage(pageNumber);
 
-  const handleApprove = (pluginId) => {
+  const handleApprove = async (pluginId) => {
     const db = getDatabase();
-    update(ref(db, `plugins/${pluginId}`), { status: "approved" });
-
-    setUploadedPlugins((prevPlugins) =>
-      prevPlugins.filter((plugin) => plugin.id !== pluginId)
-    );
+    try {
+      await update(ref(db, `plugins/${pluginId}`), { status: "approved" });
+      setUploadedPlugins((prevPlugins) =>
+        prevPlugins.filter((plugin) => plugin.id !== pluginId)
+      );
+      toast({
+        title: "Plugin Approved.",
+        description: "The plugin has been approved successfully.",
+        status: "success",
+        duration: 3000,
+        isClosable: true,
+      });
+    } catch (error) {
+      toast({
+        title: "Error approving the plugin.",
+        description: error.message,
+        status: "error",
+        duration: 5000,
+        isClosable: true,
+      });
+    }
   };
 
-  const handleReject = (pluginId) => {
+  const handleReject = async (pluginId) => {
     const db = getDatabase();
-    remove(ref(db, `plugins/${pluginId}`));
-
-    setUploadedPlugins((prevPlugins) =>
-      prevPlugins.filter((plugin) => plugin.id !== pluginId)
-    );
+    try {
+      await remove(ref(db, `plugins/${pluginId}`));
+      setUploadedPlugins((prevPlugins) =>
+        prevPlugins.filter((plugin) => plugin.id !== pluginId)
+      );
+      toast({
+        title: "Plugin Rejected.",
+        description: "The plugin has been rejected and removed.",
+        status: "info",
+        duration: 3000,
+        isClosable: true,
+      });
+    } catch (error) {
+      toast({
+        title: "Error rejecting the plugin.",
+        description: error.message,
+        status: "error",
+        duration: 5000,
+        isClosable: true,
+      });
+    }
   };
 
   return (

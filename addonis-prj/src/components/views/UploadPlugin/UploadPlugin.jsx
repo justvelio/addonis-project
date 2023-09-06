@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { onAuthStateChanged } from "firebase/auth";
 import { auth, db } from "../../../config/firebase-config";
 import { getUserData } from "../../../services/users.service";
@@ -7,7 +7,6 @@ import {
   Text,
   VStack,
   Stack,
-  SimpleGrid,
   Checkbox,
   FormControl,
   Container,
@@ -17,7 +16,7 @@ import {
   Textarea,
   useColorModeValue,
   Button,
-  StackDivider,
+  useToast,
 } from "@chakra-ui/react";
 import { ref, push } from "firebase/database";
 import TagComponent from "../../TagComponent/TagComponent";
@@ -31,6 +30,8 @@ export default function UploadPlugin() {
   const [tags, setTags] = useState([]);
   const [isHidden, setIsHidden] = useState(false);
   const [isBlocked, setIsBlocked] = useState(false);
+  const toast = useToast();
+
 
   useEffect(() => {
     onAuthStateChanged(auth, (user) => {
@@ -42,10 +43,17 @@ export default function UploadPlugin() {
           })
           .catch((error) => {
             console.error("Error fetching user data:", error);
+            toast({
+              title: "Error fetching user data.",
+              description: error.message,
+              status: "error",
+              duration: 5000,
+              isClosable: true,
+            });
           });
       }
     });
-  }, []);
+  }, [toast]);
 
   const handleFileChange = (e) => {
     setFile(e.target.files[0]);
@@ -113,7 +121,13 @@ export default function UploadPlugin() {
 
   const handleSubmit = async () => {
     if (isBlocked) {
-      console.log("You are blocked and can't upload plugins.");
+      toast({
+        title: "Upload Blocked.",
+        description: "You are blocked and can't upload plugins.",
+        status: "error",
+        duration: 5000,
+        isClosable: true,
+      });
       return;
     }
 
@@ -121,20 +135,24 @@ export default function UploadPlugin() {
       const gitDownloadLink = await uploadToGitHub();
       console.log("GitHub Download Link:", gitDownloadLink);
       await uploadToFirebase(gitDownloadLink);
+      toast({
+        title: "Upload Successful.",
+        description: "Your plugin has been uploaded for review.",
+        status: "success",
+        duration: 5000,
+        isClosable: true,
+      });
     } catch (error) {
       console.error("Error uploading:", error);
+      toast({
+        title: "Upload Failed.",
+        description: error.message || "An error occurred during upload.",
+        status: "error",
+        duration: 5000,
+        isClosable: true,
+      });
     }
   };
-
-  if (isBlocked) {
-    return (
-      <Box h="100vh" display="flex" justifyContent="center" alignItems="center">
-        <Text color="red.500" fontSize="2xl">
-          You are blocked and can't upload plugins.
-        </Text>
-      </Box>
-    );
-  }
 
   return (
     <Box position="relative" textAlign="center" py={20}>

@@ -38,7 +38,12 @@ const ProductCard = ({ plugin }) => {
       </Stack>
       <Divider />
       <Stack mt="1" p="4">
-        <Button colorScheme="blue" variant="solid">
+        <Button
+          as="a"  // Use the button as a link
+          href={plugin.gitDownloadLink}  // Set the link to the gitDownloadLink of the plugin
+          colorScheme="blue"
+          variant="solid"
+        >
           Download Now
         </Button>
       </Stack>
@@ -53,6 +58,7 @@ ProductCard.propTypes = {
     creatorName: PropTypes.string.isRequired,
     image: PropTypes.string,
     id: PropTypes.string.isRequired,
+    gitDownloadLink: PropTypes.string.isRequired,
   }).isRequired,
 };
 
