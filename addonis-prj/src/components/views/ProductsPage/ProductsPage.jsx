@@ -1,10 +1,10 @@
-import React, { useEffect, useState } from "react";
+import PropTypes from 'prop-types';
+import { useEffect, useState } from "react";
 import {
   Box,
   Heading,
   Text,
   SimpleGrid,
-  Image,
   Stack,
   Button,
   Divider,
@@ -12,7 +12,10 @@ import {
 import { ref, get } from "firebase/database";
 import { db } from "../../../config/firebase-config";
 
+
+
 const ProductCard = ({ plugin }) => {
+
   return (
     <Box
       maxW="sm"
@@ -31,7 +34,7 @@ const ProductCard = ({ plugin }) => {
       <Stack mt="2" spacing="2" p="2" h={'15vh'}>
         <Heading size="md">{plugin.name}</Heading>
         <Text noOfLines={3}>{plugin.description}</Text>
-        <Text>Uploader: {plugin.creator}</Text>
+        <Text>Uploader: {plugin.creatorName}</Text>
       </Stack>
       <Divider />
       <Stack mt="1" p="4">
@@ -43,28 +46,60 @@ const ProductCard = ({ plugin }) => {
   );
 };
 
+ProductCard.propTypes = {
+  plugin: PropTypes.shape({
+    name: PropTypes.string.isRequired,
+    description: PropTypes.string,
+    creatorName: PropTypes.string.isRequired,
+    image: PropTypes.string,
+    id: PropTypes.string.isRequired,
+  }).isRequired,
+};
+
+
 const ProductsPage = () => {
   const [plugins, setPlugins] = useState([]);
 
-  useEffect(() => {
-    const pluginsRef = ref(db, "plugins");
+  const fetchUserData = async (plugin) => {
+    try {
+      const userRef = ref(db, `users/${plugin.creator}`);
+      const userSnapshot = await get(userRef);
+      if (userSnapshot.exists()) {
+        const user = userSnapshot.val();
+        return {
+          ...plugin,
+          creatorName: `${user.firstName} ${user.lastName}`
+        };
+      } else {
+        return plugin;
+      }
+    } catch (error) {
+      console.error("Error fetching user data:", error);
+      return plugin;
+    }
+  };
 
-    get(pluginsRef)
-      .then((snapshot) => {
+  useEffect(() => {
+    const fetchPlugins = async () => {
+      try {
+        const pluginsRef = ref(db, "plugins");
+        const snapshot = await get(pluginsRef);
         if (snapshot.exists()) {
-          const pluginsArray = [];
-          snapshot.forEach((childSnapshot) => {
-            const plugin = childSnapshot.val();
-            pluginsArray.push({ ...plugin, id: childSnapshot.key });
-          });
-          setPlugins(pluginsArray);
+          const pluginsData = await Promise.all(
+            Object.values(snapshot.val()).map(async (plugin, index) =>
+              await fetchUserData({ ...plugin, id: Object.keys(snapshot.val())[index] })
+            )
+          );
+          setPlugins(pluginsData);
         } else {
           console.log("No plugin data available");
         }
-      })
-      .catch((error) => {
+      } catch (error) {
         console.error("Error fetching plugins:", error);
-      });
+      }
+    };
+
+    fetchPlugins();
   }, []);
 
   return (
