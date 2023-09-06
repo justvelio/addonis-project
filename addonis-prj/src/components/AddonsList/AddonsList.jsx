@@ -28,7 +28,7 @@ const AddonsList = () => {
         });
         return {
             title: extensionName,
-            description: response.data.description,
+            description: response.data.description, // from db
             imageUrl,
             rating,
             date,
