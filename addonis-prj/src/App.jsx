@@ -12,6 +12,7 @@ import Footer from "./components/Footer/Footer";
 import AdminPanel from "./components/AdminPanel/AdminPanel";
 import UpdateProfile from "./components/UpdateProfile/UpdateProfile";
 import ProductsPage from "./components/views/ProductsPage/ProductsPage";
+import MyPlugins from "./components/views/MyPlugins/MyPlugins";
 
 function App() {
   const [appState, setAppState] = useState({
@@ -48,6 +49,7 @@ function App() {
           <Routes>
             <Route path="/" element={<HomeContent />} />
             <Route path="/user-profile" element={<MyProfileView />} />
+            <Route path="/my-plugins" element={<MyPlugins />} />
             <Route path="/upload-plugin" element={<UploadPlugin />} />
             <Route
               path="/admin"

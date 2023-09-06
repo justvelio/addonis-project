@@ -86,6 +86,9 @@ export default function Header() {
                   <Link to="/user-profile">My Profile</Link>
                 </MenuItem>
                 <MenuItem bg={"gray.100"}>
+                  <Link to="/my-plugins">My Plugins</Link>
+                </MenuItem>
+                <MenuItem bg={"gray.100"}>
                   <Link to="/upload-plugin">Upload Plugin</Link>
                 </MenuItem>
                 {isAdminUser && (
