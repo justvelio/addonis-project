@@ -1,4 +1,4 @@
-import { ref, onValue } from "firebase/database";
+import { ref, onValue, get, child } from "firebase/database";
 import { db } from "../config/firebase-config";
 import { useEffect, useState } from "react";
 
@@ -8,7 +8,6 @@ export const useAllExtensionsFromDb = () => {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    
     const extensionsRef = ref(db, `extensions/`);
     try {
       onValue(extensionsRef, (snapshot) => {
@@ -18,7 +17,18 @@ export const useAllExtensionsFromDb = () => {
     } catch (error) {
       setError(error);
     }
-    setLoading(false)
+    setLoading(false);
   }, []);
   return { error, extensions, loading };
+};
+
+export const getPluginByName = async (extensionName) => {
+  const dbRef = ref(db);
+  const snapshot = await get(child(dbRef, `plugins/${extensionName}`))
+
+      if (snapshot.exists()) {
+        return snapshot.val();
+      } else {
+        return null;
+      }
 };

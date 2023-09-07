@@ -11,7 +11,7 @@ export default function Footer() {
       bg="gray.300"
       color="black"
       py="4"
-      
+      mt={'auto'}
     >
       <HStack spacing="1">
         <Icon as={FaGithub} boxSize="6" />
