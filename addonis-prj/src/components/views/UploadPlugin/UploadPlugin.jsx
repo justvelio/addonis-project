@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { onAuthStateChanged } from "firebase/auth";
 import { auth, db } from "../../../config/firebase-config";
 import { getUserData } from "../../../services/users.service";
@@ -18,11 +18,8 @@ import {
   Button,
   useToast,
 } from "@chakra-ui/react";
-import { ref, serverTimestamp, set } from "firebase/database";
+import { ref, push } from "firebase/database";
 import TagComponent from "../../TagComponent/TagComponent";
-import { storage } from "../../../config/firebase-config";
-import { ref as storageRef, uploadBytes, getDownloadURL } from "firebase/storage";
-import { getPluginByName } from "../../../services/extension.service";
 
 const GITHUB_TOKEN = "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";
 
@@ -33,10 +30,8 @@ export default function UploadPlugin() {
   const [tags, setTags] = useState([]);
   const [isHidden, setIsHidden] = useState(false);
   const [isBlocked, setIsBlocked] = useState(false);
-  const [downloadUrl, setDownloadUrl] = useState("");
-  const [githubRepoLink, setGithubRepoLink] = useState("");
-  
   const toast = useToast();
+
 
   useEffect(() => {
     onAuthStateChanged(auth, (user) => {
@@ -64,121 +59,82 @@ export default function UploadPlugin() {
     setFile(e.target.files[0]);
   };
 
-  const fetchGitRepositoryInfo = async () => {
-    try {
-      const [owner, repoName] = gitHubRepoLink.split('/').slice(+2);
-      const response = await fetch('https://api.github.com/repos/${owner}/${repoName}');
-      if(!response.ok){
-        console.error('GitHub API Error', response.statusText);
-        return;
-      }
-
-      const repoInfo = await response.json();
-
-      const issuesCount = repoInfo.open_issues_count;
-      const totalDownloads = repoInfo.watchers_count;
-      const lastUpdate = new Date(repoInfo.updated_at).toLocaleDateString();
-    }catch(error){
-      console.error('Error fetching GitHub repo info', error)
-  }
-  }
-
-  const uploadToStorage = async (extension, fileName) => {
-    const extensionsRef = storageRef(storage, `/Extensions/${fileName}`);
-
-    const snapshot = await uploadBytes(extensionsRef, extension);
-    const downloadURL = await getDownloadURL(snapshot.ref);
-    return downloadURL;
-  };
-
-  const addExtensionToDB = async (downloadUrl) => {
-    const newPluginRef = ref(db, `plugins/${name}`);
+  const uploadToFirebase = async (gitDownloadLink) => {
+    const newPluginRef = ref(db, "plugins/");
 
     const pluginData = {
       name,
       description,
-      creator: auth.currentUser?.uid || "Anonymous", // authenticated users ONLY
+      creator: auth.currentUser?.uid || "Anonymous",
       tags,
       isHidden,
-      githubRepoLink, // Add GitHub repo link to plugin data
-      date: serverTimestamp(),
-      downloadUrl,
-      status: "pending",
-      rating: 0,
-      // repoOwner:
-      // repo: 
+      date: new Date().toISOString(),
+      gitDownloadLink,
+      status: 'pending',
     };
 
     try {
-      await set(newPluginRef, pluginData);
+      await push(newPluginRef, pluginData);
       console.log("Successfully uploaded metadata and download link to Firebase");
     } catch (error) {
       console.error("Failed to upload to Firebase:", error);
     }
   };
 
-  // const uploadToGitHub = async () => {
-  //   const headers = {
-  //     Authorization: `token ${GITHUB_TOKEN}`,
-  //     Accept: "application/vnd.github.v3+json",
-  //     "Content-Type": "application/json",
-  //   };
+  const uploadToGitHub = async () => {
+    const headers = {
+      Authorization: `token ${GITHUB_TOKEN}`,
+      Accept: "application/vnd.github.v3+json",
+      "Content-Type": "application/json",
+    };
 
-  //   const fileContent = await new Promise((resolve, reject) => {
-  //     const reader = new FileReader();
-  //     reader.onloadend = () => resolve(reader.result.split(",")[1]);
-  //     reader.onerror = reject;
-  //     reader.readAsDataURL(file);
-  //   });
+    const fileContent = await new Promise((resolve, reject) => {
+      const reader = new FileReader();
+      reader.onloadend = () => resolve(reader.result.split(",")[1]);
+      reader.onerror = reject;
+      reader.readAsDataURL(file);
+    });
 
-  //   const data = {
-  //     message: `Adding plugin ${file.name}`,
-  //     content: fileContent,
-  //   };
+    const data = {
+      message: `Adding plugin ${file.name}`,
+      content: fileContent,
+    };
 
-  //   const response = await fetch(
-  //     `https://api.github.com/repos/DNMetodiev/Addonis/contents/plugins/${file.name}`,
-  //     {
-  //       method: "PUT",
-  //       headers,
-  //       body: JSON.stringify(data),
-  //     }
-  //   );
+    const response = await fetch(
+      `https://api.github.com/repos/DNMetodiev/Addonis/contents/plugins/${file.name}`,
+      {
+        method: "PUT",
+        headers,
+        body: JSON.stringify(data),
+      }
+    );
 
-  //   if (!response.ok) {
-  //     const errorData = await response.json();
-  //     console.error("GitHub Error:", errorData);
-  //     throw new Error("GitHub upload failed");
-  //   }
+    if (!response.ok) {
+      const errorData = await response.json();
+      console.error("GitHub Error:", errorData);
+      throw new Error("GitHub upload failed");
+    }
 
-  //   const responseData = await response.json();
-  //   return responseData.content.download_url;
-  // };
+    const responseData = await response.json();
+    return responseData.content.download_url;
+  };
 
   const handleSubmit = async () => {
-    const fileExtension = file.name.split('.');
-    const fileNameExtension = fileExtension[fileExtension.length - 1];
-    
-    const plugin = await getPluginByName(name);
-    
-    if (plugin) {
+    if (isBlocked) {
       toast({
-        title: "Upload Failed.",
-        description: "Plugin with this name already exists.",
+        title: "Upload Blocked.",
+        description: "You are blocked and can't upload plugins.",
         status: "error",
         duration: 5000,
         isClosable: true,
       });
-      console.log('Plugin with this name already exists');
-    } else {
-      const downloadUrl = await uploadToStorage(
-        file,
-        `${name}.${fileNameExtension}`
-      );
-      await addExtensionToDB(downloadUrl);
-    
-      setDownloadUrl(downloadUrl);
-    
+      return;
+    }
+
+    try {
+      const gitDownloadLink = await uploadToGitHub();
+      console.log("GitHub Download Link:", gitDownloadLink);
+      await uploadToFirebase(gitDownloadLink);
       toast({
         title: "Upload Successful.",
         description: "Your plugin has been uploaded for review.",
@@ -186,12 +142,16 @@ export default function UploadPlugin() {
         duration: 5000,
         isClosable: true,
       });
+    } catch (error) {
+      console.error("Error uploading:", error);
+      toast({
+        title: "Upload Failed.",
+        description: error.message || "An error occurred during upload.",
+        status: "error",
+        duration: 5000,
+        isClosable: true,
+      });
     }
-
-    if(githubRepoLink){
-      await fetchGitRepositoryInfo
-    }
-    
   };
 
   return (
@@ -214,10 +174,10 @@ export default function UploadPlugin() {
               </Text>
             </Heading>
             <Text mt={5} color={"gray.500"} fontSize={{ base: "sm", sm: "md" }}>
-              Your upload needs to be authorized by an admin in order to be displayed on our website.
+              Your upload needs to be authorized by an admin in order to be
+              displayed on our website.
             </Text>
           </Stack>
-
           <VStack spacing={4} alignItems="flex-start" mt="5px" w="100%">
             <FormControl id="name">
               <FormLabel color={"gray.800"} lineHeight={1.1} fontSize={24}>
@@ -252,31 +212,18 @@ export default function UploadPlugin() {
               </FormLabel>
               <TagComponent
                 mode="edit"
-                allTags={["utility", "design", "exampleTag1", "exampleTag2"]}
+                allTags={['utility', 'design', 'exampleTag1', 'exampleTag2']}
                 selectedTags={tags}
                 onTagChange={setTags}
               />
             </FormControl>
-
-            <FormControl id="githubRepoLink">
-              <FormLabel color={"gray.800"} lineHeight={1.1} fontSize={24}>
-                GitHub Repository Link:
-              </FormLabel>
-              <Input
-                type="text"
-                value={githubRepoLink}
-                onChange={(e) => setGithubRepoLink(e.target.value)}
-              />
-            </FormControl>
           </VStack>
-
           <Checkbox
             isChecked={isHidden}
             onChange={() => setIsHidden(!isHidden)}
           >
-            Apply Hidden Flag (Hides plugin from the public)
+            Apply Hidden Flag (Hides plugin from public)
           </Checkbox>
-
           <Button
             w="full"
             bg={useColorModeValue("#151f21", "gray.900")}
