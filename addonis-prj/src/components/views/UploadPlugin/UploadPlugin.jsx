@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { onAuthStateChanged } from "firebase/auth";
+import { get, set } from "firebase/database";
 import { auth, db } from "../../../config/firebase-config";
 import { getUserData } from "../../../services/users.service";
 import {
@@ -30,6 +31,8 @@ export default function UploadPlugin() {
   const [tags, setTags] = useState([]);
   const [isHidden, setIsHidden] = useState(false);
   const [isBlocked, setIsBlocked] = useState(false);
+  const [githubRepoLink, setGithubRepoLink] = useState("");
+
   const toast = useToast();
 
 
@@ -59,6 +62,12 @@ export default function UploadPlugin() {
     setFile(e.target.files[0]);
   };
 
+  const doesPluginExist = async (pluginName) => {
+    const pluginRef = ref(db, `plugins/${pluginName}`);
+    const snapshot = await get(pluginRef);
+    return snapshot.exists();
+  };
+
   const uploadToFirebase = async (gitDownloadLink) => {
     const newPluginRef = ref(db, "plugins/");
 
@@ -70,15 +79,12 @@ export default function UploadPlugin() {
       isHidden,
       date: new Date().toISOString(),
       gitDownloadLink,
+      githubRepoLink,
       status: 'pending',
     };
-
-    try {
-      await push(newPluginRef, pluginData);
-      console.log("Successfully uploaded metadata and download link to Firebase");
-    } catch (error) {
-      console.error("Failed to upload to Firebase:", error);
-    }
+    const pluginRef = ref(db, `plugins/${name}`);
+    await set(pluginRef, pluginData);
+    console.log("Successfully uploaded metadata and download link to Firebase");
   };
 
   const uploadToGitHub = async () => {
@@ -120,10 +126,10 @@ export default function UploadPlugin() {
   };
 
   const handleSubmit = async () => {
-    if (isBlocked) {
+    if (await doesPluginExist(name)) {
       toast({
-        title: "Upload Blocked.",
-        description: "You are blocked and can't upload plugins.",
+        title: "Upload Failed.",
+        description: "A plugin with this name already exists.",
         status: "error",
         duration: 5000,
         isClosable: true,
@@ -215,6 +221,17 @@ export default function UploadPlugin() {
                 allTags={['utility', 'design', 'exampleTag1', 'exampleTag2']}
                 selectedTags={tags}
                 onTagChange={setTags}
+              />
+            </FormControl>
+
+            <FormControl id="githubRepoLink">
+              <FormLabel color={"gray.800"} lineHeight={1.1} fontSize={24}>
+                GitHub Repository Link:
+              </FormLabel>
+              <Input
+                type="text"
+                value={githubRepoLink}
+                onChange={(e) => setGithubRepoLink(e.target.value)}
               />
             </FormControl>
           </VStack>
