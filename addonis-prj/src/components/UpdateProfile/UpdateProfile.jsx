@@ -15,7 +15,8 @@ import {
 import { updateUserProfile } from "../../services/users.service";
 import reauthenticateUser from "./reauthenticateUser";
 import { getAuth } from "firebase/auth";
-import { ViewIcon, ViewOffIcon } from "@chakra-ui/icons"; // Import icons
+import { ViewIcon, ViewOffIcon } from "@chakra-ui/icons";
+import { uploadProfilePictureToStorage } from "../../services/users.service";
 
 const UpdateProfile = ({ setUserData }) => {
   const [newEmail, setNewEmail] = useState("");
@@ -80,7 +81,9 @@ const UpdateProfile = ({ setUserData }) => {
     }
 
     if (profilePicture) {
-      updatedData.profilePicture = profilePicture;
+      const downloadUrl = await uploadProfilePictureToStorage(profilePicture, user.uid)
+      updatedData.profilePicture = downloadUrl;
+
     }
 
     const success = await updateUserProfile(user.uid, updatedData);

@@ -14,7 +14,7 @@ const AdminPanel = ({ role }) => {
           getUserData(uid)
             .then((data) => {
               setUserRole(data.role);
-              console.log("User Role:", data.role);
+              // console.log("User Role:", data.role);
             })
             .catch((error) => {
               console.error("Error fetching user data:", error);
@@ -25,7 +25,7 @@ const AdminPanel = ({ role }) => {
       });
     }, []);
   
-    console.log("current UR:", userRole);
+    // console.log("current UR:", userRole);
   
     if (userRole !== 'admin') {
         return (
@@ -37,7 +37,7 @@ const AdminPanel = ({ role }) => {
     
       return (
         <div className="flex justify-center items-center h-screen">
-          <div className="">
+          <div className="min-w-[90%]">
             <AdminDashboard />
             
           </div>

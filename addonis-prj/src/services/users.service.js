@@ -2,7 +2,7 @@ import { get, set, ref, query, equalTo, orderByChild, update } from 'firebase/da
 import { db, firestore } from '../config/firebase-config';
 import { getAuth, updateEmail, updatePassword, updateProfile } from 'firebase/auth';
 import { storage } from '../config/firebase-config';
-import { uploadBytes, getDownloadURL } from 'firebase/storage';
+import { uploadBytes, getDownloadURL , ref as storageRef} from 'firebase/storage';
 
 export const getUserByHandle = (handle) => {
 
@@ -77,15 +77,6 @@ export const updateUserProfile = async (handle, updatedData) => {
   }
 };
 
-export const uploadProfilePictureToStorage = async (file) => {
-  const storageRef = ref(storage, "profilePictures/" + file.name);
-
-  await uploadBytes(storageRef, file);
-
-  const downloadURL = await getDownloadURL(storageRef);
-  return downloadURL;
-};
-
 export const createUserRoles = (uid) => {
   const userRolesCollection = firestore.collection('userRoles');
 
@@ -132,3 +123,11 @@ export const checkUserPermissions = async (uid) => {
     console.error('error checking UR:', error)
   }
 }
+
+export const uploadProfilePictureToStorage = async (file, fileName) => {
+    const pictureRef = storageRef(storage, `/profilePictures/${fileName}`);
+
+    const snapshot = await uploadBytes(pictureRef, file);
+    const downloadURL = await getDownloadURL(snapshot.ref);
+    return downloadURL;
+  };
