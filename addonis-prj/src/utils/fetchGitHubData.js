@@ -37,10 +37,14 @@ export async function fetchGitHubData(repoUrl) {
   });
   const commitsData = await commitsResponse.json();
 
+  console.log(commitsData);
+
+
   const result = {
     openIssues: openIssuesData.total_count,
     pullRequests: pullRequestsData.total_count,
     lastCommitDate: commitsData[0]?.commit?.author?.date,
+    lastCommitMessage: commitsData[0]?.commit?.message // make sure this line exists
   };
 
   localStorage.setItem(cacheKey, JSON.stringify(result));

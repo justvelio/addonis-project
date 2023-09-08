@@ -18,11 +18,15 @@ export const PluginCard = ({ plugin, downloadUrl }) => {
     openIssues: 0,
     pullRequests: 0,
     lastCommitDate: null,
+    lastCommitMessage: "",
   });
 
   useEffect(() => {
     fetchGitHubData(plugin.githubRepoLink)
-      .then((data) => setGithubData(data))
+      .then((data) => {
+        console.log('GitHub Data:', data);
+        setGithubData(data);
+      })
       .catch((error) => {
         console.error("Error fetching GitHub data:", error.message);
       });
@@ -46,8 +50,8 @@ export const PluginCard = ({ plugin, downloadUrl }) => {
         <Text>Open Issues: {githubData.openIssues}</Text>
         <Text>Open Pull Requests: {githubData.pullRequests}</Text>
         <Text>
-          Last Commit:{" "}
-          {new Date(githubData.lastCommitDate).toLocaleDateString()}
+          Last Commit: {new Date(githubData.lastCommitDate).toLocaleDateString()}
+          {githubData.lastCommitMessage && ` - ${githubData.lastCommitMessage}`}
         </Text>
       </Stack>
       <Stack mt="1" p="4">
