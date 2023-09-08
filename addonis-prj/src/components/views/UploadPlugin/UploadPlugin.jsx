@@ -32,9 +32,37 @@ export default function UploadPlugin() {
   const [isHidden, setIsHidden] = useState(false);
   const [isBlocked, setIsBlocked] = useState(false);
   const [githubRepoLink, setGithubRepoLink] = useState("");
-
+  const [nameError, setNameError] = useState("");
+  const [descriptionError, setDescriptionError] = useState("");
+  const [fileError, setFileError] = useState("");
   const toast = useToast();
 
+  const validateForm = () => {
+    let isValid = true;
+
+    if (!name.trim()) {
+      setNameError("Name is required.");
+      isValid = false;
+    } else {
+      setNameError("");
+    }
+
+    if (!description.trim()) {
+      setDescriptionError("Description is required.");
+      isValid = false;
+    } else {
+      setDescriptionError("");
+    }
+
+    if (!file) {
+      setFileError("Please select a file.");
+      isValid = false;
+    } else {
+      setFileError("");
+    }
+
+    return isValid;
+  };
 
   useEffect(() => {
     onAuthStateChanged(auth, (user) => {
@@ -80,7 +108,7 @@ export default function UploadPlugin() {
       date: new Date().toISOString(),
       gitDownloadLink,
       githubRepoLink,
-      status: 'pending',
+      status: "pending",
     };
     const pluginRef = ref(db, `plugins/${name}`);
     await set(pluginRef, pluginData);
@@ -126,6 +154,9 @@ export default function UploadPlugin() {
   };
 
   const handleSubmit = async () => {
+    if (!validateForm()) {
+      return;
+    }
     if (await doesPluginExist(name)) {
       toast({
         title: "Upload Failed.",
@@ -193,7 +224,11 @@ export default function UploadPlugin() {
                 type="text"
                 value={name}
                 onChange={(e) => setName(e.target.value)}
+                isInvalid={nameError !== ""}
               />
+              <Text color="red.500" fontSize="sm">
+                {nameError}
+              </Text>
             </FormControl>
             <FormControl id="description">
               <FormLabel color={"gray.800"} lineHeight={1.1} fontSize={24}>
@@ -202,14 +237,25 @@ export default function UploadPlugin() {
               <Textarea
                 value={description}
                 onChange={(e) => setDescription(e.target.value)}
+                isInvalid={descriptionError !== ""}
               />
+              <Text color="red.500" fontSize="sm">
+                {descriptionError}
+              </Text>
             </FormControl>
 
             <FormControl id="file">
               <FormLabel color={"gray.800"} lineHeight={1.1} fontSize={24}>
                 Plugin File:
               </FormLabel>
-              <Input type="file" onChange={handleFileChange} />
+              <Input
+                type="file"
+                onChange={handleFileChange}
+                isInvalid={fileError !== ""}
+              />
+              <Text color="red.500" fontSize="sm">
+                {fileError}
+              </Text>
             </FormControl>
 
             <FormControl id="tags">
@@ -218,7 +264,7 @@ export default function UploadPlugin() {
               </FormLabel>
               <TagComponent
                 mode="edit"
-                allTags={['utility', 'design', 'exampleTag1', 'exampleTag2']}
+                allTags={["utility", "design", "exampleTag1", "exampleTag2"]}
                 selectedTags={tags}
                 onTagChange={setTags}
               />
