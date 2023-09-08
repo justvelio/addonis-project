@@ -15,7 +15,7 @@ export default function UploadedPlugins() {
   const [uploadedPlugins, setUploadedPlugins] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
   const pluginsPerPage = 12;
-  const toast = useToast(); // Initialize the toast hook
+  const toast = useToast();
 
 
   useEffect(() => {

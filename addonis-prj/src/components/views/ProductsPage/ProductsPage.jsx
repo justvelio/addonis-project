@@ -13,7 +13,7 @@ import { ref, get } from "firebase/database";
 import { db } from "../../../config/firebase-config";
 import { fetchGitHubData } from "../../../utils/fetchGitHubData";
 
-const ProductCard = ({ plugin, downloadUrl, status }) => {
+export const PluginCard = ({ plugin, downloadUrl }) => {
   const [githubData, setGithubData] = useState({
     openIssues: 0,
     pullRequests: 0,
@@ -57,9 +57,9 @@ const ProductCard = ({ plugin, downloadUrl, status }) => {
       </Stack>
     </Box>
   );
-};
+}
 
-ProductCard.propTypes = {
+PluginCard.propTypes = {
   plugin: PropTypes.shape({
     name: PropTypes.string.isRequired,
     description: PropTypes.string,
@@ -70,6 +70,8 @@ ProductCard.propTypes = {
     githubRepoLink: PropTypes.string.isRequired,
   }).isRequired,
 };
+
+
 
 const ProductsPage = () => {
   const [plugins, setPlugins] = useState([]);
@@ -112,7 +114,7 @@ const ProductsPage = () => {
             (plugin) => plugin.status === "approved" && plugin.githubRepoLink
           )
           .map((plugin) => (
-            <ProductCard
+            <PluginCard
               key={plugin.id}
               plugin={plugin}
               downloadUrl={plugin.downloadUrl}

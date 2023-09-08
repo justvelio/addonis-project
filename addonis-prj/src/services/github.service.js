@@ -13,6 +13,6 @@ export const getAddonInfo = async (repoOwner, repoName) => {
       return response.data;
     } catch (error) {
       console.error('Error fetching repository information:', error);
-      throw error; // Rethrow the error to propagate it to the component
+      throw error;
     }
   };
