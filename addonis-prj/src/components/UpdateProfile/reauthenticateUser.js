@@ -1,8 +1,11 @@
 import { getAuth, EmailAuthProvider, reauthenticateWithCredential } from 'firebase/auth';
 
-const reauthenticateUser = async (user, email, currentPassword) => {
+const reauthenticateUser = async (user, email, currentPassword, isChangingEmail = false) => {
+  if (!isChangingEmail) {
+    return true;
+  }
+
   const auth = getAuth();
-  
   const credentials = EmailAuthProvider.credential(email, currentPassword);
 
   try {
