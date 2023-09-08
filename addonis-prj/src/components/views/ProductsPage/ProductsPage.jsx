@@ -12,6 +12,7 @@ import {
 import { ref, get } from "firebase/database";
 import { db } from "../../../config/firebase-config";
 import { fetchGitHubData } from "../../../utils/fetchGitHubData";
+import PluginTabs from "../../PluginTabs/PluginTabs";
 
 export const PluginCard = ({ plugin, downloadUrl }) => {
   const [githubData, setGithubData] = useState({
@@ -112,6 +113,8 @@ const ProductsPage = () => {
       <Heading as="h1" mb={4}>
         Products
       </Heading>
+      <PluginTabs plugins={plugins.filter(plugin => plugin.status === "approved" && plugin.githubRepoLink)} />
+
       <SimpleGrid columns={{ base: 1, md: 2, lg: 3 }} spacing={4}>
         {plugins
           .filter(
