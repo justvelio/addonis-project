@@ -13,7 +13,7 @@ import { ref, get } from "firebase/database";
 import { db } from "../../../config/firebase-config";
 import { fetchGitHubData } from "../../../utils/fetchGitHubData";
 
-const ProductCard = ({ plugin, downloadUrl }) => {
+const ProductCard = ({ plugin, downloadUrl, status }) => {
   const [githubData, setGithubData] = useState({
     openIssues: 0,
     pullRequests: 0,
@@ -22,15 +22,20 @@ const ProductCard = ({ plugin, downloadUrl }) => {
 
   useEffect(() => {
     fetchGitHubData(plugin.githubRepoLink)
-      .then(data => setGithubData(data))
-      .catch(error => {
+      .then((data) => setGithubData(data))
+      .catch((error) => {
         console.error("Error fetching GitHub data:", error.message);
       });
   }, [plugin.githubRepoLink]);
 
-
   return (
-    <Box maxW="sm" borderWidth="1px" borderRadius="lg" overflow="hidden" h="100%">
+    <Box
+      maxW="sm"
+      borderWidth="1px"
+      borderRadius="lg"
+      overflow="hidden"
+      h="100%"
+    >
       <Stack mt="2" spacing="2" p="2" h={"15vh"}>
         <Heading size="md">{plugin.name}</Heading>
         <Text noOfLines={3}>{plugin.description}</Text>
@@ -40,10 +45,15 @@ const ProductCard = ({ plugin, downloadUrl }) => {
       <Stack mt="1" spacing="2" p="2">
         <Text>Open Issues: {githubData.openIssues}</Text>
         <Text>Open Pull Requests: {githubData.pullRequests}</Text>
-        <Text>Last Commit: {new Date(githubData.lastCommitDate).toLocaleDateString()}</Text>
+        <Text>
+          Last Commit:{" "}
+          {new Date(githubData.lastCommitDate).toLocaleDateString()}
+        </Text>
       </Stack>
       <Stack mt="1" p="4">
-        <Button as="a" href={downloadUrl} colorScheme="blue" variant="solid">Download Now</Button>
+        <Button as="a" href={downloadUrl} colorScheme="blue" variant="solid">
+          Download Now
+        </Button>
       </Stack>
     </Box>
   );
@@ -93,14 +103,22 @@ const ProductsPage = () => {
 
   return (
     <Box p={20} h={"93vh"}>
-      <Heading as="h1" mb={4}>Products</Heading>
+      <Heading as="h1" mb={4}>
+        Products
+      </Heading>
       <SimpleGrid columns={{ base: 1, md: 2, lg: 3 }} spacing={4}>
-        {plugins.map((plugin) => {
-          if (plugin.githubRepoLink) {
-            return <ProductCard key={plugin.id} plugin={plugin} downloadUrl={plugin.downloadUrl} />;
-          }
-          return null;
-        })}
+        {plugins
+          .filter(
+            (plugin) => plugin.status === "approved" && plugin.githubRepoLink
+          )
+          .map((plugin) => (
+            <ProductCard
+              key={plugin.id}
+              plugin={plugin}
+              downloadUrl={plugin.downloadUrl}
+              status={plugin.status}
+            />
+          ))}
       </SimpleGrid>
     </Box>
   );
