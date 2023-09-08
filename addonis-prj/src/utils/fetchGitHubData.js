@@ -2,6 +2,12 @@ const GITHUB_TOKEN = "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";
 
 export async function fetchGitHubData(repoUrl) {
   const repoName = repoUrl.replace("https://github.com/", "");
+  const cacheKey = `github-data-${repoName}`;
+
+  const cachedData = localStorage.getItem(cacheKey);
+  if (cachedData) {
+    return JSON.parse(cachedData);
+  }
 
   const repoResponse = await fetch(`https://api.github.com/repos/${repoName}`, {
     headers: {
@@ -31,9 +37,16 @@ export async function fetchGitHubData(repoUrl) {
   });
   const commitsData = await commitsResponse.json();
 
-  return {
+  const result = {
     openIssues: openIssuesData.total_count,
     pullRequests: pullRequestsData.total_count,
     lastCommitDate: commitsData[0]?.commit?.author?.date,
   };
+
+  localStorage.setItem(cacheKey, JSON.stringify(result));
+  setTimeout(() => {
+    localStorage.removeItem(cacheKey);
+  }, 3600000);
+
+  return result;
 }

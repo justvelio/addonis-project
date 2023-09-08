@@ -58,6 +58,7 @@ function PluginCard({ plugin, onClick, onDownload }) {
 PluginCard.propTypes = {
   plugin: PropTypes.shape({
     gitDownloadLink: PropTypes.string.isRequired,
+    githubRepoLink: PropTypes.string.isRequired,
     name: PropTypes.string.isRequired,
     description: PropTypes.string.isRequired,
     reviewsCount: PropTypes.number,
