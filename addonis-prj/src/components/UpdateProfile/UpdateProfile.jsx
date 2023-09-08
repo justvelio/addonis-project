@@ -209,6 +209,7 @@ const UpdateProfile = ({ setUserData }) => {
                 </Button>
               </InputRightElement>
             </InputGroup>
+                 <p className="text-xs text-red-500 font-medium">Confirm your old password if you're changing your email and/or password.</p>
           </FormControl>
         </Stack>
         <div className="pb-10 text-center">
