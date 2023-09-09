@@ -14,6 +14,7 @@ import { ref, get } from "firebase/database";
 import { db } from "../../../config/firebase-config";
 import { fetchGitHubData } from "../../../utils/fetchGitHubData";
 import PluginTabs from "../../PluginTabs/PluginTabs";
+import { calculateAverageRating } from "../../../utils/calculateAverageRating";
 
 export const PluginCard = ({ plugin, downloadUrl }) => {
   const [githubData, setGithubData] = useState({
@@ -98,7 +99,7 @@ const ProductsPage = () => {
     const fetchPlugins = async () => {
       const pluginsRef = ref(db, "plugins");
       const snapshot = await get(pluginsRef);
-      const pluginsData = await Promise.all(
+      const fetchedPlugins = await Promise.all(
         Object.values(snapshot.val()).map(async (plugin, index) => {
           return await fetchUserData({
             ...plugin,
@@ -106,11 +107,20 @@ const ProductsPage = () => {
           });
         })
       );
-      setPlugins(pluginsData);
+
+      fetchedPlugins.forEach(plugin => {
+        if (plugin.ratings) {
+          plugin.averageRating = calculateAverageRating(plugin.ratings);
+        } else {
+          plugin.averageRating = 0;
+        }
+      });
+
+      const sortedPlugins = fetchedPlugins.sort((a, b) => b.averageRating - a.averageRating);
+      setPlugins(sortedPlugins);
     };
     fetchPlugins();
   }, []);
-
   return (
     <Box p={20} h={"93vh"}>
       <Heading as="h1" mb={4}>

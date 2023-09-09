@@ -13,7 +13,7 @@ import Hero from "../../Hero/Hero";
 import ProductInfo2 from "../../ProductInfo2/ProductInfo2";
 import PluginDetailView from "../../PluginDetailView/PluginDetailView";
 import PluginTabs from "../../PluginTabs/PluginTabs";
-
+import { calculateAverageRating } from "../../../utils/calculateAverageRating";
 
 export default function HomeContent() {
   // const [data, setData] = useState([]);
@@ -46,7 +46,20 @@ export default function HomeContent() {
   useEffect(() => {
     const pluginRef = ref(db, 'plugins');
     const handleData = snap => {
-      if (snap.val()) setPlugins(Object.values(snap.val()));
+      if (snap.val()) {
+        const fetchedPlugins = Object.values(snap.val());
+
+        fetchedPlugins.forEach(plugin => {
+          if (plugin.ratings) {
+            plugin.averageRating = calculateAverageRating(plugin.ratings);
+          } else {
+            plugin.averageRating = 0;
+          }
+        });
+
+        const sortedPlugins = fetchedPlugins.sort((a, b) => b.averageRating - a.averageRating);
+        setPlugins(sortedPlugins);
+      }
     }
 
     const unsubscribe = onValue(pluginRef, handleData, error => alert(error));
