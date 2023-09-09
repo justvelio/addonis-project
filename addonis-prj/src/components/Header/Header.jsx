@@ -22,7 +22,7 @@ import "./Header.css";
 
 const navigation = [
   { name: "Products", href: "/products" },
-  { name: "Partners", href: "#" },
+  { name: "Partners", href: "/partners" },
   { name: "Careers", href: "#" },
   { name: "About Us", href: "#" },
 ];

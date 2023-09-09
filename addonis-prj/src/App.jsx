@@ -13,6 +13,7 @@ import AdminPanel from "./components/AdminPanel/AdminPanel";
 import UpdateProfile from "./components/UpdateProfile/UpdateProfile";
 import ProductsPage from "./components/views/ProductsPage/ProductsPage";
 import MyPlugins from "./components/views/MyPlugins/MyPlugins";
+import Partners from "./components/views/Partners/Partners";
 
 function App() {
   const [appState, setAppState] = useState({
@@ -57,6 +58,7 @@ function App() {
             />
             <Route path="/edit-profile" element={<UpdateProfile />} />
             <Route path="/products" element={<ProductsPage />} />
+            <Route path="/partners" element={<Partners />} />
           </Routes>
           <Footer />
         </div>
