@@ -35,6 +35,7 @@ import {
   
     return (
       <>
+      <Heading pt={20}>Check out our most valuable partners.</Heading>
         {partnerData.map((partner, index) => (
           <Stack
             key={index}
