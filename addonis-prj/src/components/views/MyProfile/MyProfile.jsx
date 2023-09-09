@@ -4,7 +4,7 @@ import { initializeApp } from "firebase/app";
 import { getAuth, onAuthStateChanged } from "firebase/auth";
 import { getUserData } from "../../../services/users.service";
 import { useNavigate } from "react-router-dom";
-
+import { db } from "../../../config/firebase-config";
 import {
   Box,
   Text,
@@ -20,12 +20,14 @@ import {
   Spacer,
   SimpleGrid,
 } from "@chakra-ui/react";
+import { equalTo, get, getDatabase, onValue, orderByChild, query, ref } from "firebase/database";
 
 const defaultProfilePictureURL =
   "https://1fid.com/wp-content/uploads/2022/06/no-profile-picture-6-1024x1024.jpg";
 
 const MyProfileView = () => {
   const [userData, setUserData] = useState(null);
+  const [userPlugins, setUserPlugins] = useState(0);
 
   const navigate = useNavigate();
 
@@ -48,6 +50,23 @@ const MyProfileView = () => {
           .catch((error) => {
             console.error("Error fetching user data:", error);
           });
+
+          const pluginsRef = ref(db, 'plugins');
+          get(pluginsRef)
+          .then((snapshot) => {
+            if(snapshot.exists()) {
+              const pluginsData = Object.values(snapshot.val())
+              const userPlugins = pluginsData.filter((plugin) => plugin.creator === uid);
+
+              const count = userPlugins.length;
+              setUserPlugins(count)
+            }else{
+              console.log('No Plugins');
+            }
+          })
+          .catch((error) => {
+            console.error('Error fetching plugins:', error)
+          });
       }
     });
 
@@ -55,7 +74,7 @@ const MyProfileView = () => {
   }, []);
 
   if (!userData) {
-    return <p>Loading...</p>;
+    return <Text>Loading...</Text>;
   }
 
   return (
@@ -109,9 +128,9 @@ const MyProfileView = () => {
               </Text>
             </Stack>
             <Stack spacing={0} align={"center"}>
-              <Text fontWeight={600}>Uploaded Add-ons</Text>
+              <Text fontWeight={600}>Uploaded Plugins</Text>
               <Text fontSize={"md"} color={"gray.500"}>
-                addons
+                {userPlugins === 1 ? `${userPlugins} plugin` : `${userPlugins} plugins`}
               </Text>
             </Stack>
           </SimpleGrid>
