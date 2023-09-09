@@ -1,3 +1,4 @@
+import { Link } from "react-router-dom";
 import PropTypes from "prop-types";
 import { useEffect, useState } from "react";
 import {
@@ -59,6 +60,8 @@ export const PluginCard = ({ plugin, downloadUrl }) => {
         <Button as="a" href={downloadUrl} colorScheme="blue" variant="solid">
           Download Now
         </Button>
+        <Button as={Link} to={`/plugin/${plugin.id}`} colorScheme="teal">View More</Button>
+
       </Stack>
     </Box>
   );

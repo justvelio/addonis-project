@@ -14,6 +14,7 @@ import UpdateProfile from "./components/UpdateProfile/UpdateProfile";
 import ProductsPage from "./components/views/ProductsPage/ProductsPage";
 import MyPlugins from "./components/views/MyPlugins/MyPlugins";
 import Partners from "./components/views/Partners/Partners";
+import PluginDetailView from "./components/PluginDetailView/PluginDetailView";
 
 function App() {
   const [appState, setAppState] = useState({
@@ -59,6 +60,7 @@ function App() {
             <Route path="/edit-profile" element={<UpdateProfile />} />
             <Route path="/products" element={<ProductsPage />} />
             <Route path="/partners" element={<Partners />} />
+            <Route path="/plugin/:id" element={<PluginDetailView />} />
           </Routes>
           <Footer />
         </div>
