@@ -15,6 +15,7 @@ import { db } from "../../../config/firebase-config";
 import { fetchGitHubData } from "../../../utils/fetchGitHubData";
 import PluginTabs from "../../PluginTabs/PluginTabs";
 import { calculateAverageRating } from "../../../utils/calculateAverageRating";
+import StarDisplay from "../../StarDisplay/StarDisplay";
 
 export const PluginCard = ({ plugin, downloadUrl }) => {
   const [githubData, setGithubData] = useState({
@@ -27,7 +28,6 @@ export const PluginCard = ({ plugin, downloadUrl }) => {
   useEffect(() => {
     fetchGitHubData(plugin.githubRepoLink)
       .then((data) => {
-        console.log('GitHub Data:', data);
         setGithubData(data);
       })
       .catch((error) => {
@@ -35,18 +35,18 @@ export const PluginCard = ({ plugin, downloadUrl }) => {
       });
   }, [plugin.githubRepoLink]);
 
+  const totalReviews = plugin.ratings ? Object.keys(plugin.ratings).length : 0;
+
   return (
-    <Box
-      maxW="sm"
-      borderWidth="1px"
-      borderRadius="lg"
-      overflow="hidden"
-      h="100%"
-    >
+    <Box maxW="sm" borderWidth="1px" borderRadius="lg" overflow="hidden" h="100%">
       <Stack mt="2" spacing="2" p="2" h={"15vh"}>
         <Heading size="md">{plugin.name}</Heading>
         <Text noOfLines={3}>{plugin.description}</Text>
         <Text>Uploader: {plugin.creatorName}</Text>
+        <Stack direction="row" align="center">
+          <StarDisplay rating={plugin.averageRating || 0} />
+          <Text>({totalReviews} reviews)</Text>
+        </Stack>
       </Stack>
       <Divider />
       <Stack mt="1" spacing="2" p="2">
@@ -62,7 +62,6 @@ export const PluginCard = ({ plugin, downloadUrl }) => {
           Download Now
         </Button>
         <Button as={Link} to={`/plugin/${plugin.id}`} colorScheme="teal">View More</Button>
-
       </Stack>
     </Box>
   );
