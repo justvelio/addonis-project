@@ -1,49 +1,43 @@
 import React, { useState } from "react";
-import {
-  Button,
-  Modal,
-  ModalOverlay,
-  ModalContent,
-  useDisclosure,
-  Icon,
-  Input,
-} from "@chakra-ui/react";
+import { Input, Button, Stack } from "@chakra-ui/react";
 import { SearchIcon } from "@chakra-ui/icons";
 
-const Search = () => {
-  const { isOpen, onOpen, onClose } = useDisclosure();
-  const [overlay, setOverlay] = useState(null);
+const SearchBar = ({ setSearchQuery, handleSearch }) => {
+  const [query, setQuery] = useState("");
 
-  const openModalWithOverlay = (customOverlay) => {
-    setOverlay(customOverlay);
-    onOpen();
+  const handleInputChange = (e) => {
+    setQuery(e.target.value);
   };
 
-  const OverlayOne = () => (
-    <ModalOverlay
-      bg="blackAlpha.300"
-      backdropFilter="blur(10px) hue-rotate(90deg)"
-    />
-  );
+  const handleSubmit = () => {
+    setSearchQuery(query);
+    handleSearch();
+  };
+
+  const handleEnterKey = (e) => {
+    if (e.key === 'Enter'){
+      handleSubmit();
+    }
+  }
 
   return (
-    <>
+    <Stack direction="row" pb={10} spacing={2}>
+      <Input
+        type="text"
+        placeholder="Search plugins"
+        value={query}
+        onChange={handleInputChange}
+        onKeyPress={handleEnterKey}
+      />
       <Button
-        bg={"transparent"}
-        _hover={"transparent"}
-        _active={"transparent"}
-        leftIcon={<Icon as={SearchIcon} 
-        color={'white'}/>}
-        onClick={() => openModalWithOverlay(<OverlayOne />)}
-      ></Button>
-      <Modal isCentered isOpen={isOpen} onClose={onClose}>
-        {overlay}
-        <ModalContent marginTop="20vh">
-          <Input type="text" placeholder="Search..." />
-        </ModalContent>
-      </Modal>
-    </>
+        colorScheme="blue"
+        leftIcon={<SearchIcon />}
+        onClick={handleSubmit}
+      >
+        Search
+      </Button>
+    </Stack>
   );
 };
 
-export default Search;
+export default SearchBar;

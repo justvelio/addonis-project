@@ -16,6 +16,7 @@ import { fetchGitHubData } from "../../../utils/fetchGitHubData";
 import PluginTabs from "../../PluginTabs/PluginTabs";
 import { calculateAverageRating } from "../../../utils/calculateAverageRating";
 import StarDisplay from "../../StarDisplay/StarDisplay";
+import SearchBar from "../../Search/Search";
 
 export const PluginCard = ({ plugin, downloadUrl }) => {
   const [githubData, setGithubData] = useState({
@@ -38,7 +39,13 @@ export const PluginCard = ({ plugin, downloadUrl }) => {
   const totalReviews = plugin.ratings ? Object.keys(plugin.ratings).length : 0;
 
   return (
-    <Box maxW="sm" borderWidth="1px" borderRadius="lg" overflow="hidden" h="100%">
+    <Box
+      maxW="sm"
+      borderWidth="1px"
+      borderRadius="lg"
+      overflow="hidden"
+      h="100%"
+    >
       <Stack mt="2" spacing="2" p="2" h={"15vh"}>
         <Heading size="md">{plugin.name}</Heading>
         <Text noOfLines={3}>{plugin.description}</Text>
@@ -53,7 +60,8 @@ export const PluginCard = ({ plugin, downloadUrl }) => {
         <Text>Open Issues: {githubData.openIssues}</Text>
         <Text>Open Pull Requests: {githubData.pullRequests}</Text>
         <Text>
-          Last Commit: {new Date(githubData.lastCommitDate).toLocaleDateString()}
+          Last Commit:{" "}
+          {new Date(githubData.lastCommitDate).toLocaleDateString()}
           {githubData.lastCommitMessage && ` - ${githubData.lastCommitMessage}`}
         </Text>
       </Stack>
@@ -61,11 +69,13 @@ export const PluginCard = ({ plugin, downloadUrl }) => {
         <Button as="a" href={downloadUrl} colorScheme="blue" variant="solid">
           Download Now
         </Button>
-        <Button as={Link} to={`/plugin/${plugin.id}`} colorScheme="teal">View More</Button>
+        <Button as={Link} to={`/plugin/${plugin.id}`} colorScheme="teal">
+          View More
+        </Button>
       </Stack>
     </Box>
   );
-}
+};
 
 PluginCard.propTypes = {
   plugin: PropTypes.shape({
@@ -79,10 +89,10 @@ PluginCard.propTypes = {
   }).isRequired,
 };
 
-
-
 const ProductsPage = () => {
   const [plugins, setPlugins] = useState([]);
+  const [searchQuery, setSearchQuery] = useState("");
+  const [filteredPlugins, setFilteredPlugins] = useState(plugins);
 
   const fetchUserData = async (plugin) => {
     const userRef = ref(db, `users/${plugin.creator}`);
@@ -93,6 +103,20 @@ const ProductsPage = () => {
       creatorName: `${user.firstName} ${user.lastName}`,
     };
   };
+
+  const handleSearch = () => {
+    if(searchQuery.trim() === ""){
+      return;
+    }
+    setSearchQuery(searchQuery);
+  };
+
+  useEffect(() => {
+    const filtered = plugins.filter((plugin) =>
+      plugin.name.toLowerCase().includes(searchQuery.toLowerCase())
+    );
+    setFilteredPlugins(filtered);
+  }, [searchQuery, plugins]);
 
   useEffect(() => {
     const fetchPlugins = async () => {
@@ -107,7 +131,7 @@ const ProductsPage = () => {
         })
       );
 
-      fetchedPlugins.forEach(plugin => {
+      fetchedPlugins.forEach((plugin) => {
         if (plugin.ratings) {
           plugin.averageRating = calculateAverageRating(plugin.ratings);
         } else {
@@ -115,7 +139,9 @@ const ProductsPage = () => {
         }
       });
 
-      const sortedPlugins = fetchedPlugins.sort((a, b) => b.averageRating - a.averageRating);
+      const sortedPlugins = fetchedPlugins.sort(
+        (a, b) => b.averageRating - a.averageRating
+      );
       setPlugins(sortedPlugins);
     };
     fetchPlugins();
@@ -127,8 +153,10 @@ const ProductsPage = () => {
       </Heading>
       {/* <PluginTabs plugins={plugins.filter(plugin => plugin.status === "approved" && plugin.githubRepoLink)} /> */}
 
+       <SearchBar setSearchQuery={setSearchQuery} />
+
       <SimpleGrid columns={{ base: 1, md: 2, lg: 3 }} spacing={4} flex="1">
-        {plugins
+        {filteredPlugins
           .filter(
             (plugin) => plugin.status === "approved" && plugin.githubRepoLink
           )
