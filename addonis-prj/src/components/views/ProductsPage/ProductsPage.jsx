@@ -17,6 +17,7 @@ import PluginTabs from "../../PluginTabs/PluginTabs";
 import { calculateAverageRating } from "../../../utils/calculateAverageRating";
 import StarDisplay from "../../StarDisplay/StarDisplay";
 import SearchBar from "../../Search/Search";
+import SortPlugins from "../../SortPlugins/SortPlugins";
 
 export const PluginCard = ({ plugin, downloadUrl }) => {
   const [githubData, setGithubData] = useState({
@@ -105,10 +106,28 @@ const ProductsPage = () => {
   };
 
   const handleSearch = () => {
-    if(searchQuery.trim() === ""){
+    if (searchQuery.trim() === "") {
       return;
     }
     setSearchQuery(searchQuery);
+  };
+
+  const handleSort = (criteria) => {
+    const sorted = [...filteredPlugins];
+
+    if (criteria === "averageRating") {
+      sorted.sort((a, b) => b.averageRating - a.averageRating);
+    } else if (criteria === "dateAdded") {
+      sorted.sort((a, b) => b.timestamp - a.timestamp);
+    } else if (criteria === "creator") {
+      sorted.sort((a, b) =>
+        a.creatorName.localeCompare(b.creatorName, undefined, {
+          sensitivity: "base",
+        })
+      );
+    }
+
+    setFilteredPlugins(sorted);
   };
 
   useEffect(() => {
@@ -124,13 +143,15 @@ const ProductsPage = () => {
       const snapshot = await get(pluginsRef);
       const fetchedPlugins = await Promise.all(
         Object.values(snapshot.val()).map(async (plugin, index) => {
+          const timestamp = new Date(plugin.date).getTime();
           return await fetchUserData({
             ...plugin,
             id: Object.keys(snapshot.val())[index],
+            timestamp: timestamp,
           });
         })
       );
-
+  
       fetchedPlugins.forEach((plugin) => {
         if (plugin.ratings) {
           plugin.averageRating = calculateAverageRating(plugin.ratings);
@@ -138,14 +159,17 @@ const ProductsPage = () => {
           plugin.averageRating = 0;
         }
       });
-
-      const sortedPlugins = fetchedPlugins.sort(
-        (a, b) => b.averageRating - a.averageRating
+  
+      const sortedPluginsByDate = fetchedPlugins.sort(
+        (a, b) => b.timestamp - a.timestamp
       );
-      setPlugins(sortedPlugins);
+
+      setPlugins(sortedPluginsByDate);
     };
     fetchPlugins();
   }, []);
+
+
   return (
     <Box minHeight="100vh" p={20} display="flex" flexDir="column">
       <Heading as="h1" mb={4}>
@@ -153,7 +177,8 @@ const ProductsPage = () => {
       </Heading>
       {/* <PluginTabs plugins={plugins.filter(plugin => plugin.status === "approved" && plugin.githubRepoLink)} /> */}
 
-       <SearchBar setSearchQuery={setSearchQuery} />
+      <SortPlugins handleSort={handleSort} />
+      <SearchBar setSearchQuery={setSearchQuery} />
 
       <SimpleGrid columns={{ base: 1, md: 2, lg: 3 }} spacing={4} flex="1">
         {filteredPlugins
