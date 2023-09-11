@@ -121,13 +121,13 @@ const ProductsPage = () => {
     fetchPlugins();
   }, []);
   return (
-    <Box p={20} h={"93vh"}>
+    <Box minHeight="100vh" p={20} display="flex" flexDir="column">
       <Heading as="h1" mb={4}>
         Products
       </Heading>
-      <PluginTabs plugins={plugins.filter(plugin => plugin.status === "approved" && plugin.githubRepoLink)} />
+      {/* <PluginTabs plugins={plugins.filter(plugin => plugin.status === "approved" && plugin.githubRepoLink)} /> */}
 
-      <SimpleGrid columns={{ base: 1, md: 2, lg: 3 }} spacing={4}>
+      <SimpleGrid columns={{ base: 1, md: 2, lg: 3 }} spacing={4} flex="1">
         {plugins
           .filter(
             (plugin) => plugin.status === "approved" && plugin.githubRepoLink
