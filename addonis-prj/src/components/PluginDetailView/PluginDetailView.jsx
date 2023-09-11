@@ -4,6 +4,7 @@ import { Box, Heading, Text, Link, Button, useToast } from '@chakra-ui/react';
 import { StarIcon } from '@chakra-ui/icons';
 import { ref, get, set } from 'firebase/database';
 import { db, auth } from '../../config/firebase-config';
+import StarDisplay from '../StarDisplay/StarDisplay';
 
 function PluginDetailView() {
   const [plugin, setPlugin] = useState(null);
@@ -75,24 +76,14 @@ function PluginDetailView() {
           Download
         </Link>
       </Text>
-      <Box d="flex" mt="2" alignItems="center">
-        {Array(5)
-          .fill('')
-          .map((_, i) => (
-            <StarIcon
-              key={i}
-              color={i < score ? 'teal.500' : 'gray.300'}
-              onClick={() => handleRating(i + 1)}
-            />
-          ))}
-        <Box as="span" ml="2" color="gray.600" fontSize="sm">
-          {score} reviews
-        </Box>
-      </Box>
+
+      <StarDisplay rating={score} />
+
       <Button mt={4} onClick={submitRating} isDisabled={userHasRated}>Submit Rating</Button>
       {userHasRated && <Text mt={2} color="red.500">You've already rated this plugin.</Text>}
     </Box>
   );
 }
+
 
 export default PluginDetailView;
