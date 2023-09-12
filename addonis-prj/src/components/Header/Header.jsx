@@ -14,11 +14,13 @@ import {
   MenuItem,
   Button,
   Stack,
+  Avatar,
   Box,
 } from "@chakra-ui/react";
 import Search from "../Search/Search";
 import { ChevronDownIcon } from "@chakra-ui/icons";
 import "./Header.css";
+import { defaultProfilePictureURL } from "../views/MyProfile/MyProfile";
 
 const navigation = [
   { name: "Products", href: "/products" },
@@ -85,12 +87,31 @@ export default function Header() {
                 rightIcon={<ChevronDownIcon />}
                 variant="unstyled"
                 color={"white"}
+                display={"flex"}
+                alignItems={"center"}
               >
-                {loading
-                  ? "Loading..."
-                  : userData && userData.username
-                  ? userData.username
-                  : ""}
+                {loading ? (
+                  "Loading..."
+                ) : (
+                  <div className="flex items-center">
+                    {userData && userData.profilePicture ? (
+                      <Avatar
+                        name={userData.username || "User"}
+                        src={userData.profilePicture}
+                        size="sm"
+                        mr={2}
+                      />
+                    ) : (
+                      <Avatar
+                        name={userData.username || "User"}
+                        src={defaultProfilePictureURL}
+                        size="sm"
+                        mr={2}
+                      />
+                    )}
+                    {userData && userData.username ? userData.username : ""}
+                  </div>
+                )}
               </MenuButton>
               <MenuList bg={"gray.100"} maxH="20rem">
                 <MenuItem bg={"gray.100"}>

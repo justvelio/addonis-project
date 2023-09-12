@@ -22,8 +22,8 @@ import {
 } from "@chakra-ui/react";
 import { equalTo, get, getDatabase, onValue, orderByChild, query, ref } from "firebase/database";
 
-const defaultProfilePictureURL =
-  "https://1fid.com/wp-content/uploads/2022/06/no-profile-picture-6-1024x1024.jpg";
+export const defaultProfilePictureURL =
+  "https://st.depositphotos.com/2218212/2938/i/450/depositphotos_29387653-stock-photo-facebook-profile.jpg";
 
 const MyProfileView = () => {
   const [userData, setUserData] = useState(null);
