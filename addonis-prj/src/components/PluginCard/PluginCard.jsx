@@ -79,7 +79,7 @@ PluginCard.propTypes = {
     firstName: PropTypes.string,
     lastName: PropTypes.string,
     description: PropTypes.string,
-    creatorName: PropTypes.string.isRequired,
+    // creatorName: PropTypes.string.isRequired,
     image: PropTypes.string,
     key: PropTypes.string.isRequired,
     downloadUrl: PropTypes.string,

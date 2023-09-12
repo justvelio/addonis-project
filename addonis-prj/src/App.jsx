@@ -15,6 +15,7 @@ import ProductsPage from "./components/views/ProductsPage/ProductsPage";
 import MyPlugins from "./components/views/MyPlugins/MyPlugins";
 import Partners from "./components/views/Partners/Partners";
 import PluginDetailView from "./components/PluginDetailView/PluginDetailView";
+import NotFoundPage from "./components/NotFound/NotFound";
 
 function App() {
   const [appState, setAppState] = useState({
@@ -61,6 +62,8 @@ function App() {
             <Route path="/products" element={<ProductsPage />} />
             <Route path="/partners" element={<Partners />} />
             <Route path="/plugin/:id" element={<PluginDetailView />} />
+            <Route path="*" element={<NotFoundPage />} />
+
           </Routes>
           <Footer />
         </div>
