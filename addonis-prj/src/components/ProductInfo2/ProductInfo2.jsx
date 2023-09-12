@@ -23,7 +23,7 @@ import {
   IoPhonePortraitOutline,
   IoCloudDownloadOutline,
 } from "react-icons/io5";
-import { MdFileDownload,  } from "react-icons/md"
+import { MdFileDownload, } from "react-icons/md"
 import animationData from "../../assets/animation_lls8yso6.json";
 import Lottie from "lottie-react";
 
@@ -121,7 +121,7 @@ export default function ProductInfo2() {
           >
             <Text color={"black"} fontSize={"lg"} textAlign={"center"}>Experience the future of smart living with our app. Download now and unlock a world of convenience, security, and control</Text>
             <Button leftIcon={<MdFileDownload />} colorScheme="blue" variant="solid">
-              Download Now
+              Coming soon!
             </Button>
           </Stack>
         </Stack>

@@ -1,7 +1,6 @@
 import { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { Box, Heading, Text, Link, Button, useToast } from '@chakra-ui/react';
-import { StarIcon } from '@chakra-ui/icons';
 import { ref, get, set } from 'firebase/database';
 import { db, auth } from '../../config/firebase-config';
 import StarDisplay from '../StarDisplay/StarDisplay';

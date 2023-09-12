@@ -1,32 +1,24 @@
 import PropTypes from 'prop-types';
-
-import { Carousel } from 'react-responsive-carousel';
+import { SimpleGrid } from '@chakra-ui/react';
 import 'react-responsive-carousel/lib/styles/carousel.min.css';
-import PluginCard from '../PluginCard/PluginCard';
+import { PluginCard } from '../../components/PluginCard/PluginCard';
 
-function PluginList({ plugins, onClick }) {
-  const approvedPlugins = plugins.filter(plugin => plugin.status === "approved");
+function PluginList({ plugins }) {
+  const approvedPlugins = plugins
+    .filter(plugin => plugin.status === "approved")
+    .slice(0, 6); // Show only the first 6 approved plugins
 
   return (
-    <Carousel
-      showThumbs={false}
-      showStatus={false}
-      showArrows={true}
-      centerMode
-      infiniteLoop
-      slidesToShow={5}
-      dynamicWidth
-    >
+    <SimpleGrid columns={{ base: 1, sm: 2, md: 3 }} spacing={6}>
       {approvedPlugins.map(plugin => (
-        <PluginCard key={plugin.id} plugin={plugin} onClick={() => onClick(plugin)} />
+        <PluginCard key={plugin.id} plugin={plugin} />
       ))}
-    </Carousel>
+    </SimpleGrid>
   );
 }
 
-// Default Prop
 PluginList.defaultProps = {
-  onClick: () => { }
+  plugins: [],
 };
 
 PluginList.propTypes = {
@@ -35,11 +27,9 @@ PluginList.propTypes = {
       status: PropTypes.string
     })
   ).isRequired,
-  onClick: PropTypes.func,
 };
 
 export default PluginList;
-
 
 // PluginList.propTypes = {
 //   plugins: PropTypes.arrayOf(

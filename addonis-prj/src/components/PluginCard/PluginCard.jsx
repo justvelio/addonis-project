@@ -1,72 +1,92 @@
+import { Link } from 'react-router-dom';
 import { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import { fetchGitHubData } from '../../utils/fetchGitHubData';
-import { Box, Text, Button, Heading, VStack, HStack, Link, Badge } from "@chakra-ui/react";
+import { Box, Text, Button, Heading, Stack, Divider } from "@chakra-ui/react";
+import StarDisplay from '../StarDisplay/StarDisplay';
 
-function PluginCard({ plugin, onClick, onDownload }) {
-  const [githubData, setGithubData] = useState(null);
+export const PluginCard = ({ plugin }) => {
+  const [githubData, setGithubData] = useState({
+    openIssues: 0,
+    pullRequests: 0,
+    lastCommitDate: null,
+    lastCommitMessage: "",
+  });
 
   useEffect(() => {
-    async function loadData() {
-      const data = await fetchGitHubData(plugin.githubRepoLink);
-      setGithubData(data);
+    if (plugin && plugin.githubRepoLink) {
+      fetchGitHubData(plugin.githubRepoLink)
+        .then((data) => {
+          setGithubData(data);
+        })
+        .catch((error) => {
+          console.error("Error fetching GitHub data:", error.message);
+        });
     }
-    loadData();
-  }, [plugin.githubRepoLink]);
+  }, [plugin]);
+
+  const totalReviews = plugin.ratings ? Object.keys(plugin.ratings).length : 0;
 
   return (
-    <Box width="260px" height="380px" border="1px" borderRadius="lg" padding="4" mb="1" mr="1" onClick={onClick} boxShadow="md" _hover={{ boxShadow: "xl", transform: "scale(1.02)" }} transition="all 0.2s" bgGradient="linear(to-b, gray.50, gray.100)" overflow="hidden">
-      <VStack spacing={3} alignItems="start" justifyContent="space-between" height="100%">
-        <VStack spacing={2} alignItems="start">
-          <Heading size="md">{plugin.name}</Heading>
-          <Text noOfLines={3}>{plugin.description}</Text>
-          {plugin.category && <Badge colorScheme="blue">{plugin.category}</Badge>}
-          <HStack spacing={4}>
-            {plugin.rating && (
-              <HStack spacing={2}>
-                <Text color="gray.500">Rating: {plugin.rating} / 5</Text>
-              </HStack>
-            )}
-            {plugin.reviewsCount && <Text color="gray.600">{plugin.reviewsCount} reviews</Text>}
-          </HStack>
-        </VStack>
-        {githubData && (
-          <VStack spacing={2} alignItems="start">
-            <Text>Open Issues: {githubData.openIssues}</Text>
-            <Text>Pull Requests: {githubData.pullRequests}</Text>
-            <Text>Last Commit: {new Date(githubData.lastCommitDate).toLocaleDateString()}</Text>
-          </VStack>
-        )}
-        <HStack spacing={4} width="100%">
-          <Button flex={1} size="sm" colorScheme="blue" onClick={(e) => {
-            e.stopPropagation();
-            onClick();
-          }}>
-            View Details
-          </Button>
-          <Link as="a" href={plugin.gitDownloadLink} download flex={1} onClick={(e) => {
-            e.stopPropagation();
-          }}>
-            <Button size="sm" colorScheme="green" width="full">Download</Button>
-          </Link>
-        </HStack>
-      </VStack>
+    <Box
+      maxW="sm"
+      borderWidth="1px"
+      borderRadius="lg"
+      overflow="hidden"
+      h="100%"
+      m="0"
+    >
+      <Stack mt="2" spacing="2" p="2" h={"15vh"}>
+        <Heading size="md">{plugin.name}</Heading>
+        <Text noOfLines={3}>{plugin.description}</Text>
+        <Text>Uploader: {plugin.creatorName}</Text>
+        <Stack direction="row" align="center">
+          <StarDisplay rating={plugin.averageRating || 0} />
+          <Text>({totalReviews} reviews)</Text>
+        </Stack>
+      </Stack>
+      <Divider />
+      <Stack mt="1" spacing="2" p="2">
+        <Text>Open Issues: {githubData.openIssues}</Text>
+        <Text>Open Pull Requests: {githubData.pullRequests}</Text>
+        <Text>
+          Last Commit: {githubData.lastCommitDate ? new Date(githubData.lastCommitDate).toLocaleDateString() : 'N/A'}
+          {githubData.lastCommitMessage && ` - ${githubData.lastCommitMessage}`}
+        </Text>
+      </Stack>
+      <Stack mt="1" p="4">
+        <Button
+          as="a"
+          href={plugin.gitDownloadLink}
+          download
+          type="application/octet-stream"
+          colorScheme="blue"
+          variant="solid"
+        >
+          Download Now
+        </Button>
+        <Button as={Link} to={`/plugin/${plugin.key}`} colorScheme="teal"> {/* changed to use plugin.key */}
+          View More
+        </Button>
+      </Stack>
     </Box>
   );
-}
+};
 
 PluginCard.propTypes = {
   plugin: PropTypes.shape({
-    gitDownloadLink: PropTypes.string.isRequired,
-    githubRepoLink: PropTypes.string.isRequired,
     name: PropTypes.string.isRequired,
-    description: PropTypes.string.isRequired,
-    reviewsCount: PropTypes.number,
-    rating: PropTypes.number,
-    category: PropTypes.string,
+    description: PropTypes.string,
+    creatorName: PropTypes.string.isRequired,
+    image: PropTypes.string,
+    key: PropTypes.string.isRequired,
+    downloadUrl: PropTypes.string,
+    githubRepoLink: PropTypes.string.isRequired,
+    ratings: PropTypes.object,
+    averageRating: PropTypes.number,
+    gitDownloadLink: PropTypes.string.isRequired,
   }).isRequired,
-  onClick: PropTypes.func,
-  onDownload: PropTypes.func
+  downloadUrl: PropTypes.string
 };
 
 export default PluginCard;
