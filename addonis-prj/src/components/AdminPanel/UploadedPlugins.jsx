@@ -13,14 +13,20 @@ import { getDatabase, ref, onValue, remove, update } from "firebase/database";
 
 export default function UploadedPlugins() {
   const [uploadedPlugins, setUploadedPlugins] = useState([]);
+  const [users, setUsers] = useState({});
   const [currentPage, setCurrentPage] = useState(1);
   const pluginsPerPage = 12;
   const toast = useToast();
 
-
   useEffect(() => {
     const db = getDatabase();
     const pluginsRef = ref(db, "plugins");
+    const usersRef = ref(db, "users");
+
+    onValue(usersRef, (snapshot) => {
+      const usersData = snapshot.val();
+      setUsers(usersData);
+    });
 
     onValue(pluginsRef, (snapshot) => {
       const plugins = [];
@@ -110,7 +116,13 @@ export default function UploadedPlugins() {
               >
                 <Text>Name: {plugin.name}</Text>
                 <Text>Description: {plugin.description}</Text>
-                <Text>Creator: {plugin.creator}</Text>
+                <Text>
+                  Creator:
+                  {users[plugin.creator]
+                    ? `${users[plugin.creator].firstName} ${users[plugin.creator].lastName}`
+                    : plugin.creator
+                  }
+                </Text>
                 <Text>Status: {plugin.status || "pending"}</Text>
                 <HStack>
                   <Button
