@@ -1,5 +1,5 @@
 import HomeContent from "./components/views/HomeContent/HomeContent";
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
 import AppContext from "../src/context/AppContext";
 import Header from "./components/Header/Header";

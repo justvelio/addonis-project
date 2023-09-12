@@ -11,12 +11,14 @@ import {
   useColorModeValue,
   InputGroup,
   InputRightElement,
+  Spacer,
 } from "@chakra-ui/react";
 import { updateUserProfile } from "../../services/users.service";
 import reauthenticateUser from "./reauthenticateUser";
 import { getAuth } from "firebase/auth";
 import { ViewIcon, ViewOffIcon } from "@chakra-ui/icons";
 import { uploadProfilePictureToStorage } from "../../services/users.service";
+import { Link } from "react-router-dom";
 
 const UpdateProfile = ({ setUserData }) => {
   const [newEmail, setNewEmail] = useState("");
@@ -81,9 +83,11 @@ const UpdateProfile = ({ setUserData }) => {
     }
 
     if (profilePicture) {
-      const downloadUrl = await uploadProfilePictureToStorage(profilePicture, user.uid)
+      const downloadUrl = await uploadProfilePictureToStorage(
+        profilePicture,
+        user.uid
+      );
       updatedData.profilePicture = downloadUrl;
-
     }
 
     const success = await updateUserProfile(user.uid, updatedData);
@@ -110,6 +114,7 @@ const UpdateProfile = ({ setUserData }) => {
         maxW={{ base: "100%", md: "800px" }}
         w={"100%"}
         pt={5}
+        _hover={{ bgColor: "gray.50", _dark: { bgColor: "gray.100" } }}
         bg={useColorModeValue("white", "gray.800")}
         boxShadow={"2xl"}
         rounded={"md"}
@@ -209,14 +214,17 @@ const UpdateProfile = ({ setUserData }) => {
                 </Button>
               </InputRightElement>
             </InputGroup>
-                 <p className="text-xs text-red-500 font-medium">Confirm your old password if you're changing your email and/or password.</p>
+            <p className="text-xs text-red-500 font-medium">
+              Confirm your old password if you're changing your email and/or
+              password.
+            </p>
           </FormControl>
         </Stack>
-        <div className="pb-10 text-center">
+        <div className="pb-5 text-center">
           <Button
-            w={"full"}
-            mt={8}
-            bg={'black'}
+            w={"80vh"}
+            
+            bg={"black"}
             color={"white"}
             rounded={"md"}
             _hover={{ bgColor: "gray", _dark: { bgColor: "gray.300" } }}
@@ -224,6 +232,19 @@ const UpdateProfile = ({ setUserData }) => {
           >
             Save Changes
           </Button>
+          <Spacer />
+          <Link to="/user-profile">
+            <Button
+              w={"80vh"}
+              mt={5}
+              bg={"black"}
+              color={"white"}
+              rounded={"md"}
+              _hover={{ bgColor: "gray", _dark: { bgColor: "gray.300" } }}
+            >
+              Cancel
+            </Button>
+          </Link>
         </div>
       </Box>
     </Center>
