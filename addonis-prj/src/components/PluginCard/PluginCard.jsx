@@ -65,7 +65,7 @@ export const PluginCard = ({ plugin }) => {
         >
           Download Now
         </Button>
-        <Button as={Link} to={`/plugin/${plugin.key}`} colorScheme="teal"> {/* changed to use plugin.key */}
+        <Button as={Link} to={`/plugin/${plugin.key}`} colorScheme="teal">
           View More
         </Button>
       </Stack>
