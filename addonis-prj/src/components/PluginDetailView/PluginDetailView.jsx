@@ -11,22 +11,29 @@ function PluginDetailView() {
   const [score, setScore] = useState(0);
   const [userHasRated, setUserHasRated] = useState(false);
 
-  const { id } = useParams();
+  const { id: rawId } = useParams();
+  const id = rawId.trim();
   const navigate = useNavigate();
   const toast = useToast();
 
+  const fetchPluginData = async () => {
+    const snapshot = await get(ref(db, 'plugins/' + id));
+    const pluginData = snapshot.val();
+
+    if (!pluginData) {
+      console.error("No data found for plugin with ID:", id);
+
+      return;
+    }
+
+    if (pluginData.ratings && pluginData.ratings[auth.currentUser.uid]) {
+      setUserHasRated(true);
+    }
+
+    setPlugin(pluginData);
+  };
+
   useEffect(() => {
-    const fetchPluginData = async () => {
-      const snapshot = await get(ref(db, 'plugins/' + id));
-      const pluginData = snapshot.val();
-
-      if (pluginData.ratings && pluginData.ratings[auth.currentUser.uid]) {
-        setUserHasRated(true);
-      }
-
-      setPlugin(pluginData);
-    };
-
     fetchPluginData();
   }, [id]);
 
@@ -62,28 +69,29 @@ function PluginDetailView() {
   if (!plugin) return <div>Loading...</div>;
 
   return (
-    <Box borderWidth="1px" borderRadius="lg" padding="6" overflow="hidden" mt="24">
-      <Button size="sm" onClick={() => navigate(-1)} mb={4}>&larr; Back</Button>
-      <Heading mb={4}>{plugin.name}</Heading>
-      <Text mb={4}>{plugin.description}</Text>
-      <Text mb={4}>
-        <Link href={plugin.githubRepoLink} isExternal>
-          {plugin.githubRepoLink}
-        </Link>
-      </Text>
-      <Text mb={4}>
-        <Link href={plugin.gitDownloadLink} isExternal>
-          Download
-        </Link>
-      </Text>
+    <Box borderWidth="1px" borderRadius="lg" padding="6" overflow="hidden">
+      <Box mt="24">
+        <Button size="sm" onClick={() => navigate(-1)} mb={4}>&larr; Back</Button>
+        <Heading mb={4}>{plugin.name}</Heading>
+        <Text mb={4}>{plugin.description}</Text>
+        <Text mb={4}>
+          <Link href={plugin.githubRepoLink} isExternal>
+            {plugin.githubRepoLink}
+          </Link>
+        </Text>
+        <Text mb={4}>
+          <Link href={plugin.gitDownloadLink} isExternal>
+            Download
+          </Link>
+        </Text>
 
-      <StarDisplay rating={score} />
+        <StarDisplay rating={score} onStarClick={handleRating} />
 
-      <Button mt={4} onClick={submitRating} isDisabled={userHasRated}>Submit Rating</Button>
-      {userHasRated && <Text mt={2} color="red.500">You've already rated this plugin.</Text>}
+        <Button mt={4} onClick={submitRating} isDisabled={userHasRated}>Submit Rating</Button>
+        {userHasRated && <Text mt={2} color="red.500">You've already rated this plugin.</Text>}
+      </Box>
     </Box>
   );
 }
-
 
 export default PluginDetailView;

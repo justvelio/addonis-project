@@ -1,7 +1,7 @@
 import { StarIcon } from '@chakra-ui/icons';
 import { Box } from '@chakra-ui/react';
 
-const StarDisplay = ({ rating }) => {
+const StarDisplay = ({ rating, onStarClick }) => {
   return (
     <Box d="flex" alignItems="center">
       {Array(5)
@@ -10,6 +10,7 @@ const StarDisplay = ({ rating }) => {
           <StarIcon
             key={i}
             color={i < rating ? 'teal.500' : 'gray.300'}
+            onClick={() => onStarClick(i + 1)}
           />
         ))}
       <Box as="span" ml="2" color="gray.600" fontSize="sm">

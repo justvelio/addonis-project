@@ -61,13 +61,19 @@ export const PluginCard = ({ plugin, downloadUrl }) => {
         <Text>Open Issues: {githubData.openIssues}</Text>
         <Text>Open Pull Requests: {githubData.pullRequests}</Text>
         <Text>
-          Last Commit:{" "}
-          {new Date(githubData.lastCommitDate).toLocaleDateString()}
+          Last Commit: {new Date(githubData.lastCommitDate).toLocaleDateString()}
           {githubData.lastCommitMessage && ` - ${githubData.lastCommitMessage}`}
         </Text>
       </Stack>
       <Stack mt="1" p="4">
-        <Button as="a" href={downloadUrl} colorScheme="blue" variant="solid">
+        <Button
+          as="a"
+          href={plugin.gitDownloadLink}
+          download
+          type="application/octet-stream"
+          colorScheme="blue"
+          variant="solid"
+        >
           Download Now
         </Button>
         <Button as={Link} to={`/plugin/${plugin.id}`} colorScheme="teal">
@@ -151,7 +157,7 @@ const ProductsPage = () => {
           });
         })
       );
-  
+
       fetchedPlugins.forEach((plugin) => {
         if (plugin.ratings) {
           plugin.averageRating = calculateAverageRating(plugin.ratings);
@@ -159,7 +165,7 @@ const ProductsPage = () => {
           plugin.averageRating = 0;
         }
       });
-  
+
       const sortedPluginsByDate = fetchedPlugins.sort(
         (a, b) => b.timestamp - a.timestamp
       );
