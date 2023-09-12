@@ -39,7 +39,7 @@ export const PluginCard = ({ plugin }) => {
       <Stack mt="2" spacing="2" p="2" h={"15vh"}>
         <Heading size="md">{plugin.name}</Heading>
         <Text noOfLines={3}>{plugin.description}</Text>
-        <Text>Uploader: {plugin.creatorName}</Text>
+        {/* <Text>Uploader: {plugin.firstName} {plugin.lastName}</Text> */}
         <Stack direction="row" align="center">
           <StarDisplay rating={plugin.averageRating || 0} />
           <Text>({totalReviews} reviews)</Text>
@@ -76,6 +76,8 @@ export const PluginCard = ({ plugin }) => {
 PluginCard.propTypes = {
   plugin: PropTypes.shape({
     name: PropTypes.string.isRequired,
+    firstName: PropTypes.string,
+    lastName: PropTypes.string,
     description: PropTypes.string,
     creatorName: PropTypes.string.isRequired,
     image: PropTypes.string,
