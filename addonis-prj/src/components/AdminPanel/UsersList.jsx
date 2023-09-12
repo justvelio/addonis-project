@@ -89,11 +89,11 @@ const UserList = () => {
     const query = event.target.value.toLowerCase();
     setSearchQuery(query);
 
-    // Filter users based on the search query
     const filtered = users.filter((user) => {
       const username = user.username.toLowerCase();
       const email = user.email.toLowerCase();
-      return username.includes(query) || email.includes(query);
+      const phone = user.phone.toLowerCase();
+      return username.includes(query) || email.includes(query) || phone.includes(query);
     });
 
     setFilteredUsers(filtered);
@@ -140,9 +140,9 @@ const UserList = () => {
   return (
     <VStack h={"80vh"}>
       <Box>
-        <Text>Search Users by Username or Email:</Text>
+        <Text>Search Users by Username, Email or Phone Number:</Text>
         <input
-          className="border-2 border-black rounded-md"
+          className="border-2 border-black rounded-md w-full"
           type="text"
           value={searchQuery}
           onChange={handleSearchInputChange}
