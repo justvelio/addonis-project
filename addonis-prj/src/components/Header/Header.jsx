@@ -1,4 +1,4 @@
-import { useState, useContext } from "react";
+import { useState, useContext, useEffect } from "react";
 import { Dialog } from "@headlessui/react";
 import { ChevronDoubleDownIcon, XIcon } from "@heroicons/react/solid";
 import LoginModal from "../LoginModal/LoginModal";
@@ -29,10 +29,17 @@ const navigation = [
 
 export default function Header() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
-  const { user, userData, loading } = useContext(AppContext);
+  const [loading, setLoading] = useState(true);
+  const { user, userData } = useContext(AppContext);
   const navigate = useNavigate();
   const isAdminUser =
     userData && userData.role && userData.role.includes("admin");
+
+  useEffect(() => {
+    setTimeout(() => {
+      setLoading(false);
+    }, 2000);
+  }, []);
 
   return (
     <header className="absolute inset-x-0 top-0 z-50 custom-overlay">
@@ -79,7 +86,11 @@ export default function Header() {
                 variant="unstyled"
                 color={"white"}
               >
-                {userData ? userData.username : ""}
+                {loading
+                  ? "Loading..."
+                  : userData && userData.username
+                  ? userData.username
+                  : ""}
               </MenuButton>
               <MenuList bg={"gray.100"} maxH="20rem">
                 <MenuItem bg={"gray.100"}>
@@ -144,7 +155,9 @@ export default function Header() {
                 {user ? (
                   <div className="flex items-center">
                     <Stack>
-                      <span className="text-black">{userData.username}</span>
+                      <span className="text-black">
+                        {userData && userData.username ? userData.username : ""}
+                      </span>
                       <Link to="/user-profile" className="text-slate-700">
                         My Profile
                       </Link>

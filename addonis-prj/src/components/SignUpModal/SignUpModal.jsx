@@ -33,7 +33,17 @@ export default function SignUpModal() {
     phone: "",
   });
   const [passwordsMatch, setPasswordsMatch] = useState(true);
+  const [validUsername, setValidUsername] = useState(true);
   const [validEmail, setValidEmail] = useState(true);
+  const [fieldErrors, setFieldErrors] = useState({
+    firstName: false,
+    lastName: false,
+    username: false,
+    email: false,
+    password: false,
+    confirmPassword: false,
+    phone: false,
+  });
   const { setContext } = useContext(AppContext);
 
   const handleSignup = async () => {
@@ -48,13 +58,44 @@ export default function SignUpModal() {
         phone,
       } = formData;
 
+      if (
+        !firstName ||
+        !lastName ||
+        !username ||
+        !email ||
+        !password ||
+        !confirmPassword ||
+        !phone
+      ) {
+        setFieldErrors({
+          firstName: !firstName,
+          lastName: !lastName,
+          username: !username,
+          email: !email,
+          password: !password,
+          confirmPassword: !confirmPassword,
+          phone: !phone,
+        });
+        return;
+      }
+
       if (password !== confirmPassword) {
         setPasswordsMatch(false);
         return;
       }
 
+      if (username.length < 2 || username.length > 20) {
+        setValidUsername(false);
+        return;
+      }
+
       if (!isValidEmail(email)) {
         setValidEmail(false);
+        return;
+      }
+
+      if (phone.length !== 10) {
+        setFieldErrors({ ...fieldErrors, phone: true });
         return;
       }
 
@@ -65,7 +106,7 @@ export default function SignUpModal() {
         email,
         password,
         phone,
-        role: 'user',
+        role: "user",
       };
       await registerUser(email, password, userData);
 
@@ -90,6 +131,15 @@ export default function SignUpModal() {
     setIsOpen(false);
     setPasswordsMatch(true);
     setValidEmail(true);
+    setFieldErrors({
+      firstName: false,
+      lastName: false,
+      username: false,
+      email: false,
+      password: false,
+      confirmPassword: false,
+      phone: false,
+    });
   };
 
   const onOpen = () => {
@@ -124,7 +174,13 @@ export default function SignUpModal() {
                     onChange={(e) =>
                       setFormData({ ...formData, firstName: e.target.value })
                     }
+                    borderColor={fieldErrors.firstName ? "red.500" : "gray.300"}
                   />
+                  {fieldErrors.firstName && (
+                    <Box mt={1} color={"red.500"}>
+                      
+                    </Box>
+                  )}
                 </FormControl>
 
                 <FormControl id="lastName" isRequired w="48%">
@@ -135,7 +191,13 @@ export default function SignUpModal() {
                     onChange={(e) =>
                       setFormData({ ...formData, lastName: e.target.value })
                     }
+                    borderColor={fieldErrors.lastName ? "red.500" : "gray.300"}
                   />
+                  {fieldErrors.lastName && (
+                    <Box mt={1} color={"red.500"}>
+                      
+                    </Box>
+                  )}
                 </FormControl>
               </Box>
 
@@ -147,7 +209,18 @@ export default function SignUpModal() {
                   onChange={(e) =>
                     setFormData({ ...formData, username: e.target.value })
                   }
+                  borderColor={fieldErrors.username ? "red.500" : "gray.300"}
                 />
+                {fieldErrors.username && (
+                  <Box mt={1} color={"red.500"}>
+                    
+                  </Box>
+                )}
+                {!validUsername && (
+                  <Box mt={1} color={"red.500"}>
+                    Username must be between 2 and 20 characters
+                  </Box>
+                )}
               </FormControl>
 
               <FormControl id="email" isRequired>
@@ -158,8 +231,13 @@ export default function SignUpModal() {
                   onChange={(e) =>
                     setFormData({ ...formData, email: e.target.value })
                   }
-                  borderColor={validEmail ? "gray.300" : "red.500"}
+                  borderColor={fieldErrors.email ? "red.500" : "gray.300"}
                 />
+                {fieldErrors.email && (
+                  <Box mt={1} color={"red.500"}>
+                    
+                  </Box>
+                )}
                 {!validEmail && (
                   <Box mt={1} color={"red.500"}>
                     Invalid email
@@ -176,7 +254,13 @@ export default function SignUpModal() {
                     onChange={(e) =>
                       setFormData({ ...formData, password: e.target.value })
                     }
+                    borderColor={fieldErrors.password ? "red.500" : "gray.300"}
                   />
+                  {fieldErrors.password && (
+                    <Box mt={1} color={"red.500"}>
+                      
+                    </Box>
+                  )}
                   <InputRightElement h="full">
                     <Button
                       _hover={{ bg: "transparent" }}
@@ -203,8 +287,20 @@ export default function SignUpModal() {
                         confirmPassword: e.target.value,
                       })
                     }
-                    borderColor={passwordsMatch ? "gray.300" : "red.500"}
+                    borderColor={
+                      fieldErrors.confirmPassword ? "red.500" : "gray.300"
+                    }
                   />
+                  {fieldErrors.confirmPassword && (
+                    <Box mt={1} color={"red.500"}>
+                      
+                    </Box>
+                  )}
+                  {!passwordsMatch && (
+                    <Box mt={1} color="red.500">
+                      Passwords do not match
+                    </Box>
+                  )}
                   <InputRightElement h="full">
                     <Button
                       _hover={{ bg: "transparent" }}
@@ -219,11 +315,6 @@ export default function SignUpModal() {
                     </Button>
                   </InputRightElement>
                 </InputGroup>
-                {!passwordsMatch && (
-                  <Box mt={1} color="red.500">
-                    Passwords do not match
-                  </Box>
-                )}
               </FormControl>
 
               <FormControl id="phone" isRequired>
@@ -234,7 +325,13 @@ export default function SignUpModal() {
                   onChange={(e) =>
                     setFormData({ ...formData, phone: e.target.value })
                   }
+                  borderColor={fieldErrors.phone ? "red.500" : "gray.300"}
                 />
+                {fieldErrors.phone && (
+                  <Box mt={1} color={"red.500"}>
+                    Phone number must be 10 digits.
+                  </Box>
+                )}
               </FormControl>
 
               <Button
