@@ -29,7 +29,7 @@ const Carousel = ({ children }) => {
       <Button onClick={handlePrev} leftIcon={<ChevronLeftIcon />} m={2}>
         Prev
       </Button>
-      <Box ref={scrollRef} overflowX="scroll" flex="1" whiteSpace="nowrap">
+      <Box ref={scrollRef} overflowX="scroll" flex="1" whiteSpace="nowrap" p="0" m="0">
         {children}
       </Box>
       <Button onClick={handleNext} rightIcon={<ChevronRightIcon />} m={2}>

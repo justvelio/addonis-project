@@ -13,13 +13,12 @@ import {
 import { ref, get } from "firebase/database";
 import { db } from "../../../config/firebase-config";
 import { fetchGitHubData } from "../../../utils/fetchGitHubData";
-import PluginTabs from "../../PluginTabs/PluginTabs";
 import { calculateAverageRating } from "../../../utils/calculateAverageRating";
 import StarDisplay from "../../StarDisplay/StarDisplay";
 import SearchBar from "../../Search/Search";
 import SortPlugins from "../../SortPlugins/SortPlugins";
 
-export const PluginCard = ({ plugin, downloadUrl }) => {
+export const PluginCard = ({ plugin }) => {
   const [githubData, setGithubData] = useState({
     openIssues: 0,
     pullRequests: 0,
@@ -93,6 +92,9 @@ PluginCard.propTypes = {
     id: PropTypes.string.isRequired,
     downloadUrl: PropTypes.string,
     githubRepoLink: PropTypes.string.isRequired,
+    ratings: PropTypes.object,
+    averageRating: PropTypes.number,
+    gitDownloadLink: PropTypes.string.isRequired,
   }).isRequired,
 };
 
@@ -181,8 +183,6 @@ const ProductsPage = () => {
       <Heading as="h1" mb={4}>
         Products
       </Heading>
-      {/* <PluginTabs plugins={plugins.filter(plugin => plugin.status === "approved" && plugin.githubRepoLink)} /> */}
-
       <SortPlugins handleSort={handleSort} />
       <SearchBar setSearchQuery={setSearchQuery} />
 
