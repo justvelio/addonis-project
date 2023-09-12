@@ -12,7 +12,7 @@ import {
   FormLabel,
   Input,
   Checkbox,
-  FormErrorMessage, // Added for error messages
+  FormErrorMessage,
 } from "@chakra-ui/react";
 import { loginUser } from "../../services/auth.service";
 import AppContext from "../../context/AppContext";
@@ -65,7 +65,6 @@ export default function LoginModal() {
 
   const onClose = () => {
     setIsOpen(false);
-    // Clear form and errors on modal close
     setFormData({ email: "", password: "" });
     setFormErrors({ email: "", password: "" });
   };

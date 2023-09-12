@@ -35,6 +35,7 @@ export default function UploadPlugin() {
   const [nameError, setNameError] = useState("");
   const [descriptionError, setDescriptionError] = useState("");
   const [fileError, setFileError] = useState("");
+  const [validName, setValidName] = useState(true);
   const toast = useToast();
 
   const validateForm = () => {
@@ -52,6 +53,11 @@ export default function UploadPlugin() {
       isValid = false;
     } else {
       setDescriptionError("");
+    }
+
+    if (name.length < 3 || name.length > 30) {
+      setValidName(false);
+      return
     }
 
     if (!file) {
@@ -228,6 +234,11 @@ export default function UploadPlugin() {
               />
               <Text color="red.500" fontSize="sm">
                 {nameError}
+                {!validName && (
+                  <Box mt={1} color={"red.500"}>
+                    Name must be between 3 and 30 characters
+                  </Box>
+                )}
               </Text>
             </FormControl>
             <FormControl id="description">
