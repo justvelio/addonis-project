@@ -8,9 +8,11 @@ import {
   SimpleGrid,
   Stack,
   Button,
+  Flex,
   Divider,
   Tag,
   Wrap,
+  useBreakpointValue
 } from "@chakra-ui/react";
 import { ref, get } from "firebase/database";
 import { db } from "../../../config/firebase-config";
@@ -27,7 +29,6 @@ export const PluginCard = ({ plugin }) => {
     lastCommitDate: null,
     lastCommitMessage: "",
   });
-  
 
   useEffect(() => {
     fetchGitHubData(plugin.githubRepoLink)
@@ -55,9 +56,12 @@ export const PluginCard = ({ plugin }) => {
         <Text>Uploader: {plugin.creatorName}</Text>
 
         <Wrap spacing="1" mt="1">
-          {plugin.tags && plugin.tags.map(tag => (
-            <Tag key={tag} colorScheme="teal" size="sm">{tag}</Tag>
-          ))}
+          {plugin.tags &&
+            plugin.tags.map((tag) => (
+              <Tag key={tag} colorScheme="teal" size="sm">
+                {tag}
+              </Tag>
+            ))}
         </Wrap>
 
         <Stack direction="row" align="center" mt="1">
@@ -70,7 +74,8 @@ export const PluginCard = ({ plugin }) => {
         <Text>Open Issues: {githubData.openIssues}</Text>
         <Text>Open Pull Requests: {githubData.pullRequests}</Text>
         <Text>
-          Last Commit: {new Date(githubData.lastCommitDate).toLocaleDateString()}
+          Last Commit:{" "}
+          {new Date(githubData.lastCommitDate).toLocaleDateString()}
           {githubData.lastCommitMessage && ` - ${githubData.lastCommitMessage}`}
         </Text>
       </Stack>
@@ -188,31 +193,45 @@ const ProductsPage = () => {
     fetchPlugins();
   }, []);
 
+  const columns = useBreakpointValue({ base: 1, md: 2, lg: 3 });
 
   return (
-    <Box minHeight="100vh" p={20} display="flex" flexDir="column">
-      <Heading as="h1" mb={4}>
+    <Box minHeight="100vh" p={4} display="flex" flexDir="column">
+      <Heading as="h1" mb={4} pt={20}>
         Products
       </Heading>
-      <Stack direction="row" spacing={4} mb={4}>
-      <SortPlugins handleSort={handleSort} />
-      <SearchBar setSearchQuery={setSearchQuery} />
-      </Stack>
-
-      <SimpleGrid columns={{ base: 1, md: 2, lg: 3 }} spacing={4} flex="1">
-        {filteredPlugins
-          .filter(
-            (plugin) => plugin.status === "approved" && plugin.githubRepoLink
-          )
-          .map((plugin) => (
-            <PluginCard
-              key={plugin.id}
-              plugin={plugin}
-              downloadUrl={plugin.downloadUrl}
-              status={plugin.status}
-            />
-          ))}
-      </SimpleGrid>
+      <Flex
+        direction={{ base: "column", md: "row" }}
+        alignItems="center"
+        justifyContent="space-between"
+        mb={4}
+      >
+        <SortPlugins handleSort={handleSort} />
+        <SearchBar setSearchQuery={setSearchQuery} />
+      </Flex>
+      <Box
+        flex="1"
+        overflowY="auto"
+      >
+        <SimpleGrid
+          columns={columns}
+          spacing={4}
+          flexDirection={{ base: "column", md: "row" }}
+        >
+          {filteredPlugins
+            .filter(
+              (plugin) => plugin.status === "approved" && plugin.githubRepoLink
+            )
+            .map((plugin) => (
+              <PluginCard
+                key={plugin.id}
+                plugin={plugin}
+                downloadUrl={plugin.downloadUrl}
+                status={plugin.status}
+              />
+            ))}
+        </SimpleGrid>
+      </Box>
     </Box>
   );
 };

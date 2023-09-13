@@ -15,24 +15,31 @@ const SearchBar = ({ setSearchQuery, handleSearch }) => {
   };
 
   const handleEnterKey = (e) => {
-    if (e.key === 'Enter'){
+    if (e.key === "Enter") {
       handleSubmit();
     }
-  }
+  };
 
   return (
-    <Stack direction="row" pb={4} spacing={2} w={'500px'}>
+    <Stack
+      direction={{ base: "column", md: "row" }}
+      pb={4}
+      spacing={2}
+    >
       <Input
         type="text"
         placeholder="Search plugins"
         value={query}
         onChange={handleInputChange}
         onKeyPress={handleEnterKey}
+        w={{ base: "100%", md: "300px" }}
+        mb={{ base: 2, md: 0 }}
       />
       <Button
         colorScheme="blue"
         leftIcon={<SearchIcon />}
         onClick={handleSubmit}
+        w={{ base: "100%", md: "auto" }}
       >
         Search
       </Button>

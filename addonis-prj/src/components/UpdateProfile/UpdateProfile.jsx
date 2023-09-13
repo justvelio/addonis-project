@@ -7,6 +7,7 @@ import {
   Stack,
   Heading,
   Input,
+  Text,
   Center,
   useColorModeValue,
   InputGroup,
@@ -109,23 +110,18 @@ const UpdateProfile = ({ setUserData }) => {
   };
 
   return (
-    <Center h={"93vh"}>
+    <Center minH={"93vh"}>
       <Box
         maxW={{ base: "100%", md: "800px" }}
         w={"100%"}
-        pt={5}
-        _hover={{ bgColor: "gray.50", _dark: { bgColor: "gray.100" } }}
+        p={4}
         bg={useColorModeValue("white", "gray.800")}
         boxShadow={"2xl"}
         rounded={"md"}
         overflow={"hidden"}
       >
-        <Stack spacing={7} p={6}>
-          <Heading
-            lineHeight={1.1}
-            fontSize={{ base: "2xl", sm: "3xl" }}
-            textAlign={"center"}
-          >
+        <Stack spacing={4}>
+          <Heading fontSize={{ base: "2xl", sm: "3xl" }} textAlign={"center"}>
             Update Your Profile
           </Heading>
 
@@ -214,34 +210,25 @@ const UpdateProfile = ({ setUserData }) => {
                 </Button>
               </InputRightElement>
             </InputGroup>
-            <p className="text-xs text-red-500 font-medium">
+            <Text fontSize="sm" color="red.500" mt="2">
               Confirm your old password if you're changing your email and/or
               password.
-            </p>
+            </Text>
           </FormControl>
         </Stack>
-        <div className="pb-5 text-center">
+        <div className="pt-4 text-center">
           <Button
-            w={"80vh"}
-            
-            bg={"black"}
+            w="full"
             color={"white"}
-            rounded={"md"}
-            _hover={{ bgColor: "gray", _dark: { bgColor: "gray.300" } }}
+            bgColor={"black"}
+            _hover={{ bgColor: 'gray.600'}}
             onClick={handleUpdate}
           >
             Save Changes
           </Button>
           <Spacer />
           <Link to="/user-profile">
-            <Button
-              w={"80vh"}
-              mt={5}
-              bg={"black"}
-              color={"white"}
-              rounded={"md"}
-              _hover={{ bgColor: "gray", _dark: { bgColor: "gray.300" } }}
-            >
+            <Button w="full" mt={2} color={"white"} bgColor={"black"} _hover={{ bgColor: 'gray.600'}}>
               Cancel
             </Button>
           </Link>

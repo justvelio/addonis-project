@@ -17,7 +17,6 @@ import {
   Avatar,
   Box,
 } from "@chakra-ui/react";
-import Search from "../Search/Search";
 import { ChevronDownIcon } from "@chakra-ui/icons";
 import "./Header.css";
 import { defaultProfilePictureURL } from "../views/MyProfile/MyProfile";
@@ -170,7 +169,6 @@ export default function Header() {
                     {item.name}
                   </Link>
                 ))}
-                <Search />
               </div>
               <Box fontSize={"lg"} py={6}>
                 {user ? (

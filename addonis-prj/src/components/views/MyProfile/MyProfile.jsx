@@ -142,7 +142,7 @@ const MyProfileView = () => {
               bg={'black'}
               color={"white"}
               rounded={"md"}
-              _hover={{ bgColor: "gray", _dark: { bgColor: "gray.300" } }}
+              _hover={{ bgColor: 'gray.600'}}
               onClick={() => navigate("/edit-profile")}
             >
               Edit Profile
