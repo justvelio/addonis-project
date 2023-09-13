@@ -27,6 +27,7 @@ export const PluginCard = ({ plugin }) => {
     lastCommitDate: null,
     lastCommitMessage: "",
   });
+  
 
   useEffect(() => {
     fetchGitHubData(plugin.githubRepoLink)

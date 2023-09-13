@@ -35,7 +35,7 @@ export const PluginCardLanding = ({ plugin }) => {
       rounded={"sm"}
       p={6}
       textAlign={"center"}
-      position="relative" // Added position relative
+      position="relative"
     >
       <Heading fontSize={"2xl"} fontFamily={"body"}>
         {plugin.name}

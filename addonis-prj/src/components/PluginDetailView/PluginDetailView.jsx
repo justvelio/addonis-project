@@ -31,6 +31,8 @@ function PluginDetailView() {
     lastCommitDate: null,
     lastCommitMessage: "",
   });
+  const [firstName, setFirstName] = useState(''); // State for first name
+  const [lastName, setLastName] = useState(''); // State for last name
 
   const { id: rawId } = useParams();
   const id = rawId.trim();
@@ -72,6 +74,8 @@ function PluginDetailView() {
       if (uploaderData) {
         setUploaderUsername(uploaderData.username || '');
         setUploaderProfilePicture(uploaderData.profilePicture || '');
+        setFirstName(uploaderData.firstName || ''); // Set the first name
+        setLastName(uploaderData.lastName || ''); // Set the last name
       }
     }
 
@@ -142,7 +146,9 @@ function PluginDetailView() {
           <Stack spacing="4" mt="4" align="center">
             <Flex align="center">
               <Avatar size="sm" src={uploaderProfilePicture} name={uploaderUsername} mr="2" />
-              <Text>Uploader: {uploaderUsername}</Text>
+              <Text className='font-medium'>
+                Uploader: {uploaderUsername} ({firstName} {lastName})
+              </Text>
             </Flex>
             <Stack direction="row" align="center">
               <StarDisplay rating={score} onStarClick={handleRating} />
