@@ -275,7 +275,7 @@ export default function UploadPlugin() {
               </FormLabel>
               <TagComponent
                 mode="edit"
-                allTags={["utility", "design", "exampleTag1", "exampleTag2"]}
+                allTags={["home", "kitchen", "bathroom", "living-room", "garage"]}
                 selectedTags={tags}
                 onTagChange={setTags}
               />

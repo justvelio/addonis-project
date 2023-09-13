@@ -9,6 +9,8 @@ import {
   Stack,
   Button,
   Divider,
+  Tag,
+  Wrap,
 } from "@chakra-ui/react";
 import { ref, get } from "firebase/database";
 import { db } from "../../../config/firebase-config";
@@ -50,7 +52,15 @@ export const PluginCard = ({ plugin }) => {
         <Heading size="md">{plugin.name}</Heading>
         <Text noOfLines={3}>{plugin.description}</Text>
         <Text>Uploader: {plugin.creatorName}</Text>
-        <Stack direction="row" align="center">
+
+        {/* Display Tags */}
+        <Wrap spacing="1" mt="1">
+          {plugin.tags && plugin.tags.map(tag => (
+            <Tag key={tag} colorScheme="teal" size="sm">{tag}</Tag>
+          ))}
+        </Wrap>
+
+        <Stack direction="row" align="center" mt="1">
           <StarDisplay rating={plugin.averageRating || 0} />
           <Text>({totalReviews} reviews)</Text>
         </Stack>
@@ -92,6 +102,7 @@ PluginCard.propTypes = {
     id: PropTypes.string.isRequired,
     downloadUrl: PropTypes.string,
     githubRepoLink: PropTypes.string.isRequired,
+    tags: PropTypes.arrayOf(PropTypes.string),
     ratings: PropTypes.object,
     averageRating: PropTypes.number,
     gitDownloadLink: PropTypes.string.isRequired,
