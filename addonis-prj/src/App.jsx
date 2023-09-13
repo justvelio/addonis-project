@@ -16,6 +16,7 @@ import MyPlugins from "./components/views/MyPlugins/MyPlugins";
 import Partners from "./components/views/Partners/Partners";
 import PluginDetailView from "./components/PluginDetailView/PluginDetailView";
 import NotFoundPage from "./components/NotFound/NotFound";
+import './App.css'
 
 function App() {
   const [appState, setAppState] = useState({

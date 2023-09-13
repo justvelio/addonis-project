@@ -115,7 +115,7 @@ const UpdateProfile = ({ setUserData }) => {
         maxW={{ base: "100%", md: "800px" }}
         w={"100%"}
         p={4}
-        bg={useColorModeValue("white", "gray.800")}
+        bg={useColorModeValue("white")}
         boxShadow={"2xl"}
         rounded={"md"}
         overflow={"hidden"}

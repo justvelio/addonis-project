@@ -80,6 +80,7 @@ const MyProfileView = () => {
   return (
     <Center h={'93vh'}>
       <Box
+      bgColor={'white'}
         maxW={{ base: "100%", md: "800px" }}
         w={"100%"}
         _hover={{ bgColor: "gray.200", _dark: { bgColor: "gray.300" } }}

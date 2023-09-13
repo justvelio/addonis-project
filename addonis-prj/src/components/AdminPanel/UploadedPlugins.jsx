@@ -113,6 +113,7 @@ export default function UploadedPlugins() {
                 p={4}
                 borderRadius="md"
                 flexDirection="column"
+                bgColor={'whiteAlpha.600'}
               >
                 <Text>Name: {plugin.name}</Text>
                 <Text>Description: {plugin.description}</Text>

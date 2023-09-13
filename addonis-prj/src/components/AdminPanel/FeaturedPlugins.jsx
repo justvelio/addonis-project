@@ -63,6 +63,7 @@ export default function FeaturedPlugins() {
           {allPlugins.map((plugin) => (
             <Box
               key={plugin.id}
+              bgColor={'whiteAlpha.600'}
               borderWidth="1px"
               p={4}
               borderRadius="md"

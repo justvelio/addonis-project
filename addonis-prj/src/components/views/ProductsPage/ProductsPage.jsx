@@ -49,6 +49,7 @@ export const PluginCard = ({ plugin }) => {
       borderRadius="lg"
       overflow="hidden"
       h="100%"
+      bgColor={'whiteAlpha.600'}
     >
       <Stack mt="2" spacing="2" p="2" h={"15vh"}>
         <Heading size="md">{plugin.name}</Heading>

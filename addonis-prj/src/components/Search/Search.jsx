@@ -25,9 +25,11 @@ const SearchBar = ({ setSearchQuery, handleSearch }) => {
       direction={{ base: "column", md: "row" }}
       pb={4}
       spacing={2}
+      
     >
       <Input
         type="text"
+        bgColor={'white'}
         placeholder="Search plugins"
         value={query}
         onChange={handleInputChange}

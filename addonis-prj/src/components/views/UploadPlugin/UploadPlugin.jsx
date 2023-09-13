@@ -200,7 +200,7 @@ export default function UploadPlugin() {
   return (
     <Box position="relative" textAlign="center" py={20}>
       <Container maxW={"3xl"} py={6}>
-        <Stack bg="white" rounded="xl" p={8} spacing={8} align="center">
+        <Stack bg="white" rounded="xl" p={8} spacing={8} align="center" >
           <Stack spacing={3} textAlign="center" pt={12}>
             <Heading
               color={"gray.800"}

@@ -139,7 +139,7 @@ const UserList = () => {
 
   return (
     <VStack h={"80vh"}>
-      <Box>
+      <Box >
         <Text>Search Users by Username, Email or Phone Number:</Text>
         <input
           className="border-2 border-black rounded-md w-full"
@@ -183,6 +183,7 @@ const UserList = () => {
                 borderRadius="lg"
                 overflow="hidden"
                 p={4}
+                bgColor={'whiteAlpha.600'}
               >
                 <Text>Email: {user.email}</Text>
                 <Text>First Name: {user.firstName}</Text>
@@ -198,7 +199,7 @@ const UserList = () => {
               </Box>
             ))}
       </SimpleGrid>
-      <Box mt={4}>
+      <Box mt={4} >
         {totalPages > 1 && (
           <HStack>
             {Array.from({ length: totalPages }, (_, i) => (
