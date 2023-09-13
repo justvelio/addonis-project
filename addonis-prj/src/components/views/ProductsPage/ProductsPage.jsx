@@ -194,8 +194,10 @@ const ProductsPage = () => {
       <Heading as="h1" mb={4}>
         Products
       </Heading>
+      <Stack direction="row" spacing={4} mb={4}>
       <SortPlugins handleSort={handleSort} />
       <SearchBar setSearchQuery={setSearchQuery} />
+      </Stack>
 
       <SimpleGrid columns={{ base: 1, md: 2, lg: 3 }} spacing={4} flex="1">
         {filteredPlugins

@@ -21,7 +21,7 @@ const SearchBar = ({ setSearchQuery, handleSearch }) => {
   }
 
   return (
-    <Stack direction="row" pb={10} spacing={2}>
+    <Stack direction="row" pb={4} spacing={2} w={'500px'}>
       <Input
         type="text"
         placeholder="Search plugins"
