@@ -1,9 +1,15 @@
-import { Tabs, TabList, TabPanels, Tab, TabPanel } from "@chakra-ui/react";
+import React from 'react';
+import {
+  Tabs,
+  TabList,
+  TabPanels,
+  Tab,
+  TabPanel,
+} from "@chakra-ui/react";
 import PluginList from "../PluginList/PluginList";
 import { calculateAverageRating } from "../../utils/calculateAverageRating";
 
 function PluginTabs({ plugins }) {
-
   const topRatedPlugins = plugins
     .filter(plugin => plugin.ratings && Object.keys(plugin.ratings).length > 0)
     .sort((a, b) =>
@@ -11,27 +17,25 @@ function PluginTabs({ plugins }) {
     );
 
   return (
-    <Tabs>
-      <TabList>
+    <Tabs isFitted variant='enclosed'>
+      <TabList mb='1em'>
         <Tab>Top</Tab>
         <Tab>Featured</Tab>
         <Tab>Newest</Tab>
       </TabList>
-
       <TabPanels>
         <TabPanel>
-          <PluginList plugins={topRatedPlugins} />
+          <PluginList plugins={topRatedPlugins.slice(0, 6)} />
         </TabPanel>
         <TabPanel>
-          <PluginList plugins={plugins.filter(plugin => plugin.featured === true)} />
+          <PluginList plugins={plugins.filter(plugin => plugin.featured === true).slice(0, 6)} />
         </TabPanel>
         <TabPanel>
-          <PluginList plugins={plugins.filter(plugin => plugin.status === "approved").sort((a, b) => new Date(b.date) - new Date(a.date))} />
+          <PluginList plugins={plugins.filter(plugin => plugin.status === "approved").sort((a, b) => new Date(b.date) - new Date(a.date)).slice(0, 6)} />
         </TabPanel>
       </TabPanels>
     </Tabs>
   );
 }
-
 
 export default PluginTabs;

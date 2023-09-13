@@ -53,7 +53,6 @@ export const PluginCard = ({ plugin }) => {
         <Text noOfLines={3}>{plugin.description}</Text>
         <Text>Uploader: {plugin.creatorName}</Text>
 
-        {/* Display Tags */}
         <Wrap spacing="1" mt="1">
           {plugin.tags && plugin.tags.map(tag => (
             <Tag key={tag} colorScheme="teal" size="sm">{tag}</Tag>
