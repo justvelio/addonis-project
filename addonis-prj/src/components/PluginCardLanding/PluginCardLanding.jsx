@@ -12,6 +12,7 @@ export const PluginCardLanding = ({ plugin }) => {
     lastCommitDate: null,
     lastCommitMessage: "",
   });
+  const cardHeight = "60vh";
 
   useEffect(() => {
     if (plugin && plugin.githubRepoLink) {
@@ -36,6 +37,9 @@ export const PluginCardLanding = ({ plugin }) => {
       p={6}
       textAlign={"center"}
       position="relative"
+      h={cardHeight}
+      display="flex"
+      flexDirection="column" 
     >
       <Heading fontSize={"2xl"} fontFamily={"body"}>
         {plugin.name}
