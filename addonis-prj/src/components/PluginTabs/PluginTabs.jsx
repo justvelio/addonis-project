@@ -17,11 +17,11 @@ function PluginTabs({ plugins }) {
     );
 
   return (
-    <Tabs isFitted variant='enclosed'>
+    <Tabs isFitted variant='enclosed' bgColor={'white'}>
       <TabList mb='1em'>
-        <Tab>Top</Tab>
-        <Tab>Featured</Tab>
-        <Tab>Newest</Tab>
+        <Tab fontWeight={'bold'}>Top</Tab>
+        <Tab fontWeight={'bold'}>Featured</Tab>
+        <Tab fontWeight={'bold'}>Newest</Tab>
       </TabList>
       <TabPanels>
         <TabPanel>
