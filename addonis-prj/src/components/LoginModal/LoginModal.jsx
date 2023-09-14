@@ -11,10 +11,13 @@ import {
   FormControl,
   FormLabel,
   Input,
-  Checkbox,
+  IconButton,
+  InputRightElement,
+  InputGroup,
   FormErrorMessage,
 } from "@chakra-ui/react";
 import { loginUser } from "../../services/auth.service";
+import { AiOutlineEye, AiOutlineEyeInvisible } from "react-icons/ai";
 import AppContext from "../../context/AppContext";
 import { getUserData } from "../../services/users.service";
 import { checkUserExistence } from "../../services/auth.service";
@@ -31,6 +34,7 @@ export default function LoginModal() {
     email: "",
     password: "",
   });
+  const [showPassword, setShowPassword] = useState(false);
   const { user } = useContext(AppContext);
 
   const handleLogin = async () => {
@@ -63,10 +67,15 @@ export default function LoginModal() {
     }
   };
 
+  const togglePasswordVisibility = () => {
+    setShowPassword(!showPassword);
+  };
+
   const onClose = () => {
     setIsOpen(false);
     setFormData({ email: "", password: "" });
     setFormErrors({ email: "", password: "" });
+    setShowPassword(false);
   };
 
   const onOpen = () => {
@@ -118,21 +127,43 @@ export default function LoginModal() {
               </FormControl>
               <FormControl mt={4} isInvalid={!!formErrors.password}>
                 <FormLabel>Password</FormLabel>
-                <Input
-                  type="password"
-                  name="password"
-                  value={formData.password}
-                  onChange={(e) =>
-                    setFormData({ ...formData, password: e.target.value })
-                  }
-                />
+                <InputGroup>
+                  <Input
+                    type={showPassword ? "text" : "password"}
+                    placeholder="Password"
+                    value={formData.password}
+                    onChange={(e) =>
+                      setFormData({ ...formData, password: e.target.value })
+                    }
+                  />
+                  <InputRightElement>
+                    <IconButton
+                      aria-label={
+                        showPassword ? "Hide password" : "Show password"
+                      }
+                      icon={
+                        showPassword ? (
+                          <AiOutlineEyeInvisible />
+                        ) : (
+                          <AiOutlineEye />
+                        )
+                      }
+                      onClick={togglePasswordVisibility}
+                      size="sm"
+                    />
+                  </InputRightElement>
+                </InputGroup>
                 <FormErrorMessage>{formErrors.password}</FormErrorMessage>
               </FormControl>
-              <Checkbox mt={4}>Remember me</Checkbox>
             </form>
           </ModalBody>
           <ModalFooter>
-            <Button variant="ghost" size={"sm"} _hover={"transparent"} onClick={onClose}>
+            <Button
+              variant="ghost"
+              size={"sm"}
+              _hover={"transparent"}
+              onClick={onClose}
+            >
               Cancel
             </Button>
             <Button
