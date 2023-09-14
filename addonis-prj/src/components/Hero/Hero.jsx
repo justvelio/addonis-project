@@ -3,8 +3,6 @@ import { Stack, Button, VStack, useBreakpointValue } from "@chakra-ui/react";
 import ImageCarousel from "../ImageCarousel/ImageCarousel";
 import { ChevronDownIcon } from "@chakra-ui/icons";
 import './Hero.css'
-import TopFields from "../TopFields/TopFields";
-import PluginList from "../PluginList/PluginList";
 
 
 function Hero() {

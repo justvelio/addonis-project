@@ -6,11 +6,14 @@ import {
   VStack,
   SimpleGrid,
   HStack,
+  useBreakpointValue
 } from "@chakra-ui/react";
 import { getDatabase, ref, onValue, update, remove } from "firebase/database";
 
 export default function FeaturedPlugins() {
   const [allPlugins, setAllPlugins] = useState([]);
+
+const columns = useBreakpointValue({ base: 1, sm: 2, lg: 4 })
 
   useEffect(() => {
     const db = getDatabase();
@@ -27,6 +30,7 @@ export default function FeaturedPlugins() {
       setAllPlugins(plugins);
     });
   }, []);
+
 
   const handleFeature = async (pluginId, isFeatured) => {
     const db = getDatabase();
@@ -59,7 +63,7 @@ export default function FeaturedPlugins() {
       {allPlugins.length === 0 ? (
         <Text>No plugins available.</Text>
       ) : (
-        <SimpleGrid columns={4} spacing={4}>
+        <SimpleGrid columns={columns} spacing={4}>
           {allPlugins.map((plugin) => (
             <Box
               key={plugin.id}

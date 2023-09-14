@@ -42,7 +42,7 @@ export const PluginCard = ({ plugin }) => {
 
   const totalReviews = plugin.ratings ? Object.keys(plugin.ratings).length : 0;
 
-  console.log(plugin)
+  // console.log(plugin)
 
   return (
     <Box
