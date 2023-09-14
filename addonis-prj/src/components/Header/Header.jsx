@@ -27,7 +27,7 @@ const navigation = [
   { name: "Products", href: "/products" },
   { name: "Partners", href: "/partners" },
   { name: "Careers", href: "#" },
-  { name: "About Us", href: "#" },
+  { name: "About Us", href: "/about-us" },
 ];
 
 export default function Header() {
