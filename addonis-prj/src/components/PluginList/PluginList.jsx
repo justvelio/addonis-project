@@ -8,7 +8,13 @@ function PluginList({ plugins }) {
     .filter((plugin) => plugin.status === 'approved')
     .slice(0, 6);
 
-  const columns = useBreakpointValue({ base: 1, sm: 2, md: 3, lg: 4, xl: 6 });
+  const columns = useBreakpointValue({
+    base: 1,
+    sm: 2,
+    md: 3,
+    lg: 3,
+    xl: 6
+  });
 
   return (
     <Box>
