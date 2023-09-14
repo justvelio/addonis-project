@@ -16,6 +16,8 @@ import {
   Stack,
   Avatar,
   Box,
+  Spacer,
+  Flex,
 } from "@chakra-ui/react";
 import { ChevronDownIcon } from "@chakra-ui/icons";
 import "./Header.css";
@@ -134,8 +136,16 @@ export default function Header() {
             </Menu>
           ) : (
             <div className="hidden lg:flex lg:flex-1 lg:justify-end text-slate-700">
-              <SignUpModal />
-              <LoginModal />
+              <Flex alignItems="center" margin={1}>
+                <Box ml={10}>
+                <SignUpModal />
+                </Box>
+              </Flex>
+              <Flex alignItems="center" margin={1}>
+                <Box>
+                <LoginModal />
+                </Box>
+              </Flex>
             </div>
           )}
         </div>

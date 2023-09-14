@@ -88,20 +88,13 @@ export default function LoginModal() {
         <span className="text-white mr-4">{user.username}</span>
       ) : (
         <Button
-          size="sm"
-          color={"teal.500"}
-          bg={"transparent"}
-          _hover={"transparent"}
+          size="md"
+          color={"white"}
+          bg={"blackAlpha.600"}
+          _hover={{bgColor: 'blackAlpha.800'}}
           onClick={onOpen}
-          className="group text-gray-200 hover:text-sky-600 transition ease-in-out duration-200"
         >
-          Log In{" "}
-          <span
-            aria-hidden="true"
-            className="inline-block translate-x-0 group-hover:translate-x-1 transition-transform ease-in-out duration-200"
-          >
-            →
-          </span>
+          Sign In
         </Button>
       )}
       <Modal isOpen={isOpen} onClose={onClose} isCentered>
