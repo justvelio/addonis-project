@@ -84,7 +84,7 @@ export const PluginCardLanding = ({ plugin }) => {
           >
             Download Now
           </Button>
-          <Button as={Link} to={`/plugin/${plugin.id}`} colorScheme="teal">
+          <Button as={Link} to={`/plugin/${plugin.name}`} colorScheme="teal">
             View More
           </Button>
         </Stack>
