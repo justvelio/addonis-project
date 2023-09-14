@@ -48,53 +48,61 @@ export const PluginCard = ({ plugin }) => {
       borderWidth="1px"
       borderRadius="lg"
       overflow="hidden"
-      h="100%"
+      h="450px"
       bgColor={'whiteAlpha.600'}
     >
-      <Stack mt="2" spacing="2" p="2" h={"15vh"}>
-        <Heading size="md">{plugin.name}</Heading>
-        <Text noOfLines={3}>{plugin.description}</Text>
-        <Text>Uploader: {plugin.creatorName}</Text>
+      <Flex flexDirection="column" justifyContent="space-between" h="100%">
+        <Box>
+          <Stack mt="2" spacing="2" p="2">
+            <Heading size="md" noOfLines={1}>
+              {plugin.name}
+            </Heading>
+            <Text noOfLines={2}>
+              {plugin.description}
+            </Text>
+            <Text noOfLines={1}>Uploader: {plugin.creatorName}</Text>
 
-        <Wrap spacing="1" mt="1">
-          {plugin.tags &&
-            plugin.tags.map((tag) => (
-              <Tag key={tag} colorScheme="teal" size="sm">
-                {tag}
-              </Tag>
-            ))}
-        </Wrap>
+            <Wrap spacing="1" mt="1">
+              {plugin.tags && plugin.tags.slice(0, 4).map((tag) => (
+                <Tag key={tag} colorScheme="teal" size="sm">
+                  {tag}
+                </Tag>
+              ))}
+            </Wrap>
 
-        <Stack direction="row" align="center" mt="1">
-          <StarDisplay rating={plugin.averageRating || 0} />
-          <Text>({totalReviews} reviews)</Text>
+            <Stack direction="row" align="center" mt="1">
+              <StarDisplay rating={plugin.averageRating || 0} />
+              <Text>({totalReviews} reviews)</Text>
+            </Stack>
+          </Stack>
+          <Divider />
+          <Stack mt="1" spacing="2" p="2">
+            <Text noOfLines={1}>Open Issues: {githubData.openIssues}</Text>
+            <Text noOfLines={1}>Open Pull Requests: {githubData.pullRequests}</Text>
+            <Text noOfLines={1}>
+              Last Commit:{" "}
+              {new Date(githubData.lastCommitDate).toLocaleDateString()}
+              {githubData.lastCommitMessage && ` - ${githubData.lastCommitMessage}`}
+            </Text>
+          </Stack>
+        </Box>
+
+        <Stack mt="1" p="4">
+          <Button
+            as="a"
+            href={plugin.gitDownloadLink}
+            download
+            type="application/octet-stream"
+            colorScheme="blue"
+            variant="solid"
+          >
+            Download Now
+          </Button>
+          <Button as={Link} to={`/plugin/${plugin.id}`} colorScheme="teal">
+            View More
+          </Button>
         </Stack>
-      </Stack>
-      <Divider />
-      <Stack mt="1" spacing="2" p="2">
-        <Text>Open Issues: {githubData.openIssues}</Text>
-        <Text>Open Pull Requests: {githubData.pullRequests}</Text>
-        <Text>
-          Last Commit:{" "}
-          {new Date(githubData.lastCommitDate).toLocaleDateString()}
-          {githubData.lastCommitMessage && ` - ${githubData.lastCommitMessage}`}
-        </Text>
-      </Stack>
-      <Stack mt="1" p="4">
-        <Button
-          as="a"
-          href={plugin.gitDownloadLink}
-          download
-          type="application/octet-stream"
-          colorScheme="blue"
-          variant="solid"
-        >
-          Download Now
-        </Button>
-        <Button as={Link} to={`/plugin/${plugin.id}`} colorScheme="teal">
-          View More
-        </Button>
-      </Stack>
+      </Flex>
     </Box>
   );
 };
