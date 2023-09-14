@@ -125,7 +125,7 @@ export default function ProductInfo2() {
               Coming soon!
             </Button>
             <Text color={"black"} fontSize={"lg"} textAlign={"center"}>
-              Want to be the first to know? Subscribe now!
+              Join the exclusive list and be alerted when our app goes live!
             </Text>
             {isSubscribed ? (
               <Text>Thank you for subscribing!</Text>
