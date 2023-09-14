@@ -21,7 +21,6 @@ import { calculateAverageRating } from "../../../utils/calculateAverageRating";
 import StarDisplay from "../../StarDisplay/StarDisplay";
 import SearchBar from "../../Search/Search";
 import SortPlugins from "../../SortPlugins/SortPlugins";
-import { incrementDownloadCount } from "../../../utils/firebaseHelpers";
 
 export const PluginCard = ({ plugin }) => {
   const [githubData, setGithubData] = useState({
@@ -43,14 +42,6 @@ export const PluginCard = ({ plugin }) => {
 
   const totalReviews = plugin.ratings ? Object.keys(plugin.ratings).length : 0;
 
-  const handleDownloadClick = async () => {
-    try {
-      await incrementDownloadCount(plugin.id);
-    } catch (error) {
-      console.error("Error updating download count:", error.message);
-    }
-  };
-
   return (
     <Box
       maxW="sm"
@@ -63,14 +54,22 @@ export const PluginCard = ({ plugin }) => {
       <Flex flexDirection="column" justifyContent="space-between" h="100%">
         <Box>
           <Stack mt="2" spacing="2" p="2">
-            <Heading size="md" noOfLines={1}>{plugin.name}</Heading>
-            <Text noOfLines={2}>{plugin.description}</Text>
+            <Heading size="md" noOfLines={1}>
+              {plugin.name}
+            </Heading>
+            <Text noOfLines={2}>
+              {plugin.description}
+            </Text>
             <Text noOfLines={1}>Uploader: {plugin.creatorName}</Text>
+
             <Wrap spacing="1" mt="1">
               {plugin.tags && plugin.tags.slice(0, 4).map((tag) => (
-                <Tag key={tag} colorScheme="teal" size="sm">{tag}</Tag>
+                <Tag key={tag} colorScheme="teal" size="sm">
+                  {tag}
+                </Tag>
               ))}
             </Wrap>
+
             <Stack direction="row" align="center" mt="1">
               <StarDisplay rating={plugin.averageRating || 0} />
               <Text>({totalReviews} reviews)</Text>
@@ -81,10 +80,13 @@ export const PluginCard = ({ plugin }) => {
             <Text noOfLines={1}>Open Issues: {githubData.openIssues}</Text>
             <Text noOfLines={1}>Open Pull Requests: {githubData.pullRequests}</Text>
             <Text noOfLines={1}>
-              Last Commit: {new Date(githubData.lastCommitDate).toLocaleDateString()} {githubData.lastCommitMessage && ` - ${githubData.lastCommitMessage}`}
+              Last Commit:{" "}
+              {new Date(githubData.lastCommitDate).toLocaleDateString()}
+              {githubData.lastCommitMessage && ` - ${githubData.lastCommitMessage}`}
             </Text>
           </Stack>
         </Box>
+
         <Stack mt="1" p="4">
           <Button
             as="a"
@@ -93,12 +95,12 @@ export const PluginCard = ({ plugin }) => {
             type="application/octet-stream"
             colorScheme="blue"
             variant="solid"
-            onClick={handleDownloadClick}
           >
             Download Now
           </Button>
-          <Text noOfLines={1}>Downloads: {plugin.downloadCount || 0}</Text>
-          <Button as={Link} to={`/plugin/${plugin.id}`} colorScheme="teal">View More</Button>
+          <Button as={Link} to={`/plugin/${plugin.id}`} colorScheme="teal">
+            View More
+          </Button>
         </Stack>
       </Flex>
     </Box>
@@ -136,6 +138,13 @@ const ProductsPage = () => {
     };
   };
 
+  const handleSearch = () => {
+    if (searchQuery.trim() === "") {
+      return;
+    }
+    setSearchQuery(searchQuery);
+  };
+
   const handleSort = (criteria) => {
     const sorted = [...filteredPlugins];
 
@@ -144,14 +153,20 @@ const ProductsPage = () => {
     } else if (criteria === "dateAdded") {
       sorted.sort((a, b) => b.timestamp - a.timestamp);
     } else if (criteria === "creator") {
-      sorted.sort((a, b) => a.creatorName.localeCompare(b.creatorName, undefined, { sensitivity: "base" }));
+      sorted.sort((a, b) =>
+        a.creatorName.localeCompare(b.creatorName, undefined, {
+          sensitivity: "base",
+        })
+      );
     }
 
     setFilteredPlugins(sorted);
   };
 
   useEffect(() => {
-    const filtered = plugins.filter((plugin) => plugin.name.toLowerCase().includes(searchQuery.toLowerCase()));
+    const filtered = plugins.filter((plugin) =>
+      plugin.name.toLowerCase().includes(searchQuery.toLowerCase())
+    );
     setFilteredPlugins(filtered);
   }, [searchQuery, plugins]);
 
@@ -161,9 +176,12 @@ const ProductsPage = () => {
       const snapshot = await get(pluginsRef);
       const fetchedPlugins = await Promise.all(
         Object.values(snapshot.val()).map(async (plugin, index) => {
-          const timestamp = new Date(plugin.dateAdded).getTime();
-          const withUserData = await fetchUserData({ ...plugin, id: `plugin${index}`, timestamp });
-          return withUserData;
+          const timestamp = new Date(plugin.date).getTime();
+          return await fetchUserData({
+            ...plugin,
+            id: Object.keys(snapshot.val())[index],
+            timestamp: timestamp,
+          });
         })
       );
 
@@ -173,33 +191,56 @@ const ProductsPage = () => {
         } else {
           plugin.averageRating = 0;
         }
-        plugin.downloadCount = plugin.downloadCount || 0;
       });
 
-      setPlugins(fetchedPlugins);
-    };
+      const sortedPluginsByDate = fetchedPlugins.sort(
+        (a, b) => b.timestamp - a.timestamp
+      );
 
+      setPlugins(sortedPluginsByDate);
+    };
     fetchPlugins();
   }, []);
 
+  const columns = useBreakpointValue({ base: 1, md: 2, lg: 3 });
+
   return (
-    <Box>
-      <Box textAlign="center" my="4">
-        <Heading size="xl">Browse Addonis Plugins</Heading>
-        <Text mt="2">Search, sort, and find the plugins you need!</Text>
+    <Box minHeight="100vh" p={4} display="flex" flexDir="column">
+      <Heading as="h1" mb={4} pt={20}>
+        Products
+      </Heading>
+      <Flex
+        direction={{ base: "column", md: "row" }}
+        alignItems="center"
+        justifyContent="space-between"
+        mb={4}
+      >
+        <SortPlugins handleSort={handleSort} />
+        <SearchBar setSearchQuery={setSearchQuery} />
+      </Flex>
+      <Box
+        flex="1"
+        overflowY="auto"
+      >
+        <SimpleGrid
+          columns={columns}
+          spacing={4}
+          flexDirection={{ base: "column", md: "row" }}
+        >
+          {filteredPlugins
+            .filter(
+              (plugin) => plugin.status === "approved" && plugin.githubRepoLink
+            )
+            .map((plugin) => (
+              <PluginCard
+                key={plugin.id}
+                plugin={plugin}
+                downloadUrl={plugin.downloadUrl}
+                status={plugin.status}
+              />
+            ))}
+        </SimpleGrid>
       </Box>
-      <SearchBar onChange={(e) => setSearchQuery(e.target.value)} />
-      <SortPlugins onSort={handleSort} />
-      <SimpleGrid columns={useBreakpointValue({ base: 1, md: 2, lg: 3 })} gap="6" mt="6">
-        {filteredPlugins
-          .filter((plugin) => plugin.status === "approved" && plugin.githubRepoLink)
-          .map((plugin) => (
-            <PluginCard
-              key={plugin.id}
-              plugin={plugin}
-            />
-          ))}
-      </SimpleGrid>
     </Box>
   );
 };
