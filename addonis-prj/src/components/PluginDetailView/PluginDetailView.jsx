@@ -1,5 +1,5 @@
-import { useState, useEffect } from 'react';
-import { useParams, useNavigate } from 'react-router-dom';
+import { useState, useEffect } from "react";
+import { useParams, useNavigate } from "react-router-dom";
 import {
   Box,
   Heading,
@@ -12,50 +12,52 @@ import {
   Avatar,
   Stack,
   Divider,
-} from '@chakra-ui/react';
-import { ref, get, set } from 'firebase/database';
-import { db, auth } from '../../config/firebase-config';
-import StarDisplay from '../StarDisplay/StarDisplay';
-import { getUserData } from '../../services/users.service';
-import { fetchGitHubData } from '../../utils/fetchGitHubData';
+} from "@chakra-ui/react";
+import { ref, get, set } from "firebase/database";
+import { db, auth } from "../../config/firebase-config";
+import StarDisplay from "../StarDisplay/StarDisplay";
+import { getUserData } from "../../services/users.service";
+import { fetchGitHubData } from "../../utils/fetchGitHubData";
 
 function PluginDetailView() {
   const [plugin, setPlugin] = useState(null);
   const [score, setScore] = useState(0);
   const [userHasRated, setUserHasRated] = useState(false);
-  const [uploaderUsername, setUploaderUsername] = useState('');
-  const [uploaderProfilePicture, setUploaderProfilePicture] = useState('');
+  const [uploaderUsername, setUploaderUsername] = useState("");
+  const [uploaderProfilePicture, setUploaderProfilePicture] = useState("");
   const [githubData, setGithubData] = useState({
     openIssues: 0,
     pullRequests: 0,
     lastCommitDate: null,
     lastCommitMessage: "",
   });
-  const [firstName, setFirstName] = useState(''); // State for first name
-  const [lastName, setLastName] = useState(''); // State for last name
+  const [firstName, setFirstName] = useState("");
+  const [lastName, setLastName] = useState("");
 
   const { id: rawId } = useParams();
   const id = rawId.trim();
   const navigate = useNavigate();
   const toast = useToast();
 
+  // console.log(id)
+
   const handleDownload = () => {
     if (plugin && plugin.gitDownloadLink) {
-      const downloadLink = document.createElement('a');
+      const downloadLink = document.createElement("a");
       downloadLink.href = plugin.gitDownloadLink;
-      downloadLink.target = '_blank';
+      downloadLink.target = "_blank";
       downloadLink.click();
     } else {
-      console.error('Download link not available');
+      console.error("Download link not available");
     }
   };
 
-  const fetchPluginData = async () => {
-    const snapshot = await get(ref(db, 'plugins/' + id));
+  const fetchPluginData = async (id) => {
+    const snapshot = await get(ref(db, "plugins/" + id));
     const pluginData = snapshot.val();
 
     if (!pluginData) {
-      console.error('No data found for plugin with ID:', id);
+      console.error("No data found for plugin with ID:", id);
       return;
     }
 
@@ -72,18 +74,24 @@ function PluginDetailView() {
     if (pluginData.creator) {
       const uploaderData = await getUserData(pluginData.creator);
       if (uploaderData) {
-        setUploaderUsername(uploaderData.username || '');
-        setUploaderProfilePicture(uploaderData.profilePicture || '');
-        setFirstName(uploaderData.firstName || ''); // Set the first name
-        setLastName(uploaderData.lastName || ''); // Set the last name
+        setUploaderUsername(uploaderData.username || "");
+        setUploaderProfilePicture(uploaderData.profilePicture || "");
+        setFirstName(uploaderData.firstName || "");
+        setLastName(uploaderData.lastName || "");
       }
     }
 
-    setPlugin(pluginData);
+    return pluginData;
   };
 
   useEffect(() => {
-    fetchPluginData();
+    if (id === undefined) {
+      return;
+    }
+    // console.log('string', id)
+    fetchPluginData(id).then((result) => {
+      setPlugin(result);
+    });
   }, [id]);
 
   const handleRating = (selectedScore) => {
@@ -93,9 +101,9 @@ function PluginDetailView() {
   const submitRating = async () => {
     if (userHasRated) {
       toast({
-        title: 'Rating Failed.',
+        title: "Rating Failed.",
         description: "You've already rated this plugin.",
-        status: 'error',
+        status: "error",
         duration: 5000,
         isClosable: true,
       });
@@ -107,18 +115,21 @@ function PluginDetailView() {
 
     setUserHasRated(true);
     toast({
-      title: 'Rating Submitted.',
-      description: 'Thank you for your feedback!',
-      status: 'success',
+      title: "Rating Submitted.",
+      description: "Thank you for your feedback!",
+      status: "success",
       duration: 5000,
       isClosable: true,
     });
   };
 
-  if (!plugin) return <div>Loading...</div>;
+  // console.log(plugin)
+
+    
 
   return (
     <Flex direction="column" minHeight="100vh">
+      {!plugin ? <Box pt={10}> Loading...</Box> :
       <Center py={6} flex="1">
         <Box
           maxW="445px"
@@ -137,7 +148,7 @@ function PluginDetailView() {
               fontSize="sm"
               letterSpacing={1.1}
             >
-              {plugin.category}
+              {/* {plugin.category} */}
             </Text>
             <Heading fontSize="2xl">{plugin.name}</Heading>
             <Text color="gray.500">{plugin.description}</Text>
@@ -145,14 +156,19 @@ function PluginDetailView() {
           <Divider mt="4" />
           <Stack spacing="4" mt="4" align="center">
             <Flex align="center">
-              <Avatar size="sm" src={uploaderProfilePicture} name={uploaderUsername} mr="2" />
-              <Text className='font-medium'>
+              <Avatar
+                size="sm"
+                src={uploaderProfilePicture}
+                name={uploaderUsername}
+                mr="2"
+              />
+              <Text className="font-medium">
                 Uploader: {uploaderUsername} ({firstName} {lastName})
               </Text>
             </Flex>
             <Stack direction="row" align="center">
               <StarDisplay rating={score} onStarClick={handleRating} />
-              <Text>({plugin.totalReviews || 0} reviews)</Text>
+              <Text>({Object.keys(plugin.ratings).length || 0} reviews)</Text>
             </Stack>
           </Stack>
           <Stack mt="4">
@@ -174,20 +190,20 @@ function PluginDetailView() {
             <Text>Open Issues: {githubData.openIssues}</Text>
             <Text>Open Pull Requests: {githubData.pullRequests}</Text>
             <Text>
-              Last Commit: {githubData.lastCommitDate ? new Date(githubData.lastCommitDate).toLocaleDateString() : 'N/A'}
-              {githubData.lastCommitMessage && ` - ${githubData.lastCommitMessage}`}
+              Last Commit:{" "}
+              {githubData.lastCommitDate
+                ? new Date(githubData.lastCommitDate).toLocaleDateString()
+                : "N/A"}
+              {githubData.lastCommitMessage &&
+                ` - ${githubData.lastCommitMessage}`}
             </Text>
           </Stack>
-          <Button
-            mt="4"
-            colorScheme="teal"
-            onClick={handleDownload}
-            size="sm"
-          >
+          <Button mt="4" colorScheme="teal" onClick={handleDownload} size="sm">
             Download
           </Button>
         </Box>
       </Center>
+      }
     </Flex>
   );
 }

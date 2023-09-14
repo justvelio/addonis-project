@@ -28,6 +28,8 @@ export const PluginCardLanding = ({ plugin }) => {
 
   const totalReviews = plugin.ratings ? Object.keys(plugin.ratings).length : 0;
 
+  // console.log(plugin)
+
   return (
     <Box
       maxW="320px"
@@ -90,7 +92,7 @@ export const PluginCardLanding = ({ plugin }) => {
         >
           Download Now
         </Button>
-        <Button as={Link} to={`/plugin/${plugin.id}`} colorScheme="teal">
+        <Button as={Link} to={`/plugin/${plugin.name}`} colorScheme="teal">
           View More
         </Button>
       </Box>
