@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import PropTypes from "prop-types";
-import { Box, Text, Button, Heading, Stack, Divider } from "@chakra-ui/react";
+import { Box, Text, Button, Heading, Stack, Divider, Wrap, Flex, Tag } from "@chakra-ui/react";
 import StarDisplay from "../StarDisplay/StarDisplay";
 import { fetchGitHubData } from "../../utils/fetchGitHubData";
 import { Link } from "react-router-dom";
@@ -12,7 +12,6 @@ export const PluginCardLanding = ({ plugin }) => {
     lastCommitDate: null,
     lastCommitMessage: "",
   });
-  const cardHeight = "60vh";
 
   useEffect(() => {
     if (plugin && plugin.githubRepoLink) {
@@ -32,70 +31,66 @@ export const PluginCardLanding = ({ plugin }) => {
 
   return (
     <Box
-      maxW="320px"
-      bg={"white"}
-      boxShadow={"2xl"}
-      rounded={"sm"}
-      p={6}
-      textAlign={"center"}
-      position="relative"
-      h={cardHeight}
-      display="flex"
-      flexDirection="column" 
+      maxW="sm"
+      borderWidth="1px"
+      borderRadius="lg"
+      overflow="hidden"
+      h="450px"
+      bgColor={'whiteAlpha.600'}
     >
-      <Heading fontSize={"2xl"} fontFamily={"body"}>
-        {plugin.name}
-      </Heading>
-      <Text fontWeight={600} color={"gray.500"} mb={4}>
-        {/* Uploader: {plugin.firstName} {plugin.lastName} */}
-      </Text>
-      <Text noOfLines={3}>{plugin.description}</Text>
-      <Stack mt={4} direction="row" align="center" justify="center">
-        <StarDisplay rating={plugin.averageRating || 0} />
-        <Text>({totalReviews} reviews)</Text>
-      </Stack>
-      <Divider mt={4} />
-      <Stack mt={4} spacing={2}>
-        <Text>Open Issues: {githubData.openIssues}</Text>
-        <Text>Open Pull Requests: {githubData.pullRequests}</Text>
-        <Text>
-          Last Commit:{" "}
-          {githubData.lastCommitDate
-            ? new Date(githubData.lastCommitDate).toLocaleDateString()
-            : "N/A"}
-          {githubData.lastCommitMessage && ` - ${githubData.lastCommitMessage}`}
-        </Text>
-      </Stack>
-      <Box
-        position="absolute"
-        bottom="0"
-        left="0"
-        right="0"
-        p={4}
-        bg={"white"}
-        borderTopWidth="1px"
-        textAlign="center"
-      >
-        <Button
-          as="a"
-          href={plugin.gitDownloadLink}
-          download
-          type="application/octet-stream"
-          colorScheme="blue"
-          variant="solid"
-          fontSize={"sm"}
-          rounded={"md"}
-          _focus={{
-            bg: "gray.200",
-          }}
-          marginRight="8px"
-        >
-          Download Now
-        </Button>
-        <Button as={Link} to={`/plugin/${plugin.name}`} colorScheme="teal">
-          View More
-        </Button>
-      </Box>
+      <Flex flexDirection="column" justifyContent="space-between" h="100%">
+        <Box>
+          <Stack mt="2" spacing="2" p="2">
+            <Heading size="md" noOfLines={1}>
+              {plugin.name}
+            </Heading>
+            <Text noOfLines={2}>
+              {plugin.description}
+            </Text>
+
+
+
+            <Wrap spacing="1" mt="1">
+              {plugin.tags && plugin.tags.slice(0, 4).map((tag) => (
+                <Tag key={tag} colorScheme="teal" size="sm">
+                  {tag}
+                </Tag>
+              ))}
+            </Wrap>
+
+            <Stack direction="row" align="center" mt="1">
+              <StarDisplay rating={plugin.averageRating || 0} />
+              <Text>({totalReviews} reviews)</Text>
+            </Stack>
+          </Stack>
+          <Divider />
+          <Stack mt="1" spacing="2" p="2">
+            <Text noOfLines={1}>Open Issues: {githubData.openIssues}</Text>
+            <Text noOfLines={1}>Open Pull Requests: {githubData.pullRequests}</Text>
+            <Text noOfLines={1}>
+              Last Commit:{" "}
+              {new Date(githubData.lastCommitDate).toLocaleDateString()}
+              {githubData.lastCommitMessage && ` - ${githubData.lastCommitMessage}`}
+            </Text>
+          </Stack>
+        </Box>
+
+        <Stack mt="1" p="4">
+          <Button
+            as="a"
+            href={plugin.gitDownloadLink}
+            download
+            type="application/octet-stream"
+            colorScheme="blue"
+            variant="solid"
+          >
+            Download Now
+          </Button>
+          <Button as={Link} to={`/plugin/${plugin.name}`} colorScheme="teal">
+            View More
+          </Button>
+        </Stack>
+      </Flex>
     </Box>
   );
 };
