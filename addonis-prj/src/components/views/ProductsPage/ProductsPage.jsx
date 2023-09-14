@@ -11,11 +11,12 @@ import {
   Flex,
   Divider,
   Tag,
+  useToast,
   Wrap,
-  useBreakpointValue
+  useBreakpointValue,
 } from "@chakra-ui/react";
 import { ref, get } from "firebase/database";
-import { db } from "../../../config/firebase-config";
+import { auth, db } from "../../../config/firebase-config";
 import { fetchGitHubData } from "../../../utils/fetchGitHubData";
 import { calculateAverageRating } from "../../../utils/calculateAverageRating";
 import StarDisplay from "../../StarDisplay/StarDisplay";
@@ -23,6 +24,8 @@ import SearchBar from "../../Search/Search";
 import SortPlugins from "../../SortPlugins/SortPlugins";
 
 export const PluginCard = ({ plugin }) => {
+  const toast = useToast();
+
   const [githubData, setGithubData] = useState({
     openIssues: 0,
     pullRequests: 0,
@@ -51,7 +54,7 @@ export const PluginCard = ({ plugin }) => {
       borderRadius="lg"
       overflow="hidden"
       h="450px"
-      bgColor={'whiteAlpha.600'}
+      bgColor={"whiteAlpha.600"}
     >
       <Flex flexDirection="column" justifyContent="space-between" h="100%">
         <Box>
@@ -59,17 +62,16 @@ export const PluginCard = ({ plugin }) => {
             <Heading size="md" noOfLines={1}>
               {plugin.name}
             </Heading>
-            <Text noOfLines={2}>
-              {plugin.description}
-            </Text>
+            <Text noOfLines={2}>{plugin.description}</Text>
             <Text noOfLines={1}>Uploader: {plugin.creatorName}</Text>
 
             <Wrap spacing="1" mt="1">
-              {plugin.tags && plugin.tags.slice(0, 4).map((tag) => (
-                <Tag key={tag} colorScheme="teal" size="sm">
-                  {tag}
-                </Tag>
-              ))}
+              {plugin.tags &&
+                plugin.tags.slice(0, 4).map((tag) => (
+                  <Tag key={tag} colorScheme="teal" size="sm">
+                    {tag}
+                  </Tag>
+                ))}
             </Wrap>
 
             <Stack direction="row" align="center" mt="1">
@@ -80,11 +82,14 @@ export const PluginCard = ({ plugin }) => {
           <Divider />
           <Stack mt="1" spacing="2" p="2">
             <Text noOfLines={1}>Open Issues: {githubData.openIssues}</Text>
-            <Text noOfLines={1}>Open Pull Requests: {githubData.pullRequests}</Text>
+            <Text noOfLines={1}>
+              Open Pull Requests: {githubData.pullRequests}
+            </Text>
             <Text noOfLines={1}>
               Last Commit:{" "}
               {new Date(githubData.lastCommitDate).toLocaleDateString()}
-              {githubData.lastCommitMessage && ` - ${githubData.lastCommitMessage}`}
+              {githubData.lastCommitMessage &&
+                ` - ${githubData.lastCommitMessage}`}
             </Text>
           </Stack>
         </Box>
@@ -100,9 +105,26 @@ export const PluginCard = ({ plugin }) => {
           >
             Download Now
           </Button>
-          <Button as={Link} to={`/plugin/${plugin.id}`} colorScheme="teal">
-            View More
-          </Button>
+          {!auth.currentUser ? (
+            <Button
+              colorScheme="teal"
+              onClick={() => {
+                toast({
+                  title: "Please Log In",
+                  description: "You need to log in to see more information.",
+                  status: "warning",
+                  duration: 5000,
+                  isClosable: true,
+                });
+              }}
+            >
+              View More
+            </Button>
+          ) : (
+            <Button as={Link} to={`/plugin/${plugin.id}`} colorScheme="teal">
+              View More
+            </Button>
+          )}
         </Stack>
       </Flex>
     </Box>
@@ -220,10 +242,7 @@ const ProductsPage = () => {
         <SortPlugins handleSort={handleSort} />
         <SearchBar setSearchQuery={setSearchQuery} />
       </Flex>
-      <Box
-        flex="1"
-        overflowY="auto"
-      >
+      <Box flex="1" overflowY="auto">
         <SimpleGrid
           columns={columns}
           spacing={4}

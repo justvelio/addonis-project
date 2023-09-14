@@ -62,6 +62,11 @@ function PluginDetailView() {
       return;
     }
 
+    if (auth.currentUser && pluginData.ratings && pluginData.ratings[auth.currentUser.uid]) {
+      setUserHasRated(true);
+      setScore(pluginData.ratings[auth.currentUser.uid]);
+    }
+
     if (pluginData.ratings && pluginData.ratings[auth.currentUser.uid]) {
       setUserHasRated(true);
       setScore(pluginData.ratings[auth.currentUser.uid]);
