@@ -73,6 +73,13 @@ export default function LoginModal() {
     setIsOpen(true);
   };
 
+  const handleKeyPress = (e) => {
+    if (e.key === "Enter") {
+      e.preventDefault();
+      handleLogin();
+    }
+  };
+
   return (
     <div>
       {user ? (
@@ -113,6 +120,7 @@ export default function LoginModal() {
                   onChange={(e) =>
                     setFormData({ ...formData, email: e.target.value })
                   }
+                  onKeyDown={handleKeyPress}
                 />
                 <FormErrorMessage>{formErrors.email}</FormErrorMessage>
               </FormControl>
@@ -125,6 +133,7 @@ export default function LoginModal() {
                   onChange={(e) =>
                     setFormData({ ...formData, password: e.target.value })
                   }
+                  onKeyDown={handleKeyPress}
                 />
                 <FormErrorMessage>{formErrors.password}</FormErrorMessage>
               </FormControl>
@@ -136,6 +145,7 @@ export default function LoginModal() {
               Cancel
             </Button>
             <Button
+              type="button"
               size={"sm"}
               onClick={handleLogin}
               className="px-6 py-3 bg-gray-200 text-black rounded-lg hover:scale-110 active:scale-90 transition-transform ease-in-out duration-200"

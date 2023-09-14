@@ -146,6 +146,11 @@ export default function SignUpModal() {
     setIsOpen(true);
   };
 
+  const handleFormSubmit = (e) => {
+    e.preventDefault();
+    handleSignup();
+  };
+
   return (
     <div>
       <Button
@@ -158,6 +163,7 @@ export default function SignUpModal() {
         </span>
       </Button>
       <Modal isOpen={isOpen} onClose={onClose} isCentered>
+      <form onSubmit={handleFormSubmit}>
         <ModalOverlay />
         <ModalContent>
           <ModalHeader textAlign="center" w={"full"}>
@@ -335,6 +341,7 @@ export default function SignUpModal() {
               </FormControl>
 
               <Button
+                type="submit"
                 size={"md"}
                 loadingText="Submitting"
                 onClick={handleSignup}
@@ -346,6 +353,7 @@ export default function SignUpModal() {
           </ModalBody>
           <ModalFooter />
         </ModalContent>
+        </form>
       </Modal>
     </div>
   );
