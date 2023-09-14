@@ -45,16 +45,17 @@ export default function ImageCarousel() {
   ];
 
   const gradientColors = [
-    "#092B44",
-    "#4F4FAC",
-    "#4F4FAC",
-    "#092B44",
-    "#4B4B50",
-    "#4F4FAC",
-    "#092B44",
-    "#4F4FAC",
-    "#092B44",
+    "#0A59A5",
+    "#6B6BF1",
+    "#6B6BF1",
+    "#0A59A5",
+    "#656569",
+    "#6B6BF1",
+    "#0A59A5",
+    "#6B6BF1",
+    "#0A59A5",
   ];
+  
 
   const gradientAnimation = {
     animation: "shiftBackgroundPosition 10s infinite linear",
