@@ -4,7 +4,6 @@ import {
   Box,
   Heading,
   Text,
-  Link,
   Button,
   useToast,
   Center,
@@ -40,37 +39,20 @@ function PluginDetailView() {
   const navigate = useNavigate();
   const toast = useToast();
 
-  // console.log(id)
-
   const handleDownload = () => {
-    if (plugin && plugin.gitDownloadLink) {
-      const downloadLink = document.createElement("a");
-      downloadLink.href = plugin.gitDownloadLink;
-      downloadLink.target = "_blank";
-      downloadLink.click();
-    } else {
-      console.error("Download link not available");
-    }
+    const downloadLink = document.createElement("a");
+    downloadLink.href = plugin.gitDownloadLink;
+    downloadLink.target = "_blank";
+    downloadLink.click();
+  };
+
+  const handleBack = () => {
+    navigate(-1);
   };
 
   const fetchPluginData = async (id) => {
     const snapshot = await get(ref(db, "plugins/" + id));
     const pluginData = snapshot.val();
-
-    if (!pluginData) {
-      console.error("No data found for plugin with ID:", id);
-      return;
-    }
-
-    if (auth.currentUser && pluginData.ratings && pluginData.ratings[auth.currentUser.uid]) {
-      setUserHasRated(true);
-      setScore(pluginData.ratings[auth.currentUser.uid]);
-    }
-
-    if (pluginData.ratings && pluginData.ratings[auth.currentUser.uid]) {
-      setUserHasRated(true);
-      setScore(pluginData.ratings[auth.currentUser.uid]);
-    }
 
     if (pluginData.githubRepoLink) {
       const githubData = await fetchGitHubData(pluginData.githubRepoLink);
@@ -91,16 +73,14 @@ function PluginDetailView() {
   };
 
   useEffect(() => {
-    if (id === undefined) {
-      return;
-    }
-    // console.log('string', id)
-    fetchPluginData(id).then((result) => {
-      setPlugin({
-        ...result,
-        averageRating: calculateAverageRating(result.ratings),
+    if (id !== undefined) {
+      fetchPluginData(id).then((result) => {
+        setPlugin({
+          ...result,
+          averageRating: calculateAverageRating(result.ratings),
+        });
       });
-    });
+    }
   }, [id]);
 
   const handleRating = (selectedScore) => {
@@ -132,8 +112,6 @@ function PluginDetailView() {
     });
   };
 
-  // console.log(plugin)
-
   return (
     <Flex direction="column" minHeight="100vh">
       {!plugin ? (
@@ -156,9 +134,7 @@ function PluginDetailView() {
                 fontWeight={800}
                 fontSize="sm"
                 letterSpacing={1.1}
-              >
-                {/* {plugin.category} */}
-              </Text>
+              ></Text>
               <Heading fontSize="2xl">{plugin.name}</Heading>
               <Text color="gray.500">{plugin.description}</Text>
             </Stack>
@@ -171,54 +147,32 @@ function PluginDetailView() {
                   name={uploaderUsername}
                   mr="2"
                 />
-                <Text className="font-medium">
+                <Text>
                   Uploader: {uploaderUsername} ({firstName} {lastName})
                 </Text>
               </Flex>
               <Stack direction="row" align="center">
-                <StarDisplay
-                  rating={plugin.averageRating || 0}
-                  onStarClick={handleRating}
-                />
-
+                <StarDisplay rating={plugin.averageRating || 0} onStarClick={handleRating} />
                 <Text>({Object.keys(plugin.ratings).length || 0} reviews)</Text>
               </Stack>
             </Stack>
             <Stack mt="4">
-              <Button
-                colorScheme="teal"
-                onClick={submitRating}
-                isDisabled={userHasRated}
-                size="sm"
-              >
+              <Button colorScheme="teal" onClick={submitRating} isDisabled={userHasRated} size="sm">
                 Submit Rating
               </Button>
-              {userHasRated && (
-                <Text mt="2" color="red.500">
-                  You've already rated this plugin.
-                </Text>
-              )}
+              {userHasRated && <Text mt="2" color="red.500">You've already rated this plugin.</Text>}
             </Stack>
             <Stack mt="4">
               <Text>Open Issues: {githubData.openIssues}</Text>
               <Text>Open Pull Requests: {githubData.pullRequests}</Text>
               <Text>
-                Last Commit:{" "}
-                {githubData.lastCommitDate
-                  ? new Date(githubData.lastCommitDate).toLocaleDateString()
-                  : "N/A"}
-                {githubData.lastCommitMessage &&
-                  ` - ${githubData.lastCommitMessage}`}
+                Last Commit: {githubData.lastCommitDate ? new Date(githubData.lastCommitDate).toLocaleDateString() : "N/A"}{githubData.lastCommitMessage && ` - ${githubData.lastCommitMessage}`}
               </Text>
             </Stack>
-            <Button
-              mt="4"
-              colorScheme="teal"
-              onClick={handleDownload}
-              size="sm"
-            >
-              Download
-            </Button>
+            <Stack direction="row" spacing={2} mt="4">
+              <Button onClick={handleBack} size="sm">Back</Button>
+              <Button colorScheme="teal" onClick={handleDownload} size="sm">Download</Button>
+            </Stack>
           </Box>
         </Center>
       )}
