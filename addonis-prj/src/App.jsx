@@ -16,6 +16,7 @@ import MyPlugins from "./components/views/MyPlugins/MyPlugins";
 import Partners from "./components/views/Partners/Partners";
 import PluginDetailView from "./components/PluginDetailView/PluginDetailView";
 import NotFoundPage from "./components/NotFound/NotFound";
+import AboutUs from "./components/AboutUs/AboutUs";
 import './App.css'
 
 function App() {
@@ -64,6 +65,7 @@ function App() {
             <Route path="/partners" element={<Partners />} />
             <Route path="/plugin/:id" element={<PluginDetailView />} />
             <Route path="*" element={<NotFoundPage />} />
+            <Route path="/about-us" element={<AboutUs />} />
 
           </Routes>
           <Footer />

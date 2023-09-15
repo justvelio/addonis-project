@@ -11,10 +11,13 @@ import {
   FormControl,
   FormLabel,
   Input,
-  Checkbox,
+  IconButton,
+  InputRightElement,
+  InputGroup,
   FormErrorMessage,
 } from "@chakra-ui/react";
 import { loginUser } from "../../services/auth.service";
+import { AiOutlineEye, AiOutlineEyeInvisible } from "react-icons/ai";
 import AppContext from "../../context/AppContext";
 import { getUserData } from "../../services/users.service";
 import { checkUserExistence } from "../../services/auth.service";
@@ -31,6 +34,7 @@ export default function LoginModal() {
     email: "",
     password: "",
   });
+  const [showPassword, setShowPassword] = useState(false);
   const { user } = useContext(AppContext);
 
   const handleLogin = async () => {
@@ -63,14 +67,26 @@ export default function LoginModal() {
     }
   };
 
+  const togglePasswordVisibility = () => {
+    setShowPassword(!showPassword);
+  };
+
   const onClose = () => {
     setIsOpen(false);
     setFormData({ email: "", password: "" });
     setFormErrors({ email: "", password: "" });
+    setShowPassword(false);
   };
 
   const onOpen = () => {
     setIsOpen(true);
+  };
+
+  const handleKeyPress = (e) => {
+    if (e.key === "Enter") {
+      e.preventDefault();
+      handleLogin();
+    }
   };
 
   return (
@@ -79,20 +95,13 @@ export default function LoginModal() {
         <span className="text-white mr-4">{user.username}</span>
       ) : (
         <Button
-          size="sm"
-          color={"teal.500"}
-          bg={"transparent"}
-          _hover={"transparent"}
+          size="md"
+          color={"white"}
+          bg={"blackAlpha.600"}
+          _hover={{bgColor: 'blackAlpha.800'}}
           onClick={onOpen}
-          className="group text-gray-200 hover:text-sky-600 transition ease-in-out duration-200"
         >
-          Log In{" "}
-          <span
-            aria-hidden="true"
-            className="inline-block translate-x-0 group-hover:translate-x-1 transition-transform ease-in-out duration-200"
-          >
-            →
-          </span>
+          Sign In
         </Button>
       )}
       <Modal isOpen={isOpen} onClose={onClose} isCentered>
@@ -113,29 +122,54 @@ export default function LoginModal() {
                   onChange={(e) =>
                     setFormData({ ...formData, email: e.target.value })
                   }
+                  onKeyDown={handleKeyPress}
                 />
                 <FormErrorMessage>{formErrors.email}</FormErrorMessage>
               </FormControl>
               <FormControl mt={4} isInvalid={!!formErrors.password}>
                 <FormLabel>Password</FormLabel>
-                <Input
-                  type="password"
-                  name="password"
-                  value={formData.password}
-                  onChange={(e) =>
-                    setFormData({ ...formData, password: e.target.value })
-                  }
+                <InputGroup>
+                  <Input
+                    type={showPassword ? "text" : "password"}
+                    placeholder="Password"
+                    value={formData.password}
+                    onChange={(e) =>
+                      setFormData({ ...formData, password: e.target.value })
+                    }
+                    onKeyDown={handleKeyPress}
                 />
+                  <InputRightElement>
+                    <IconButton
+                      aria-label={
+                        showPassword ? "Hide password" : "Show password"
+                      }
+                      icon={
+                        showPassword ? (
+                          <AiOutlineEyeInvisible />
+                        ) : (
+                          <AiOutlineEye />
+                        )
+                      }
+                      onClick={togglePasswordVisibility}
+                      size="sm"
+                    />
+                  </InputRightElement>
+                </InputGroup>
                 <FormErrorMessage>{formErrors.password}</FormErrorMessage>
               </FormControl>
-              <Checkbox mt={4}>Remember me</Checkbox>
             </form>
           </ModalBody>
           <ModalFooter>
-            <Button variant="ghost" size={"sm"} _hover={"transparent"} onClick={onClose}>
+            <Button
+              variant="ghost"
+              size={"sm"}
+              _hover={"transparent"}
+              onClick={onClose}
+            >
               Cancel
             </Button>
             <Button
+              type="button"
               size={"sm"}
               onClick={handleLogin}
               className="px-6 py-3 bg-gray-200 text-black rounded-lg hover:scale-110 active:scale-90 transition-transform ease-in-out duration-200"

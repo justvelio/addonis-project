@@ -146,18 +146,23 @@ export default function SignUpModal() {
     setIsOpen(true);
   };
 
+  const handleFormSubmit = (e) => {
+    e.preventDefault();
+    handleSignup();
+  };
+
   return (
     <div>
       <Button
+      bgColor={'whiteAlpha.700'}
+      _hover={{bgColor: 'whiteAlpha.900'}}
         onClick={onOpen}
-        size="sm"
-        className="group [transform:translateZ(0)] px-6 py-3 rounded-lg bg-gray-200 overflow-hidden relative before:absolute before:bg-sky-600 before:bottom-0 before:left-0 before:h-full before:w-full before:-translate-x-full hover:before:translate-x-0 before:transition before:ease-in-out before:duration-500"
-      >
-        <span className="relative z-0 text-black group-hover:text-gray-200 transition ease-in-out duration-500">
+        size="md"
+        >
           Sign Up
-        </span>
       </Button>
       <Modal isOpen={isOpen} onClose={onClose} isCentered>
+      <form onSubmit={handleFormSubmit}>
         <ModalOverlay />
         <ModalContent>
           <ModalHeader textAlign="center" w={"full"}>
@@ -335,6 +340,7 @@ export default function SignUpModal() {
               </FormControl>
 
               <Button
+                type="submit"
                 size={"md"}
                 loadingText="Submitting"
                 onClick={handleSignup}
@@ -346,6 +352,7 @@ export default function SignUpModal() {
           </ModalBody>
           <ModalFooter />
         </ModalContent>
+        </form>
       </Modal>
     </div>
   );

@@ -1,11 +1,14 @@
 import { useState, useEffect } from "react";
 import PropTypes from "prop-types";
-import { Box, Text, Button, Heading, Stack, Divider, Wrap, Flex, Tag } from "@chakra-ui/react";
+import { Box, Text, Button, Heading, Stack, Divider, Wrap, Flex, Tag, useToast } from "@chakra-ui/react";
 import StarDisplay from "../StarDisplay/StarDisplay";
 import { fetchGitHubData } from "../../utils/fetchGitHubData";
 import { Link } from "react-router-dom";
+import { auth } from "../../config/firebase-config";
 
 export const PluginCardLanding = ({ plugin }) => {
+  const toast = useToast();
+
   const [githubData, setGithubData] = useState({
     openIssues: 0,
     pullRequests: 0,
@@ -86,9 +89,26 @@ export const PluginCardLanding = ({ plugin }) => {
           >
             Download Now
           </Button>
-          <Button as={Link} to={`/plugin/${plugin.name}`} colorScheme="teal">
-            View More
-          </Button>
+          {!auth.currentUser ? (
+            <Button
+              colorScheme="teal"
+              onClick={() => {
+                toast({
+                  title: "Please Log In",
+                  description: "You need to log in to see more information.",
+                  status: "warning",
+                  duration: 5000,
+                  isClosable: true,
+                });
+              }}
+            >
+              View More
+            </Button>
+          ) : (
+            <Button as={Link} to={`/plugin/${plugin.name}`} colorScheme="teal">
+              View More
+            </Button>
+          )}
         </Stack>
       </Flex>
     </Box>

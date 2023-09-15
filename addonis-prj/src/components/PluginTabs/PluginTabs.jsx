@@ -19,7 +19,7 @@ function PluginTabs({ plugins }) {
   return (
     <Tabs isFitted variant='enclosed' bgColor={'white'}>
       <TabList mb='1em'>
-        <Tab fontWeight={'bold'}>Top</Tab>
+        <Tab fontWeight={'bold'}>Top Rated</Tab>
         <Tab fontWeight={'bold'}>Featured</Tab>
         <Tab fontWeight={'bold'}>Newest</Tab>
       </TabList>
