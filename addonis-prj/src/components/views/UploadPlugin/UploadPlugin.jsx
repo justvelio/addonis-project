@@ -22,7 +22,8 @@ import {
 import { ref, push } from "firebase/database";
 import TagComponent from "../../TagComponent/TagComponent";
 
-const GITHUB_TOKEN = "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";
+
+const GITHUB_TOKEN = import.meta.env.VITE_GITHUB_TOKEN;
 
 export default function UploadPlugin() {
   const [file, setFile] = useState(null);
