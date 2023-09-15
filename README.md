@@ -24,7 +24,7 @@ Welcome to the FutureHome project! This is a platform designed to enhance your h
 -  **Update Profile**: Keep your user profile information up-to-date.
 ![UpdateProfile](https://imgur.com/FZaP8J7.png)
 ### For Admins
--  **Admin Dashboard**: Access a powerful dashboard to manage the platform efficiently.![enter image description here](https://imgur.com/b1Tvsx7.png)
+-  **Admin Dashboard**: Access a powerful dashboard to manage the platform efficiently.![AdminDashboard](https://imgur.com/b1Tvsx7.png)
 -  **User Management**: Block users, search for users by email, username, or phone. ![UsersList](https://imgur.com/u2en044.png)
 -  **Plugin Management**: Approve, reject, or delete plugins to maintain quality control.![PendingPlugins](https://imgur.com/jeYWkbi.png) 
 -  **Feature Plugins**: Showcase selected plugins in the "Featured" section of the website.![FeaturePlugins](https://imgur.com/APAjcXT.png)
@@ -35,4 +35,4 @@ To start benefiting from our smart home plugins, follow these simple steps:
  3.  **Configuration**: Customize the plugins to your preferences and home setup. 
  4.  **Contribute**: Register and log in to upload your own plugins and rate existing ones.
   ##
-**Together, we're building a smarter, more sustainable future, one plugin at a time.**
+**Together, we're building a smarter, more sustainable future, one plugin at a time.**![AboutUs](https://imgur.com/k5M7JeZ.png)
